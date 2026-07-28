@@ -1,12 +1,16 @@
-import type { Metadata } from 'next';
-import './globals.css';
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'Gencouv | Automated Trading Technology',
-  description: 'Broker-connected copy trading, expert advisors and professional indicators engineered for systematic execution.',
-  metadataBase: new URL('https://gencouv.com'),
+  title: "Gencouv | AI Trading Automation, EAs & Indicators",
+  description: "Explore automated trading systems, Expert Advisors, AI-assisted indicators and guided onboarding for systematic market participation.",
+  metadataBase: new URL("https://gencouv.com"),
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body>{children}</body></html>;
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
 }
