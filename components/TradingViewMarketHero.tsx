@@ -27,7 +27,7 @@ export default function TradingViewMarketHero() {
     script.type = "text/javascript";
     script.async = true;
     script.innerHTML = JSON.stringify({
-      symbols: markets.map((market) => [market.title, `${market.symbol}|1D`]),
+      symbols: [["Gold / U.S. Dollar", "OANDA:XAUUSD|1D"]],
       chartOnly: true,
       width: "100%",
       height: "100%",
@@ -61,40 +61,46 @@ export default function TradingViewMarketHero() {
     };
   }, []);
 
+  const movingMarkets = [...markets, ...markets];
+
   return (
-    <section className="live-market-shell" aria-label="Live market overview">
+    <section className="live-market-shell" aria-label="Live XAUUSD market chart">
       <div className="live-market-head">
         <div>
           <span>LIVE MARKET INTELLIGENCE</span>
-          <h2>Markets in motion.</h2>
+          <h2>Gold never clocks out.</h2>
         </div>
-        <p>Real market prices supplied by TradingView. Some instruments may be delayed according to exchange data rules.</p>
+        <p>You might be sleeping. The market does not. And guess what? Our EAs do not sleep either.</p>
+      </div>
+
+      <div className="gold-label">
+        <div><i /> XAU/USD</div>
+        <span>Gold / U.S. Dollar</span>
       </div>
 
       <div className="live-market-chart">
         <div ref={containerRef} className="tradingview-widget-container" />
       </div>
 
-      <div className="market-card-track">
-        {markets.map((market, index) => (
-          <a
-            href={`https://www.tradingview.com/symbols/${market.symbol.replace(":", "-")}/`}
-            target="_blank"
-            rel="noreferrer"
-            className="market-card"
-            key={market.title}
-          >
-            <span className="market-icon">{index + 1}</span>
-            <span>
-              <b>{market.title}</b>
+      <div className="market-strip" aria-label="Other markets">
+        <div className="market-strip-track">
+          {movingMarkets.map((market, index) => (
+            <a
+              href={`https://www.tradingview.com/symbols/${market.symbol.replace(":", "-")}/`}
+              target="_blank"
+              rel="noreferrer"
+              className="market-pill"
+              key={`${market.title}-${index}`}
+            >
+              <span>{market.title}</span>
               <small>{market.subtitle}</small>
-            </span>
-          </a>
-        ))}
+            </a>
+          ))}
+        </div>
       </div>
 
       <style jsx>{`
-        .live-market-shell{width:min(1180px,calc(100% - 40px));margin:20px auto 0;padding:28px;border:1px solid rgba(255,255,255,.09);border-radius:30px;background:radial-gradient(circle at 50% 12%,rgba(35,235,200,.18),transparent 38%),linear-gradient(180deg,#073233 0%,#031817 100%);box-shadow:0 40px 100px rgba(0,0,0,.38);overflow:hidden}.live-market-head{display:flex;align-items:end;justify-content:space-between;gap:35px;margin-bottom:22px}.live-market-head span{font-size:10px;letter-spacing:.2em;color:#35e4c0}.live-market-head h2{font-size:clamp(34px,5vw,62px);line-height:1;margin:10px 0 0;letter-spacing:-.055em}.live-market-head p{max-width:430px;color:#93a5a2;line-height:1.6;font-size:13px}.live-market-chart{height:430px;border:1px solid rgba(255,255,255,.08);border-radius:22px;overflow:hidden;background:rgba(0,9,9,.45)}.tradingview-widget-container{height:100%;width:100%}.market-card-track{display:grid;grid-template-columns:repeat(5,minmax(220px,1fr));gap:14px;margin-top:18px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}.market-card{min-width:220px;display:flex;align-items:center;gap:16px;padding:22px;border:1px solid rgba(255,255,255,.11);border-radius:19px;background:linear-gradient(145deg,rgba(13,42,40,.92),rgba(5,19,18,.9));transition:.25s}.market-card:hover{transform:translateY(-3px);border-color:rgba(53,228,192,.45)}.market-icon{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;background:#0c3442;color:white;font-weight:800}.market-card b,.market-card small{display:block}.market-card b{font-size:18px;letter-spacing:.04em}.market-card small{margin-top:7px;color:#91a09e;font-size:12px}@media(max-width:760px){.live-market-shell{width:min(100% - 24px,1180px);padding:16px;border-radius:22px}.live-market-head{display:block}.live-market-head p{margin-top:14px}.live-market-chart{height:350px}.market-card-track{grid-template-columns:repeat(5,220px)}}
+        .live-market-shell{width:min(1120px,calc(100% - 40px));margin:20px auto 0;padding:24px;border:1px solid rgba(255,255,255,.09);border-radius:28px;background:radial-gradient(circle at 50% 5%,rgba(35,235,200,.16),transparent 35%),linear-gradient(180deg,#073233 0%,#031817 100%);box-shadow:0 35px 90px rgba(0,0,0,.35);overflow:hidden}.live-market-head{display:flex;align-items:end;justify-content:space-between;gap:35px;margin-bottom:16px}.live-market-head span{font-size:10px;letter-spacing:.2em;color:#35e4c0}.live-market-head h2{font-size:clamp(32px,4.7vw,56px);line-height:1;margin:9px 0 0;letter-spacing:-.05em}.live-market-head p{max-width:420px;color:#b3c2bf;line-height:1.55;font-size:15px;font-weight:600}.gold-label{display:flex;align-items:center;justify-content:space-between;margin:8px 2px 12px;color:#dbe8e5;font-size:12px}.gold-label div{display:flex;align-items:center;gap:8px;font-weight:800;letter-spacing:.08em}.gold-label i{width:7px;height:7px;border-radius:50%;background:#35e4c0;box-shadow:0 0 14px #35e4c0}.gold-label span{color:#7f9691}.live-market-chart{height:285px;border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden;background:rgba(0,9,9,.45)}.tradingview-widget-container{height:100%;width:100%}.market-strip{margin-top:14px;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}.market-strip-track{display:flex;width:max-content;gap:10px;animation:marketFlow 28s linear infinite}.market-strip:hover .market-strip-track{animation-play-state:paused}.market-pill{display:flex;align-items:center;gap:11px;white-space:nowrap;padding:10px 14px;border:1px solid rgba(255,255,255,.1);border-radius:999px;background:rgba(6,27,25,.82)}.market-pill span{font-size:11px;font-weight:850;letter-spacing:.08em}.market-pill small{font-size:10px;color:#839692}@keyframes marketFlow{from{transform:translateX(0)}to{transform:translateX(-50%)}}@media(max-width:760px){.live-market-shell{width:min(100% - 24px,1120px);padding:15px;border-radius:22px}.live-market-head{display:block}.live-market-head p{margin:13px 0 0;font-size:14px}.live-market-head h2{font-size:38px}.gold-label{margin-top:18px}.live-market-chart{height:230px}.market-strip-track{animation-duration:22s}.market-pill{padding:9px 12px}.market-pill small{font-size:9px}}
       `}</style>
     </section>
   );
