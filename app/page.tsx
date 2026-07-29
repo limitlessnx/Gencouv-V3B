@@ -23,23 +23,31 @@ export default function Home() {
       <a className="navCta" href={`${telegram}?start=website`} target="_blank" rel="noreferrer">Begin onboarding</a>
     </nav>
 
-    <section className="hero shell">
-      <div className="heroCopy">
-        <div className="eyebrow">AI-ASSISTED & AUTOMATED MARKET PARTICIPATION</div>
-        <h1>Trade with systems.<br/><em>Not shifting emotions.</em></h1>
-        <p>Gencouv provides automated trading solutions, Expert Advisors, indicators and guided onboarding for clients who want a more structured way to participate in financial markets.</p>
-        <div className="heroActions"><a className="primary" href={`${telegram}?start=automation_onboarding`} target="_blank" rel="noreferrer">Explore automated trading <span>↗</span></a><a className="secondary" href="#education">Learn how it works</a></div>
-        <div className="trust"><span>Systematic execution</span><span>Configurable risk controls</span><span>Continuous monitoring</span><span>Human-guided onboarding</span></div>
+    <section className="copyHero shell">
+      <div className="copyHeroText">
+        <div className="copyPill">AI-ASSISTED COPY TRADING</div>
+        <h1>Follow the strategy.<br/><em>Keep control of your account.</em></h1>
+        <p>Connect a supported broker account and mirror eligible Gencouv strategies automatically. Your capital remains in your own account while trades are copied according to the selected risk profile.</p>
+        <div className="copyHeroActions"><a className="copyPrimary" href={`${telegram}?start=copy_trading`} target="_blank" rel="noreferrer">Check copy-trading eligibility <span>↗</span></a><a className="secondary" href="#education">How it works</a></div>
+        <div className="copyProof"><span><b>$1,000</b><small>Minimum account size</small></span><span><b>Your broker</b><small>Funds remain in your account</small></span><span><b>Risk profiles</b><small>Suitability review required</small></span></div>
       </div>
-      <figure className="heroVisual" aria-label="A satisfied Gencouv client checking trading activity on a phone">
-        <img
-          src="https://unsplash.com/photos/ZIHugVW3SZk/download?force=true&w=1400"
-          alt="A smiling professional checking trading activity on a smartphone in a modern cafe"
-          loading="eager"
-          fetchPriority="high"
-        />
-        <figcaption><span>Live strategy access</span><strong>Markets monitored while you get on with your day.</strong></figcaption>
-      </figure>
+
+      <div className="copyHeroVisual" aria-label="Illustration of copy trading between a lead strategy and connected client accounts">
+        <div className="copyChart"><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/></div>
+        <div className="copyNetwork">
+          <span className="copyNode lead">G</span>
+          <span className="copyNode n1">1</span><span className="copyNode n2">2</span><span className="copyNode n3">3</span><span className="copyNode n4">4</span>
+          <span className="copyLine l1"/><span className="copyLine l2"/><span className="copyLine l3"/><span className="copyLine l4"/>
+        </div>
+        <div className="copyPhone">
+          <div className="phoneTop"><span>GENCOUV COPY</span><b>LIVE</b></div>
+          <div className="phoneAccount"><small>Connected strategy</small><strong>Gencouv Core</strong></div>
+          <div className="phoneGraph"><svg viewBox="0 0 320 130" preserveAspectRatio="none" aria-hidden="true"><path d="M0 106 C28 96 35 72 58 79 S92 103 116 61 S154 48 174 70 S207 72 226 42 S268 58 320 14"/></svg></div>
+          <div className="phoneStats"><span><small>Status</small><b>Copying</b></span><span><small>Risk profile</small><b>Core</b></span></div>
+          <a href={`${telegram}?start=copy_trading`} target="_blank" rel="noreferrer">Start eligibility review</a>
+        </div>
+        <div className="copyBadge green">COPY</div><div className="copyBadge blue">TRADE</div>
+      </div>
     </section>
 
     <TradingViewMarketHero />
