@@ -1,3 +1,5 @@
+import TradingViewMarketHero from "@/components/TradingViewMarketHero";
+
 const telegram = "https://t.me/Gencou_bot";
 
 const benefits = [
@@ -26,8 +28,9 @@ export default function Home() {
       <p>Gencouv provides automated trading solutions, Expert Advisors, indicators and guided onboarding for clients who want a more structured way to participate in financial markets.</p>
       <div className="heroActions"><a className="primary" href={`${telegram}?start=automation_onboarding`} target="_blank" rel="noreferrer">Explore automated trading <span>↗</span></a><a className="secondary" href="#education">Learn how it works</a></div>
       <div className="trust"><span>Systematic execution</span><span>Configurable risk controls</span><span>Continuous monitoring</span><span>Human-guided onboarding</span></div>
-      <div className="terminal"><div className="terminalTop"><div className="brand mini"><span>G</span><div><b>GENCOUV</b><small>AUTOMATION CONTROL</small></div></div><div className="online"><i/>SYSTEM ONLINE</div></div><div className="terminalGrid"><aside><b>Workspace</b><span className="active">Automation</span><span>Strategies</span><span>Risk Engine</span><span>Executions</span><span>Reports</span></aside><div className="chartArea"><div className="chartHead"><div><small>Illustrative strategy activity</small><strong>24/5 Monitoring</strong></div><span>ACTIVE</span></div><div className="chart"><div className="gridlines"/><svg viewBox="0 0 800 260" role="img" aria-label="Illustrative strategy activity"><path className="area" d="M0 220 C70 210 100 185 155 192 S245 150 300 165 S390 118 455 130 S550 90 610 104 S710 55 800 72 L800 260 L0 260 Z"/><path className="line" d="M0 220 C70 210 100 185 155 192 S245 150 300 165 S390 118 455 130 S550 90 610 104 S710 55 800 72"/></svg></div><div className="chartMeta"><span>Execution <b>Rule-based</b></span><span>Monitoring <b>Continuous</b></span><span>Controls <b>Configured</b></span></div></div><div className="metrics"><article><small>Decision model</small><strong>Systematic</strong><span>Rules before reactions</span></article><article><small>Market access</small><strong>Automated</strong><span>Configured participation</span></article><article><small>Review process</small><strong>Trackable</strong><span>Data-led evaluation</span></article></div></div></div>
     </section>
+
+    <TradingViewMarketHero />
 
     <section id="education" className="section shell"><div className="sectionHead"><div><div className="eyebrow left">WHY AUTOMATED TRADING</div><h2>Automation turns a trading plan into repeatable execution.</h2></div><p>It does not remove market risk or guarantee profit. Its value is discipline: monitoring conditions, applying rules and reducing avoidable decision errors caused by fear, greed, hesitation and overtrading.</p></div><div className="knowledgeGrid">{benefits.map(([title,description],i)=><article className="knowledgeCard" key={title}><span>0{i+1}</span><h3>{title}</h3><p>{description}</p></article>)}</div></section>
 
