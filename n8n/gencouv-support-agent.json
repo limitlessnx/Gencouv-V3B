@@ -1,0 +1,129 @@
+{
+  "name": "Gencouv Website Support Agent",
+  "active": false,
+  "settings": {"executionOrder": "v1"},
+  "nodes": [
+    {
+      "id": "webhook",
+      "name": "Website Support Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-900, 0],
+      "parameters": {"httpMethod": "POST", "path": "gencouv-support", "responseMode": "responseNode", "options": {}}
+    },
+    {
+      "id": "normalize",
+      "name": "Normalize Website Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-680, 0],
+      "parameters": {
+        "jsCode": "const b=$json.body??$json;const message=String(b.message??b.chatInput??'').trim();if(!message)throw new Error('message is required');return [{json:{session_id:String(b.session_id??b.sessionId??`web-${Date.now()}`),name:String(b.name??''),email:String(b.email??''),phone:String(b.phone??''),message,page_url:String(b.page_url??b.pageUrl??''),source:'gencouv.com',received_at:new Date().toISOString()}}];"
+      }
+    },
+    {
+      "id": "drive",
+      "name": "Load Gencouv Knowledge Base",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [-460, -120],
+      "parameters": {"operation": "download", "fileId": {"__rl": true, "value": "REPLACE_WITH_GOOGLE_DRIVE_KNOWLEDGE_FILE_ID", "mode": "id"}, "options": {}},
+      "credentials": {"googleDriveOAuth2Api": {"id": "RESELECT_IF_NEEDED", "name": "gencouv"}}
+    },
+    {
+      "id": "extract",
+      "name": "Extract Knowledge Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [-240, -120],
+      "parameters": {"operation": "text", "options": {}}
+    },
+    {
+      "id": "prompt",
+      "name": "Build Support Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-20, 0],
+      "parameters": {
+        "jsCode": "const input=$items('Normalize Website Message')[0].json;const knowledge=$input.all().map(i=>i.json.text??i.json.data??'').join('\\n\\n').slice(0,30000);const system=`You are Gencouv Support, the official website support assistant for Gencouv, a premium trading brand. Handle trading support, copy-trading questions, Expert Advisors, indicators, broker-connected execution, setup, payments and existing-client support. Copy trading requires a minimum trading capital of $1,000. Never promise profit, guaranteed returns or risk-free trading. Never give personalized entry signals. Never guess. If information is missing, say so and offer human escalation. Recommend a relevant Gencouv EA or indicator only when it genuinely fits the visitor's interest. Serious prospects should be sent to https://t.me/Gencou_bot. Classify intent as support, copy_trading, ea_interest, indicator_interest, existing_client, human_support or general. Lead status must be qualified, nurture, support_only or human_review. A qualified copy-trading lead has at least $1,000 available and wants onboarding. Return ONLY valid JSON with keys reply,intent,lead_status,save_lead,handoff_to_telegram,telegram_url,upsell_product,lead. The lead object must contain name,email,phone,country,trading_experience,available_capital_usd,broker,risk_tolerance,preferred_product,main_question. KNOWLEDGE BASE:\\n${knowledge||'Knowledge unavailable. Do not guess.'}`;return [{json:{...input,system_prompt:system}}];"
+      }
+    },
+    {
+      "id": "openai",
+      "name": "Gencouv Support Intelligence",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendHeaders": true,
+        "headerParameters": {"parameters": [{"name": "Content-Type", "value": "application/json"}]},
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({model:'gpt-4.1-mini',temperature:0.2,response_format:{type:'json_object'},messages:[{role:'system',content:$json.system_prompt},{role:'user',content:$json.message}]}) }}",
+        "options": {}
+      },
+      "credentials": {"openAiApi": {"id": "RESELECT_OPENAI_CREDENTIAL", "name": "OpenAI account"}}
+    },
+    {
+      "id": "parse",
+      "name": "Parse Support Decision",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 0],
+      "parameters": {
+        "jsCode": "const original=$items('Build Support Prompt')[0].json;const raw=$json.choices?.[0]?.message?.content??'{}';let ai;try{ai=JSON.parse(raw)}catch{ai={reply:raw,intent:'general',lead_status:'support_only',save_lead:false,handoff_to_telegram:false,telegram_url:'https://t.me/Gencou_bot',upsell_product:'',lead:{}}}const l=ai.lead??{};return [{json:{...original,...ai,lead:{name:l.name||original.name||'',email:l.email||original.email||'',phone:l.phone||original.phone||'',country:l.country||'',trading_experience:l.trading_experience||'',available_capital_usd:l.available_capital_usd||'',broker:l.broker||'',risk_tolerance:l.risk_tolerance||'',preferred_product:l.preferred_product||ai.upsell_product||'',main_question:l.main_question||original.message}}}];"
+      }
+    },
+    {
+      "id": "leadIf",
+      "name": "Save As Lead?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [700, -100],
+      "parameters": {"conditions": {"options": {"caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2}, "conditions": [{"id": "save", "leftValue": "={{ $json.save_lead }}", "rightValue": true, "operator": {"type": "boolean", "operation": "true", "singleValue": true}}], "combinator": "and"}, "options": {}}
+    },
+    {
+      "id": "leadSheet",
+      "name": "Save Qualified Lead",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [940, -180],
+      "parameters": {"operation": "append", "documentId": {"__rl": true, "value": "REPLACE_WITH_GOOGLE_SHEET_ID", "mode": "id"}, "sheetName": {"__rl": true, "value": "Leads", "mode": "name"}, "columns": {"mappingMode": "defineBelow", "value": {"timestamp": "={{ $json.received_at }}", "session_id": "={{ $json.session_id }}", "source": "={{ $json.source }}", "name": "={{ $json.lead.name }}", "email": "={{ $json.lead.email }}", "phone": "={{ $json.lead.phone }}", "country": "={{ $json.lead.country }}", "intent": "={{ $json.intent }}", "lead_status": "={{ $json.lead_status }}", "trading_experience": "={{ $json.lead.trading_experience }}", "available_capital_usd": "={{ $json.lead.available_capital_usd }}", "broker": "={{ $json.lead.broker }}", "risk_tolerance": "={{ $json.lead.risk_tolerance }}", "preferred_product": "={{ $json.lead.preferred_product }}", "main_question": "={{ $json.lead.main_question }}", "telegram_handoff": "={{ $json.handoff_to_telegram }}", "page_url": "={{ $json.page_url }}"}, "matchingColumns": [], "schema": []}, "options": {}},
+      "credentials": {"googleSheetsOAuth2Api": {"id": "RESELECT_IF_NEEDED", "name": "gencouv"}}
+    },
+    {
+      "id": "logSheet",
+      "name": "Log Support Conversation",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [700, 120],
+      "parameters": {"operation": "append", "documentId": {"__rl": true, "value": "REPLACE_WITH_GOOGLE_SHEET_ID", "mode": "id"}, "sheetName": {"__rl": true, "value": "Support Logs", "mode": "name"}, "columns": {"mappingMode": "defineBelow", "value": {"timestamp": "={{ $json.received_at }}", "session_id": "={{ $json.session_id }}", "source": "={{ $json.source }}", "message": "={{ $json.message }}", "reply": "={{ $json.reply }}", "intent": "={{ $json.intent }}", "lead_status": "={{ $json.lead_status }}", "upsell_product": "={{ $json.upsell_product }}", "handoff_to_telegram": "={{ $json.handoff_to_telegram }}", "page_url": "={{ $json.page_url }}"}, "matchingColumns": [], "schema": []}, "options": {}},
+      "credentials": {"googleSheetsOAuth2Api": {"id": "RESELECT_IF_NEEDED", "name": "gencouv"}}
+    },
+    {
+      "id": "respond",
+      "name": "Return Website Reply",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [1180, 20],
+      "parameters": {"respondWith": "json", "responseBody": "={{ {success:true,reply:$json.reply,intent:$json.intent,lead_status:$json.lead_status,handoff_to_telegram:$json.handoff_to_telegram,telegram_url:$json.telegram_url||'https://t.me/Gencou_bot',upsell_product:$json.upsell_product||''} }}", "options": {"responseCode": 200}}
+    }
+  ],
+  "connections": {
+    "Website Support Webhook": {"main": [[{"node": "Normalize Website Message", "type": "main", "index": 0}]]},
+    "Normalize Website Message": {"main": [[{"node": "Load Gencouv Knowledge Base", "type": "main", "index": 0}]]},
+    "Load Gencouv Knowledge Base": {"main": [[{"node": "Extract Knowledge Text", "type": "main", "index": 0}]]},
+    "Extract Knowledge Text": {"main": [[{"node": "Build Support Prompt", "type": "main", "index": 0}]]},
+    "Build Support Prompt": {"main": [[{"node": "Gencouv Support Intelligence", "type": "main", "index": 0}]]},
+    "Gencouv Support Intelligence": {"main": [[{"node": "Parse Support Decision", "type": "main", "index": 0}]]},
+    "Parse Support Decision": {"main": [[{"node": "Save As Lead?", "type": "main", "index": 0}, {"node": "Log Support Conversation", "type": "main", "index": 0}]]},
+    "Save As Lead?": {"main": [[{"node": "Save Qualified Lead", "type": "main", "index": 0}], []]},
+    "Save Qualified Lead": {"main": [[{"node": "Return Website Reply", "type": "main", "index": 0}]]},
+    "Log Support Conversation": {"main": [[{"node": "Return Website Reply", "type": "main", "index": 0}]]}
+  }
+}
