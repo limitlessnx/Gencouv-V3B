@@ -1,4 +1,5 @@
 import TradingViewMarketHero from "@/components/TradingViewMarketHero";
+import FloatingGencouvChat from "@/components/FloatingGencouvChat";
 
 const telegram = "https://t.me/Gencou_bot";
 
@@ -45,5 +46,7 @@ export default function Home() {
     <section className="finalCta shell"><div className="eyebrow">GUIDED ONBOARDING</div><h2>Understand the system before activating it.</h2><p>The Gencouv Telegram assistant explains available solutions, asks suitability questions and helps you identify the automation route that fits your experience and objectives.</p><a className="primary" href={`${telegram}?start=website_final`} target="_blank" rel="noreferrer">Begin onboarding <span>↗</span></a></section>
 
     <footer className="footer shell"><div className="brand"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></div><p>Automated trading systems, Expert Advisors and market intelligence tools.</p><div><a href="mailto:support@gencouv.com">support@gencouv.com</a><a href="/terms">Terms</a></div><small>© 2026 Gencouv. Trading involves substantial risk. Automated systems do not guarantee profit, and historical performance does not guarantee future results.</small></footer>
+
+    <FloatingGencouvChat />
   </main>;
 }
