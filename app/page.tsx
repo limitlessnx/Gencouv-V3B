@@ -24,11 +24,22 @@ export default function Home() {
     </nav>
 
     <section className="hero shell">
-      <div className="eyebrow">AI-ASSISTED & AUTOMATED MARKET PARTICIPATION</div>
-      <h1>Trade with systems.<br/><em>Not shifting emotions.</em></h1>
-      <p>Gencouv provides automated trading solutions, Expert Advisors, indicators and guided onboarding for clients who want a more structured way to participate in financial markets.</p>
-      <div className="heroActions"><a className="primary" href={`${telegram}?start=automation_onboarding`} target="_blank" rel="noreferrer">Explore automated trading <span>↗</span></a><a className="secondary" href="#education">Learn how it works</a></div>
-      <div className="trust"><span>Systematic execution</span><span>Configurable risk controls</span><span>Continuous monitoring</span><span>Human-guided onboarding</span></div>
+      <div className="heroCopy">
+        <div className="eyebrow">AI-ASSISTED & AUTOMATED MARKET PARTICIPATION</div>
+        <h1>Trade with systems.<br/><em>Not shifting emotions.</em></h1>
+        <p>Gencouv provides automated trading solutions, Expert Advisors, indicators and guided onboarding for clients who want a more structured way to participate in financial markets.</p>
+        <div className="heroActions"><a className="primary" href={`${telegram}?start=automation_onboarding`} target="_blank" rel="noreferrer">Explore automated trading <span>↗</span></a><a className="secondary" href="#education">Learn how it works</a></div>
+        <div className="trust"><span>Systematic execution</span><span>Configurable risk controls</span><span>Continuous monitoring</span><span>Human-guided onboarding</span></div>
+      </div>
+      <figure className="heroVisual" aria-label="A satisfied Gencouv client checking trading activity on a phone">
+        <img
+          src="https://unsplash.com/photos/ZIHugVW3SZk/download?force=true&w=1400"
+          alt="A smiling professional checking trading activity on a smartphone in a modern cafe"
+          loading="eager"
+          fetchPriority="high"
+        />
+        <figcaption><span>Live strategy access</span><strong>Markets monitored while you get on with your day.</strong></figcaption>
+      </figure>
     </section>
 
     <TradingViewMarketHero />
