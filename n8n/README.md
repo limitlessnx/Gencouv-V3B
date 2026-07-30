@@ -102,6 +102,27 @@ The website now includes this server endpoint:
 
 Use it from n8n after a visitor provides an email address. Do not call it before an email is collected.
 
+### Live Resend setup
+
+- Domain: `gencouv.com`
+- Domain status: verified
+- Region: `eu-west-1`
+- Lead onboarding automation: `019fb559-434c-733e-8024-10cca3b24fb8`
+- Support acknowledgement automation: `019fb559-66e2-729a-be54-b6ee279c8069`
+
+Published templates:
+
+- `gencouv_welcome`
+- `gencouv_complete_onboarding`
+- `gencouv_broker_setup`
+- `gencouv_support_acknowledgement`
+
+Resend events:
+
+- `gencouv.lead.created`
+- `gencouv.support.requested`
+- `gencouv.onboarding.completed`
+
 ### Required Vercel environment variables
 
 - `RESEND_API_KEY`
@@ -151,10 +172,6 @@ Body for a support request:
 }
 ```
 
-### Resend status
-
-Resend templates and events can be prepared before DNS verification, but sending from `@gencouv.com` requires the domain DNS records to verify successfully first.
-
 ## Important
 
-Test the webhook manually before activating the workflow. Then copy the production webhook URL into the Gencouv website environment variables and connect the website chat interface to it.
+Test the webhook manually before activating the n8n workflow. Then copy the production webhook URL into the Gencouv website environment variables and connect the website chat interface to it.
