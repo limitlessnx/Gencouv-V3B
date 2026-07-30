@@ -42,27 +42,13 @@ export default function Home() {
 
       <div className="copyHeroVisual" aria-label="Illustration of copy trading between a lead strategy and connected client accounts">
         <div className="copyChart"><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/></div>
-        <div className="copyNetwork">
-          <span className="copyNode lead">G</span>
-          <span className="copyNode n1">1</span><span className="copyNode n2">2</span><span className="copyNode n3">3</span><span className="copyNode n4">4</span>
-          <span className="copyLine l1"/><span className="copyLine l2"/><span className="copyLine l3"/><span className="copyLine l4"/>
-        </div>
-        <div className="copyPhone">
-          <div className="phoneTop"><span>GENCOUV COPY</span><b>LIVE</b></div>
-          <div className="phoneAccount"><small>Connected strategy</small><strong>Gencouv Core</strong></div>
-          <div className="phoneGraph"><svg viewBox="0 0 320 130" preserveAspectRatio="none" aria-hidden="true"><path d="M0 106 C28 96 35 72 58 79 S92 103 116 61 S154 48 174 70 S207 72 226 42 S268 58 320 14"/></svg></div>
-          <div className="phoneStats"><span><small>Status</small><b>Copying</b></span><span><small>Risk profile</small><b>Core</b></span></div>
-          <a href={`${telegram}?start=copy_trading`} target="_blank" rel="noreferrer">Start eligibility review</a>
-        </div>
+        <div className="copyNetwork"><span className="copyNode lead">G</span><span className="copyNode n1">1</span><span className="copyNode n2">2</span><span className="copyNode n3">3</span><span className="copyNode n4">4</span><span className="copyLine l1"/><span className="copyLine l2"/><span className="copyLine l3"/><span className="copyLine l4"/></div>
+        <div className="copyPhone"><div className="phoneTop"><span>GENCOUV COPY</span><b>LIVE</b></div><div className="phoneAccount"><small>Connected strategy</small><strong>Gencouv Core</strong></div><div className="phoneGraph"><svg viewBox="0 0 320 130" preserveAspectRatio="none" aria-hidden="true"><path d="M0 106 C28 96 35 72 58 79 S92 103 116 61 S154 48 174 70 S207 72 226 42 S268 58 320 14"/></svg></div><div className="phoneStats"><span><small>Status</small><b>Copying</b></span><span><small>Risk profile</small><b>Core</b></span></div><a href={`${telegram}?start=copy_trading`} target="_blank" rel="noreferrer">Start eligibility review</a></div>
         <div className="copyBadge green">COPY</div><div className="copyBadge blue">TRADE</div>
       </div>
     </section>
 
-    <section id="copy-trading" className="section shell">
-      <div className="sectionHead"><div><div className="eyebrow left">HOW COPY TRADING WORKS</div><h2>A guided route from broker account to strategy activation.</h2></div><p>Gencouv currently supports HFM and Lirunex. We guide each prospective client through broker compatibility, suitability and risk-profile review before any strategy is activated.</p></div>
-      <div className="knowledgeGrid">{copySteps.map(([title,description],i)=><article className="knowledgeCard" key={title}><span>0{i+1}</span><h3>{title}</h3><p>{description}</p></article>)}</div>
-      <div className="copyHeroActions" style={{marginTop: "28px"}}><a className="copyPrimary" href={`${telegram}?start=get_started`} target="_blank" rel="noreferrer">Get started <span>↗</span></a><a className="secondary" href="/copy-trading">Learn more</a><a className="secondary" href="#support">Contact support</a></div>
-    </section>
+    <section id="copy-trading" className="section shell"><div className="sectionHead"><div><div className="eyebrow left">HOW COPY TRADING WORKS</div><h2>A guided route from broker account to strategy activation.</h2></div><p>Gencouv currently supports HFM and Lirunex. We guide each prospective client through broker compatibility, suitability and risk-profile review before any strategy is activated.</p></div><div className="knowledgeGrid">{copySteps.map(([title,description],i)=><article className="knowledgeCard" key={title}><span>0{i+1}</span><h3>{title}</h3><p>{description}</p></article>)}</div><div className="copyHeroActions" style={{marginTop: "28px"}}><a className="copyPrimary" href={`${telegram}?start=get_started`} target="_blank" rel="noreferrer">Get started <span>↗</span></a><a className="secondary" href="/copy-trading">Learn more</a><a className="secondary" href="#support">Contact support</a></div></section>
 
     <TradingViewMarketHero />
 
@@ -74,11 +60,11 @@ export default function Home() {
 
     <section className="section shell"><div className="sectionHead"><div><div className="eyebrow left">GENCOUV MARKETPLACE</div><h2>Tools built for systematic participation.</h2></div><p>Browse Expert Advisors, market indicators and trading utilities with clear explanations of their role, configuration and intended user.</p></div><div className="serviceGrid"><a className="service" href="/marketplace"><span>01</span><h3>Expert Advisors</h3><p>Automated strategies for compatible MetaTrader environments, with defined execution and risk parameters.</p><b>View marketplace ↗</b></a><a className="service" href="/marketplace"><span>02</span><h3>AI-assisted indicators</h3><p>Decision-support tools that help identify structure, momentum, liquidity and changing market conditions.</p><b>View marketplace ↗</b></a><a className="service" href="/marketplace"><span>03</span><h3>Trading utilities</h3><p>Position-sizing, journaling and analysis tools that improve process quality and accountability.</p><b>View marketplace ↗</b></a></div></section>
 
-    <section className="risk"><div className="shell riskGrid"><div><div className="eyebrow left">RISK & RESPONSIBILITY</div><h2>Automation improves process, not certainty.</h2></div><p>Trading involves substantial risk. Results are not guaranteed, and past performance does not guarantee future results. Gencouv does not hold client funds. Clients remain responsible for understanding the service, selecting appropriate risk settings and monitoring their broker account.</p></div></section>
+    <section className="risk"><div className="shell riskGrid"><div><div className="eyebrow left">RISK & RESPONSIBILITY</div><h2>Automation improves process, not certainty.</h2></div><p>Trading foreign exchange, CFDs and other leveraged products involves a high risk of loss and may not be suitable for everyone. Returns, target ranges and examples are not guaranteed. Past performance is not a reliable indicator of future results. Gencouv does not hold client funds or control withdrawals. Clients remain responsible for understanding the service, selecting appropriate risk settings and monitoring their broker account. Read the full <a href="/risk-disclosure">Risk Disclosure</a> before proceeding.</p></div></section>
 
     <section className="finalCta shell"><div className="eyebrow">GUIDED ONBOARDING</div><h2>Understand the system before activating it.</h2><p>The Gencouv Telegram assistant explains HFM and Lirunex compatibility, asks suitability questions and helps identify the route that fits your experience and objectives.</p><div className="copyHeroActions"><a className="primary" href={`${telegram}?start=website_final`} target="_blank" rel="noreferrer">Get started <span>↗</span></a><a className="secondary" href="#support">Contact support</a></div></section>
 
-    <footer className="footer shell"><div className="brand"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></div><p>Copy trading, automated trading systems, Expert Advisors and market intelligence tools.</p><div><a href="#support">Contact support</a><a href="/copy-trading">Copy trading</a><a href="/marketplace">Marketplace</a><a href="/about">About</a><a href="/terms">Terms</a></div><small>© 2026 Gencouv. Trading involves substantial risk. Automated systems do not guarantee profit, and historical performance does not guarantee future results.</small></footer>
+    <footer className="footer shell"><div className="brand"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></div><p>Copy trading, automated trading systems, Expert Advisors and market intelligence tools.</p><div><a href="/about">About</a><a href="/copy-trading">Copy trading</a><a href="/marketplace">Marketplace</a><a href="/testimonials">Testimonials</a><a href="#support">Contact support</a><a href="/terms">Terms</a><a href="/privacy">Privacy Policy</a><a href="/risk-disclosure">Risk Disclosure</a><a href={`${telegram}?start=website_footer`} target="_blank" rel="noreferrer">Telegram</a></div><small>Supported brokers: HFM and Lirunex. Gencouv does not hold client funds. © 2026 Gencouv. Trading involves substantial risk. Results are not guaranteed and past performance does not guarantee future results.</small></footer>
 
     <FloatingGencouvChat />
   </main>;
