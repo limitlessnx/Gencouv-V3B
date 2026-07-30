@@ -11,6 +11,13 @@ const benefits = [
   ["Measurable decisions", "Automated trading creates records that can be reviewed, tested and improved instead of relying on memory, instinct or emotional interpretation."],
 ];
 
+const copySteps = [
+  ["Connect a supported broker", "Use an HFM or Lirunex trading account. Your funds remain with your broker throughout the process."],
+  ["Complete guided onboarding", "Tell us about your experience, objectives and risk tolerance so we can assess suitability."],
+  ["Select an eligible profile", "Review the available strategy profile, its operating approach and the risks involved before activation."],
+  ["Mirror eligible trades", "Once connected, eligible strategy activity is copied automatically according to your selected profile."],
+];
+
 const profiles = [
   { name: "Gencouv Core", label: "Measured participation", description: "Designed for clients who prefer more controlled market exposure, lower strategy intensity and a steadier automation framework.", items: ["Systematic execution", "Defined risk parameters", "Broker-platform monitoring"], start: "core_profile" },
   { name: "Gencouv Alpha", label: "Higher-intensity participation", description: "Designed for experienced clients who understand that increased opportunity frequency can also produce larger fluctuations and drawdowns.", items: ["Automated execution", "Higher market activity", "Enhanced risk awareness required"], start: "alpha_profile" },
@@ -20,7 +27,7 @@ export default function Home() {
   return <main>
     <nav className="nav shell">
       <a className="brand" href="/"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></a>
-      <div className="links"><a href="/about">About</a><a href="#education">Why automation</a><a href="/marketplace">Marketplace</a><a href="/testimonials">Testimonials</a><a href="/terms">Terms</a></div>
+      <div className="links"><a href="/about">About</a><a href="#copy-trading">Copy trading</a><a href="#education">Why automation</a><a href="/marketplace">Marketplace</a><a href="/testimonials">Testimonials</a><a href="/terms">Terms</a></div>
       <a className="navCta" href={`${telegram}?start=website`} target="_blank" rel="noreferrer">Begin onboarding</a>
     </nav>
 
@@ -28,9 +35,9 @@ export default function Home() {
       <div className="copyHeroText">
         <div className="copyPill">AI-ASSISTED COPY TRADING</div>
         <h1>Follow the strategy.<br/><em>Keep control of your account.</em></h1>
-        <p>Connect a supported broker account and mirror eligible Gencouv strategies automatically. Your capital remains in your own account while trades are copied according to the selected risk profile.</p>
-        <div className="copyHeroActions"><a className="copyPrimary" href={`${telegram}?start=copy_trading`} target="_blank" rel="noreferrer">Check copy-trading eligibility <span>↗</span></a><a className="secondary" href="#education">How it works</a></div>
-        <div className="copyProof"><span><b>$1,000</b><small>Minimum account size</small></span><span><b>Your broker</b><small>Funds remain in your account</small></span><span><b>Risk profiles</b><small>Suitability review required</small></span></div>
+        <p>Connect an HFM or Lirunex account and mirror eligible Gencouv strategies automatically. Your capital remains in your own broker account while trades are copied according to your selected risk profile.</p>
+        <div className="copyHeroActions"><a className="copyPrimary" href={`${telegram}?start=copy_trading`} target="_blank" rel="noreferrer">Check copy-trading eligibility <span>↗</span></a><a className="secondary" href="#copy-trading">How it works</a></div>
+        <div className="copyProof"><span><b>HFM & Lirunex</b><small>Supported partner brokers</small></span><span><b>Your account</b><small>Funds remain with your broker</small></span><span><b>Guided setup</b><small>Suitability review before activation</small></span></div>
       </div>
 
       <div className="copyHeroVisual" aria-label="Illustration of copy trading between a lead strategy and connected client accounts">
@@ -51,6 +58,11 @@ export default function Home() {
       </div>
     </section>
 
+    <section id="copy-trading" className="section shell">
+      <div className="sectionHead"><div><div className="eyebrow left">HOW COPY TRADING WORKS</div><h2>A guided route from broker account to strategy activation.</h2></div><p>Gencouv currently supports HFM and Lirunex. We guide each prospective client through broker compatibility, suitability and risk-profile review before any strategy is activated.</p></div>
+      <div className="knowledgeGrid">{copySteps.map(([title,description],i)=><article className="knowledgeCard" key={title}><span>0{i+1}</span><h3>{title}</h3><p>{description}</p></article>)}</div>
+    </section>
+
     <TradingViewMarketHero />
 
     <section id="education" className="section shell"><div className="sectionHead"><div><div className="eyebrow left">WHY AUTOMATED TRADING</div><h2>Automation turns a trading plan into repeatable execution.</h2></div><p>It does not remove market risk or guarantee profit. Its value is discipline: monitoring conditions, applying rules and reducing avoidable decision errors caused by fear, greed, hesitation and overtrading.</p></div><div className="knowledgeGrid">{benefits.map(([title,description],i)=><article className="knowledgeCard" key={title}><span>0{i+1}</span><h3>{title}</h3><p>{description}</p></article>)}</div></section>
@@ -61,11 +73,11 @@ export default function Home() {
 
     <section className="section shell"><div className="sectionHead"><div><div className="eyebrow left">GENCOUV MARKETPLACE</div><h2>Tools built for systematic participation.</h2></div><p>Browse Expert Advisors, market indicators and trading utilities with clear explanations of their role, configuration and intended user.</p></div><div className="serviceGrid"><a className="service" href="/marketplace"><span>01</span><h3>Expert Advisors</h3><p>Automated strategies for compatible MetaTrader environments, with defined execution and risk parameters.</p><b>Browse EAs ↗</b></a><a className="service" href="/marketplace"><span>02</span><h3>AI-assisted indicators</h3><p>Decision-support tools that help identify structure, momentum, liquidity and changing market conditions.</p><b>Browse indicators ↗</b></a><a className="service" href="/marketplace"><span>03</span><h3>Trading utilities</h3><p>Position-sizing, journaling and analysis tools that improve process quality and accountability.</p><b>Explore utilities ↗</b></a></div></section>
 
-    <section className="risk"><div className="shell riskGrid"><div><div className="eyebrow left">RISK & RESPONSIBILITY</div><h2>Automation improves process, not certainty.</h2></div><p>All trading systems can experience losses, drawdowns, execution differences and periods when market conditions do not favour their logic. Clients remain responsible for understanding the product, selecting appropriate risk settings and monitoring their trading account.</p></div></section>
+    <section className="risk"><div className="shell riskGrid"><div><div className="eyebrow left">RISK & RESPONSIBILITY</div><h2>Automation improves process, not certainty.</h2></div><p>Trading involves substantial risk. Results are not guaranteed, and past performance does not guarantee future results. Gencouv does not hold client funds. Clients remain responsible for understanding the service, selecting appropriate risk settings and monitoring their broker account.</p></div></section>
 
-    <section className="finalCta shell"><div className="eyebrow">GUIDED ONBOARDING</div><h2>Understand the system before activating it.</h2><p>The Gencouv Telegram assistant explains available solutions, asks suitability questions and helps you identify the automation route that fits your experience and objectives.</p><a className="primary" href={`${telegram}?start=website_final`} target="_blank" rel="noreferrer">Begin onboarding <span>↗</span></a></section>
+    <section className="finalCta shell"><div className="eyebrow">GUIDED ONBOARDING</div><h2>Understand the system before activating it.</h2><p>The Gencouv Telegram assistant explains HFM and Lirunex compatibility, asks suitability questions and helps identify the route that fits your experience and objectives.</p><a className="primary" href={`${telegram}?start=website_final`} target="_blank" rel="noreferrer">Begin onboarding <span>↗</span></a></section>
 
-    <footer className="footer shell"><div className="brand"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></div><p>Automated trading systems, Expert Advisors and market intelligence tools.</p><div><a href="mailto:support@gencouv.com">support@gencouv.com</a><a href="/terms">Terms</a></div><small>© 2026 Gencouv. Trading involves substantial risk. Automated systems do not guarantee profit, and historical performance does not guarantee future results.</small></footer>
+    <footer className="footer shell"><div className="brand"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></div><p>Copy trading, automated trading systems, Expert Advisors and market intelligence tools.</p><div><a href="mailto:support@gencouv.com">support@gencouv.com</a><a href="#copy-trading">Copy trading</a><a href="/marketplace">Marketplace</a><a href="/about">About</a><a href="/terms">Terms</a></div><small>© 2026 Gencouv. Trading involves substantial risk. Automated systems do not guarantee profit, and historical performance does not guarantee future results.</small></footer>
 
     <FloatingGencouvChat />
   </main>;
