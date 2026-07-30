@@ -1,17 +1,18 @@
 # Gencouv Website Support Agent
 
-This workflow powers the Gencouv website support assistant and hands qualified prospects to the Telegram onboarding bot.
+This workflow powers the Gencouv website support assistant and hands qualified prospects to the Gencouv Telegram onboarding bot.
 
 ## What it does
 
 - Answers Gencouv trading-support questions.
 - Explains copy trading, Expert Advisors, indicators, broker-connected execution and account setup.
-- Uses a $1,000 minimum trading-capital requirement for copy-trading qualification.
+- Qualifies copy-trading prospects privately during onboarding, including trading-capital readiness.
 - Never promises profit or guaranteed returns.
 - Recommends a suitable Gencouv EA or indicator only when relevant.
 - Sends qualified prospects to `https://t.me/Gencou_bot`.
 - Loads the support knowledge base from Google Drive.
 - Saves qualified leads and support logs in Google Sheets.
+- Can trigger Resend email sequences after a lead email is collected.
 
 ## Required n8n credentials
 
@@ -33,8 +34,8 @@ Recommended knowledge sections:
 
 - About Gencouv
 - Copy trading process
-- $1,000 minimum trading capital
-- Supported brokers and account types
+- Supported brokers: HFM and Lirunex
+- Internal onboarding qualification rules
 - Alpha and Core profiles
 - EAs and indicators
 - Pricing and payment rules
@@ -92,6 +93,67 @@ Send a POST request to the workflow production webhook:
   "upsell_product": ""
 }
 ```
+
+## Resend email automation
+
+The website now includes this server endpoint:
+
+`POST https://gencouv.com/api/resend/events`
+
+Use it from n8n after a visitor provides an email address. Do not call it before an email is collected.
+
+### Required Vercel environment variables
+
+- `RESEND_API_KEY`
+- `GENCOUV_EMAIL_EVENT_SECRET`
+
+`GENCOUV_EMAIL_EVENT_SECRET` should be a private random value. n8n must send the same value in the `x-gencouv-event-secret` header.
+
+### n8n HTTP Request node
+
+Method: `POST`
+
+URL:
+
+`https://gencouv.com/api/resend/events`
+
+Headers:
+
+```json
+{
+  "Content-Type": "application/json",
+  "x-gencouv-event-secret": "YOUR_SECRET_VALUE"
+}
+```
+
+Body for a new lead:
+
+```json
+{
+  "email": "lead@example.com",
+  "event": "gencouv.lead.created",
+  "interest": "copy_trading",
+  "source": "website_chat",
+  "broker": "HFM",
+  "profile": "undecided",
+  "onboarding_link": "https://t.me/Gencou_bot?start=email_welcome"
+}
+```
+
+Body for a support request:
+
+```json
+{
+  "email": "lead@example.com",
+  "event": "gencouv.support.requested",
+  "topic": "copy_trading",
+  "source": "website_chat"
+}
+```
+
+### Resend status
+
+Resend templates and events can be prepared before DNS verification, but sending from `@gencouv.com` requires the domain DNS records to verify successfully first.
 
 ## Important
 
