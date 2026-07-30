@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 
 const TELEGRAM = "https://t.me/Gencou_bot?start=website_support_handoff";
 
@@ -30,6 +30,19 @@ export default function FloatingGencouvChat() {
     () => `web-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     [],
   );
+
+  useEffect(() => {
+    const openFromLink = () => {
+      if (window.location.hash === "#support") setOpen(true);
+    };
+    openFromLink();
+    window.addEventListener("hashchange", openFromLink);
+    window.addEventListener("gencouv:open-support", openFromLink);
+    return () => {
+      window.removeEventListener("hashchange", openFromLink);
+      window.removeEventListener("gencouv:open-support", openFromLink);
+    };
+  }, []);
 
   async function sendMessage(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
