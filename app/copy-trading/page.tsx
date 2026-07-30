@@ -3,7 +3,7 @@ import FloatingGencouvChat from "@/components/FloatingGencouvChat";
 const telegram = "https://t.me/Gencou_bot";
 
 const steps = [
-  ["Start onboarding", "Open the Gencouv Telegram onboarding bot and answer a few questions about your broker, experience, objectives and risk tolerance."],
+  ["Start onboarding", "Open the Gencouv onboarding bot and answer a few questions about your broker, experience, objectives and risk tolerance."],
   ["Connect a supported broker", "Gencouv currently supports HFM and Lirunex. Your funds remain in your own broker account."],
   ["Review your profile", "We explain the available trading profiles, expected volatility and possible drawdown before activation."],
   ["Begin copy trading", "Eligible trades are copied automatically according to the profile and risk settings selected during onboarding."],
@@ -29,7 +29,7 @@ export default function CopyTradingPage() {
 
       <section className="finalCta shell"><div className="eyebrow">READY TO BEGIN?</div><h2>Start with the onboarding bot.</h2><p>Answer the suitability questions, confirm whether you use HFM or Lirunex and review the profile that best matches your risk tolerance.</p><a className="primary" href={`${telegram}?start=copy_trading`} target="_blank" rel="noreferrer">Get started <span>↗</span></a></section>
 
-      <footer className="footer shell"><div className="brand"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></div><p>Copy trading, automated systems and market intelligence tools.</p><div><a href="/about">About</a><a href="/copy-trading">Copy trading</a><a href="/marketplace">Marketplace</a><a href="#support">Contact support</a><a href="/terms">Terms</a><a href="/privacy">Privacy Policy</a><a href="/risk-disclosure">Risk Disclosure</a><a href={`${telegram}?start=copy_footer`} target="_blank" rel="noreferrer">Telegram</a></div><small>Supported brokers: HFM and Lirunex. Gencouv does not hold client funds. © 2026 Gencouv. Trading involves substantial risk. Results are not guaranteed.</small></footer>
+      <footer className="footer shell"><div className="brand"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></div><p>Copy trading, automated systems and market intelligence tools.</p><div><a href="/about">About</a><a href="/copy-trading">Copy trading</a><a href="/marketplace">Marketplace</a><a href="#support">Contact support</a><a href="/terms">Terms</a><a href="/privacy">Privacy Policy</a><a href="/risk-disclosure">Risk Disclosure</a><a href={`${telegram}?start=copy_footer`} target="_blank" rel="noreferrer">Get on board</a></div><small>Supported brokers: HFM and Lirunex. Gencouv does not hold client funds. © 2026 Gencouv. Trading involves substantial risk. Results are not guaranteed.</small></footer>
       <FloatingGencouvChat />
 
       <style>{`.infoHero{padding:110px 0 70px;max-width:900px}.infoHero h1{font-size:clamp(48px,8vw,92px);line-height:.96;letter-spacing:-.06em;margin:18px 0}.infoHero>p{font-size:19px;line-height:1.7;color:#b8c7c4;max-width:760px}.heroActions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.returnRange{display:block;margin:14px 0;color:#35e4c0;font-size:24px}.profile{min-height:430px}.profile p{min-height:96px}@media(max-width:700px){.infoHero{padding:72px 0 45px}.infoHero h1{font-size:50px}.infoHero>p{font-size:16px}.heroActions a{width:100%;justify-content:center}}`}</style>
