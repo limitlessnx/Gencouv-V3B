@@ -95,7 +95,7 @@ export default function FloatingGencouvChat() {
   }
 
   return (
-    <div className="gencouv-chat-wrap" aria-label="Gencouv trading support">
+    <div className={`gencouv-chat-wrap${open ? " is-open" : ""}`} aria-label="Gencouv trading support">
       {open ? (
         <section className="gencouv-chat-panel" aria-label="Gencouv Support chat">
           <header>
@@ -150,15 +150,15 @@ export default function FloatingGencouvChat() {
         .gencouv-chat-bubble:after{content:"";position:absolute;right:4px;bottom:-5px;width:9px;height:9px;background:#f5fffc;clip-path:polygon(0 0,100% 0,100% 100%)}
         .gencouv-chat-bubble i{width:3px;height:3px;border-radius:50%;background:#0a3934}
         .gencouv-chat-status{position:absolute;right:3px;bottom:4px;width:13px;height:13px;border:3px solid #061817;border-radius:50%;background:#35e4a6;box-shadow:0 0 12px rgba(53,228,166,.8)}
-        .gencouv-chat-panel{width:min(340px,calc(100vw - 100px));height:min(520px,calc(100vh - 135px));display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;border:1px solid rgba(53,228,192,.22);border-radius:22px;background:radial-gradient(circle at 80% 0%,rgba(53,228,192,.12),transparent 34%),rgba(4,15,17,.96);box-shadow:0 28px 90px rgba(0,0,0,.58);backdrop-filter:blur(18px)}
+        .gencouv-chat-panel{width:min(340px,calc(100vw - 100px));height:min(520px,calc(100dvh - 135px));display:grid;grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden;border:1px solid rgba(53,228,192,.22);border-radius:22px;background:radial-gradient(circle at 80% 0%,rgba(53,228,192,.12),transparent 34%),rgba(4,15,17,.96);box-shadow:0 28px 90px rgba(0,0,0,.58);backdrop-filter:blur(18px)}
         header{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px;border-bottom:1px solid rgba(255,255,255,.08)}
         header span,header strong{display:block}header span{color:#35e4c0;font-size:9px;letter-spacing:.18em}header strong{margin-top:4px;color:#f3fffb;font-size:14px}header button{width:32px;height:32px;border:1px solid rgba(255,255,255,.1);border-radius:50%;background:rgba(255,255,255,.05);color:#dffcf4;cursor:pointer}
-        .gencouv-chat-feed{display:flex;flex-direction:column;gap:9px;overflow-y:auto;padding:14px}.gencouv-chat-feed article{width:fit-content;max-width:90%;border-radius:16px;padding:10px 12px;font-size:12px;line-height:1.5}.gencouv-chat-feed p{margin:0}.assistant{align-self:flex-start;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.05);color:#d8e5e2}.user{align-self:flex-end;background:#35e4c0;color:#03120d;font-weight:650}.gencouv-chat-feed a{display:inline-flex;margin-top:9px;color:#35e4c0;font-weight:800}
-        form{display:grid;grid-template-columns:1fr auto;gap:8px;padding:11px;border-top:1px solid rgba(255,255,255,.08)}input{min-width:0;border:1px solid rgba(255,255,255,.1);border-radius:999px;background:rgba(255,255,255,.06);color:#f3fffb;padding:10px 12px;font-size:12px;outline:none}input::placeholder{color:#7f9691}form button{border:0;border-radius:999px;background:#35e4c0;color:#03120d;padding:0 13px;font-size:12px;font-weight:850;cursor:pointer}form button:disabled{cursor:not-allowed;opacity:.55}
+        .gencouv-chat-feed{min-height:0;display:flex;flex-direction:column;gap:9px;overflow-y:auto;padding:14px}.gencouv-chat-feed article{width:fit-content;max-width:90%;border-radius:16px;padding:10px 12px;font-size:12px;line-height:1.5}.gencouv-chat-feed p{margin:0}.assistant{align-self:flex-start;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.05);color:#d8e5e2}.user{align-self:flex-end;background:#35e4c0;color:#03120d;font-weight:650}.gencouv-chat-feed a{display:inline-flex;margin-top:9px;color:#35e4c0;font-weight:800}
+        form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:11px;border-top:1px solid rgba(255,255,255,.08)}input{width:100%;min-width:0;border:1px solid rgba(255,255,255,.1);border-radius:999px;background:rgba(255,255,255,.06);color:#f3fffb;padding:10px 12px;font-size:16px;outline:none}input::placeholder{color:#7f9691}form button{border:0;border-radius:999px;background:#35e4c0;color:#03120d;padding:0 13px;font-size:12px;font-weight:850;cursor:pointer}form button:disabled{cursor:not-allowed;opacity:.55}
         @keyframes chatPulse{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-        @media(max-width:1000px){.gencouv-chat-panel{width:min(320px,calc(100vw - 88px));height:min(480px,calc(100vh - 120px))}}
-        @media(max-width:700px){.gencouv-chat-wrap{right:max(10px,env(safe-area-inset-right));bottom:max(12px,calc(env(safe-area-inset-bottom) + 8px));gap:7px}.gencouv-chat-button{width:52px;height:52px}.gencouv-chat-bubble{transform:scale(.84)}.gencouv-chat-label{display:none}.gencouv-chat-panel{width:min(300px,calc(100vw - 76px));height:min(450px,calc(100vh - 100px));border-radius:19px}header{padding:13px}.gencouv-chat-feed{padding:12px}form{padding:9px}}
-        @media(max-width:390px){.gencouv-chat-button{display:none}.gencouv-chat-panel{width:calc(100vw - 20px);height:min(440px,calc(100vh - 40px))}}
+        @media(max-width:1000px){.gencouv-chat-panel{width:min(320px,calc(100vw - 88px));height:min(480px,calc(100dvh - 120px))}}
+        @media(max-width:700px){.gencouv-chat-wrap{right:max(10px,env(safe-area-inset-right));bottom:max(12px,calc(env(safe-area-inset-bottom) + 8px));gap:7px}.gencouv-chat-wrap.is-open{left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));bottom:max(10px,env(safe-area-inset-bottom));display:block}.gencouv-chat-button{width:52px;height:52px}.gencouv-chat-wrap.is-open .gencouv-chat-button{display:none}.gencouv-chat-bubble{transform:scale(.84)}.gencouv-chat-label{display:none}.gencouv-chat-panel{width:100%;height:min(430px,62dvh);max-height:calc(100dvh - 20px);border-radius:19px}header{padding:13px}.gencouv-chat-feed{padding:12px}form{padding:9px}}
+        @media(max-width:390px){.gencouv-chat-panel{height:min(400px,58dvh)}}
         @media(prefers-reduced-motion:reduce){.gencouv-chat-button{animation:none}}
       `}</style>
     </div>
