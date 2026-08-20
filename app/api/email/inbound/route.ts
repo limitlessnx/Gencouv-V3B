@@ -1,0 +1,2 @@
+import { NextResponse } from "next/server";
+export async function POST(request:Request){const secret=process.env.RESEND_INBOUND_WEBHOOK_SECRET;if(secret&&request.headers.get("x-resend-webhook-secret")!==secret)return NextResponse.json({error:"Unauthorized"},{status:401});const event=await request.json();console.log("Inbound email received",{type:event?.type});return NextResponse.json({received:true});}
