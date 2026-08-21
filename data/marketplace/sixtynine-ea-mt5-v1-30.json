@@ -1,0 +1,32 @@
+{
+  "slug": "sixtynine-ea-mt5-v1-30",
+  "name": "SixtyNine EA MT5 v1.30",
+  "type": "EA",
+  "platform": "MetaTrader 5",
+  "symbol": "XAUUSD",
+  "timeframes": ["H1", "H4"],
+  "priceUsd": 299,
+  "currency": "USD",
+  "website": "https://gencouv.com",
+  "status": "draft",
+  "delivery": "digital-download",
+  "minimumTestingDepositUsd": 300,
+  "recommendedDepositUsd": 1000,
+  "features": [
+    "6 integrated strategy layers",
+    "Public live signal support",
+    "Predefined Stop Loss",
+    "Take Profit and Trailing Stop",
+    "No Martingale",
+    "No Grid",
+    "No Recovery system",
+    "No simultaneous hedging",
+    "Custom set files",
+    "Gold/XAUUSD focused"
+  ],
+  "riskDisclosure": "Trading involves substantial risk. Historical, backtest, and live-signal performance are not guarantees of future results. The product is software and does not guarantee profits.",
+  "customerPackage": {
+    "include": ["SixtyNine EA v1.30.ex5", "Presets/gold h1 fix lot 0.01.set"],
+    "exclude": ["third-party broker promotions", "rebate promotions", "VPS promotions", "third-party promotional links", "supplier promotional write-ups"]
+  }
+}
