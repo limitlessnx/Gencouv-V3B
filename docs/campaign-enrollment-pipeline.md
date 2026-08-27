@@ -10,7 +10,7 @@ Promote only eligible, validated, non-suppressed leads into one daily email coho
 
 ## Rules
 
-1. Daily cohort is capped at 30 newly qualified leads.
+1. Daily cohort target is configurable: **30 leads/day initially**, with capacity to increase in controlled steps up to **200 leads/day** without rebuilding the workflow.
 2. Normalize email before every comparison or insert.
 3. Suppression is a hard stop. Check `gencouv_suppression_list` before qualification and again immediately before enrollment.
 4. Only leads with `validation_status = verified_mx` and `qualification_status = qualified` may proceed.
@@ -23,6 +23,7 @@ Promote only eligible, validated, non-suppressed leads into one daily email coho
 11. Product positioning should use `portfolio_management`, not the retired `copy_trading` label.
 12. Save the returned Resend contact/run identifier back to the enrollment record where available.
 13. Delivery, bounce, unsubscribe, and reply events update the enrollment and stop future sequence steps when appropriate.
+14. Increasing the daily target must only affect **new cohorts**. Existing cohorts retain their original membership and sequence schedule.
 
 ## n8n orchestration
 
@@ -33,12 +34,17 @@ Promote only eligible, validated, non-suppressed leads into one daily email coho
 3. Exclude addresses in suppression.
 4. Require verified email status and the configured qualification criteria.
 5. Insert/upsert qualified records into `gencouv_qualified_leads`.
-6. Create one `gencouv_daily_cohorts` record for the cohort date and campaign key.
-7. Select at most 30 newly eligible leads for that cohort.
-8. Insert enrollment rows with an idempotent conflict-safe operation.
-9. For each newly inserted enrollment only, emit `gencouv.campaign.enrolled` to Resend.
-10. Record the Resend identifiers and initial sequence state.
-11. Sync cohort/enrollment status to Fluxknight.
+6. Read the configured daily cohort target (initially 30, maximum 200).
+7. Create one `gencouv_daily_cohorts` record for the cohort date and campaign key.
+8. Select up to the configured target of newly eligible leads for that cohort.
+9. Insert enrollment rows with an idempotent conflict-safe operation.
+10. For each newly inserted enrollment only, emit `gencouv.campaign.enrolled` to Resend.
+11. Record the Resend identifiers and initial sequence state.
+12. Sync cohort/enrollment status to Fluxknight.
+
+### Scaling
+
+The daily target must be a configuration value, not a hard-coded workflow limit. Start at 30. An authorized operator can raise it progressively up to 200 as deliverability and operational capacity permit. Lowering the target affects only future cohorts and never removes leads from an existing cohort.
 
 ### Retry behavior
 
