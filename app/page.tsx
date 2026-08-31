@@ -27,9 +27,18 @@ const services = [
 ];
 
 const reviewCards = [
+  ["Kingsley", "Dublin, Ireland", "I started mainly to observe. A few months later, the account growth had crossed a level I never expected that early. The experience completely changed how I viewed systematic trading."],
+  ["Nathan", "Calgary, Canada", "One of the strongest months was honestly difficult to believe at first. I kept refreshing the account because the growth was far beyond what I had expected when I joined."],
   ["Peter", "Birmingham, UK", "There were periods where the performance was much stronger than I expected. What kept me comfortable was being able to follow what was happening rather than blindly handing over my money."],
+  ["Felix", "Nairobi, Kenya", "I did not expect the portfolio to move this strongly within a few months. I started with the minimum amount. The results made me appreciate the importance of patience and letting the system work."],
+  ["Victor", "Johannesburg, South Africa", "I came in expecting to test the system for a short period. Three months later, the portfolio had grown far beyond my original expectations."],
   ["Daniel", "Lagos, Nigeria", "I was skeptical at first, but seeing the account grow close to 20% completely changed my perspective. The consistency and structure behind the trading impressed me most. The track record says it all."],
+  ["Anthony", "Dublin, Ireland", "I have followed trading services before, but this was the first time I felt like I could actually see a structured system working directly inside my own account."],
+  ["Omar", "Dubai, UAE", "I started cautiously because I wanted to see the results for myself first. After watching the account grow steadily, I became much more confident in the system and the way the risk was being handled."],
+  ["Khalid", "Riyadh, Saudi Arabia", "I was initially doubtful because I had seen too many trading promises online. Seeing real growth in my own portfolio over the following months made the difference for me."],
   ["Ahmed", "Dubai, UAE", "One of the strongest periods pushed my account far beyond what I expected when I started. What impressed me most was being able to monitor the performance directly instead of relying on screenshots or promises."],
+  ["Faisal", "Jeddah, Saudi Arabia", "I joined mainly to test the system with realistic expectations. After a few months, the portfolio growth was much stronger than I had anticipated, and that gave me confidence to continue."],
+  ["Yousef", "Abu Dhabi, UAE", "I remember seeing the account approaching 20% growth and realizing this was no longer just something I was testing. The performance and structure made me take Gencouv much more seriously."],
 ];
 
 export default function Home() {
