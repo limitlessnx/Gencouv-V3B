@@ -4,14 +4,15 @@ const TELEGRAM_URL = "https://t.me/Gencou_bot?start=website_support_handoff";
 const MYFXBOOK_URL = "https://www.myfxbook.com/portfolio/gencouv-lirunex-pm/12165670";
 
 const PERFORMANCE_CONTEXT = `
-Gencouv verified performance record:
+Gencouv portfolio-management performance context:
 - Public Myfxbook record: ${MYFXBOOK_URL}
-- This is Gencouv's master-account record for the Lirunex strategy.
-- When a client asks for a performance record, trading history, results, track record, or proof of performance, provide the Myfxbook link and explain that it is the live/public record they can inspect themselves.
-- Use the live Myfxbook page for current figures. Do not invent, estimate, or guarantee returns.
-- Historical performance is not a promise of future results. Individual client results can differ because of account size, execution, fees, risk settings, drawdown, and other account-specific factors.
-- Do not imply that every client received exactly the master-account return unless that is specifically verified.
-- A suitable response can say: "Yes. You can review Gencouv's master-account trading record on Myfxbook here: ${MYFXBOOK_URL}. It gives you a transparent view of the strategy's tracked performance and trading history. These are historical results, not guaranteed future returns, and individual client results may differ based on account and risk settings."
+- This is Gencouv's master-account record for the Lirunex managed strategy.
+- When a client asks for performance, trading history, results, track record or proof of performance, provide the Myfxbook link and explain that it is a public historical record they can inspect themselves.
+- Do not invent, estimate or guarantee returns.
+- Historical performance is not a promise of future results. Individual client outcomes can differ because of account size, execution, fees, risk settings, deposits, withdrawals, drawdown and other account-specific factors.
+- Gencouv does not accept or hold client deposits. Eligible clients maintain their own supported brokerage account.
+- Portfolio-management participation is subject to eligibility and onboarding. Do not promise approval.
+- Marketplace products such as Expert Advisors and indicators are separate from Gencouv's managed portfolio service.
 `;
 
 type SupportRequest = {
@@ -26,9 +27,7 @@ type SupportRequest = {
 };
 
 function asksForPerformance(message: string) {
-  return /myfxbook|performance|track record|trading record|trading history|results|returns|profit|gain|proof of performance|verified record/i.test(
-    message,
-  );
+  return /myfxbook|performance|track record|trading record|trading history|results|returns|profit|gain|proof of performance|verified record/i.test(message);
 }
 
 export async function POST(request: Request) {
@@ -36,33 +35,24 @@ export async function POST(request: Request) {
   const message = body.message?.trim();
 
   if (!message) {
-    return NextResponse.json(
-      {
-        success: false,
-        reply: "Please enter a message for Gencouv Support.",
-      },
-      { status: 400 },
-    );
+    return NextResponse.json({ success: false, reply: "Please enter a message for Gencouv Support." }, { status: 400 });
   }
 
   const performanceIntent = asksForPerformance(message);
   const webhookUrl = process.env.N8N_GENCOUV_SUPPORT_WEBHOOK_URL;
 
   if (!webhookUrl) {
-    return NextResponse.json(
-      {
-        success: true,
-        reply: performanceIntent
-          ? `Yes. You can review Gencouv's master-account trading record on Myfxbook here: ${MYFXBOOK_URL}. It gives you a transparent view of the strategy's tracked performance and trading history. These are historical results, not guaranteed future returns, and individual client results may differ based on account and risk settings.`
-          : "Gencouv Support is being connected. For copy-trading eligibility, EA access, indicators, or account onboarding, continue with the Telegram onboarding agent.",
-        intent: performanceIntent ? "performance_record" : "general",
-        lead_status: "support_only",
-        handoff_to_telegram: !performanceIntent,
-        telegram_url: TELEGRAM_URL,
-        performance_record_url: performanceIntent ? MYFXBOOK_URL : "",
-      },
-      { status: 200 },
-    );
+    return NextResponse.json({
+      success: true,
+      reply: performanceIntent
+        ? `You can review Gencouv's Lirunex managed-strategy record on Myfxbook here: ${MYFXBOOK_URL}. It provides historical master-account performance and trading information for independent review. Historical results are not guaranteed future returns, and individual client outcomes may differ.`
+        : "Gencouv Support can help with portfolio management, eligibility, the client-held brokerage structure, performance information, onboarding and separate marketplace products. Human onboarding is available when you are ready to proceed.",
+      intent: performanceIntent ? "performance_record" : "general",
+      lead_status: "support_only",
+      handoff_to_telegram: false,
+      telegram_url: TELEGRAM_URL,
+      performance_record_url: performanceIntent ? MYFXBOOK_URL : "",
+    }, { status: 200 });
   }
 
   try {
@@ -80,6 +70,7 @@ export async function POST(request: Request) {
         intent_hint: performanceIntent ? "performance_record" : "",
         performance_context: PERFORMANCE_CONTEXT,
         performance_record_url: MYFXBOOK_URL,
+        service_context: "portfolio_management",
       }),
       cache: "no-store",
     });
@@ -87,27 +78,22 @@ export async function POST(request: Request) {
     const data = await upstream.json().catch(() => ({}));
 
     if (!upstream.ok) {
-      return NextResponse.json(
-        {
-          success: false,
-          reply: performanceIntent
-            ? `You can review Gencouv's master-account trading record on Myfxbook here: ${MYFXBOOK_URL}. The record is historical and does not guarantee future results.`
-            : "Gencouv Support is temporarily unavailable. You can continue directly with the Telegram onboarding agent.",
-          handoff_to_telegram: !performanceIntent,
-          telegram_url: TELEGRAM_URL,
-          performance_record_url: performanceIntent ? MYFXBOOK_URL : "",
-        },
-        { status: 502 },
-      );
+      return NextResponse.json({
+        success: false,
+        reply: performanceIntent
+          ? `You can review Gencouv's managed-strategy record on Myfxbook here: ${MYFXBOOK_URL}. The record is historical and does not guarantee future results.`
+          : "Gencouv Support is temporarily unavailable. Portfolio-management information remains available on the website, and onboarding can continue through the human onboarding channel when required.",
+        handoff_to_telegram: false,
+        telegram_url: TELEGRAM_URL,
+        performance_record_url: performanceIntent ? MYFXBOOK_URL : "",
+      }, { status: 502 });
     }
 
     return NextResponse.json({
       success: true,
-      reply:
-        data.reply ||
-        (performanceIntent
-          ? `You can review Gencouv's master-account trading record on Myfxbook here: ${MYFXBOOK_URL}. These are historical results, not a guarantee of future performance.`
-          : "Gencouv Support can help with copy trading, EAs, indicators and onboarding questions."),
+      reply: data.reply || (performanceIntent
+        ? `You can review Gencouv's managed-strategy record on Myfxbook here: ${MYFXBOOK_URL}. These are historical results, not a guarantee of future performance.`
+        : "Gencouv Support can help with portfolio management, eligibility, onboarding, risk information and separate marketplace products."),
       intent: data.intent || (performanceIntent ? "performance_record" : "general"),
       lead_status: data.lead_status || "support_only",
       handoff_to_telegram: Boolean(data.handoff_to_telegram),
@@ -116,17 +102,14 @@ export async function POST(request: Request) {
       performance_record_url: data.performance_record_url || (performanceIntent ? MYFXBOOK_URL : ""),
     });
   } catch {
-    return NextResponse.json(
-      {
-        success: false,
-        reply: performanceIntent
-          ? `You can review Gencouv's master-account trading record on Myfxbook here: ${MYFXBOOK_URL}. These are historical results, not a guarantee of future performance.`
-          : "Gencouv Support could not connect right now. You can continue directly with the Telegram onboarding agent.",
-        handoff_to_telegram: !performanceIntent,
-        telegram_url: TELEGRAM_URL,
-        performance_record_url: performanceIntent ? MYFXBOOK_URL : "",
-      },
-      { status: 502 },
-    );
+    return NextResponse.json({
+      success: false,
+      reply: performanceIntent
+        ? `You can review Gencouv's managed-strategy record on Myfxbook here: ${MYFXBOOK_URL}. These are historical results, not a guarantee of future performance.`
+        : "Gencouv Support could not connect right now. Please review the portfolio-management and risk pages while support reconnects.",
+      handoff_to_telegram: false,
+      telegram_url: TELEGRAM_URL,
+      performance_record_url: performanceIntent ? MYFXBOOK_URL : "",
+    }, { status: 502 });
   }
 }
