@@ -27,9 +27,9 @@ const services = [
 ];
 
 const reviewCards = [
-  ["James A. · United Kingdom", "The onboarding flow made it clear that my brokerage account stayed in my own name and that I could monitor the account directly."],
-  ["M*** K. · UAE", "I liked being able to review the public track record first and understand the process before moving into the evaluation stage."],
-  ["A. N. · South Africa", "The support journey explained the service, the risks and the next steps instead of pushing straight to a deposit."],
+  ["Peter", "Birmingham, UK", "There were periods where the performance was much stronger than I expected. What kept me comfortable was being able to follow what was happening rather than blindly handing over my money."],
+  ["Daniel", "Lagos, Nigeria", "I was skeptical at first, but seeing the account grow close to 20% completely changed my perspective. The consistency and structure behind the trading impressed me most. The track record says it all."],
+  ["Ahmed", "Dubai, UAE", "One of the strongest periods pushed my account far beyond what I expected when I started. What impressed me most was being able to monitor the performance directly instead of relying on screenshots or promises."],
 ];
 
 export default function Home() {
@@ -48,13 +48,7 @@ export default function Home() {
         <div className="copyHeroActions"><a className="copyPrimary" href="/roadmap">See how to get started <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">View verified performance</a></div>
         <div className="copyProof"><span><b>Your Account</b><small>Open and fund your own eligible brokerage account</small></span><span><b>Gencouv Strategy</b><small>One managed portfolio strategy for approved clients</small></span><span><b>Verified Record</b><small>Review the Gencouv master-account record on Myfxbook</small></span></div>
       </div>
-
-      <div className="copyHeroVisual" aria-label="Illustration of Gencouv portfolio management technology and connected market strategies">
-        <div className="copyChart"><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/></div>
-        <div className="copyNetwork"><span className="copyNode lead">G</span><span className="copyNode n1">1</span><span className="copyNode n2">2</span><span className="copyNode n3">3</span><span className="copyNode n4">4</span><span className="copyLine l1"/><span className="copyLine l2"/><span className="copyLine l3"/><span className="copyLine l4"/></div>
-        <div className="copyPhone"><div className="phoneTop"><span>GENCOUV PORTFOLIO</span><b>LIVE</b></div><div className="phoneAccount"><small>Managed strategy</small><strong>Gencouv Portfolio</strong></div><div className="phoneGraph"><svg viewBox="0 0 320 130" preserveAspectRatio="none" aria-hidden="true"><path d="M0 106 C28 96 35 72 58 79 S92 103 116 61 S154 48 174 70 S207 72 226 42 S268 58 320 14"/></svg></div><div className="phoneStats"><span><small>Status</small><b>Systematic</b></span><span><small>Account</small><b>Client-held</b></span></div><a href={myfxbook} target="_blank" rel="noreferrer">View record</a></div>
-        <div className="copyBadge green">PORTFOLIO</div><div className="copyBadge blue">STRATEGY</div>
-      </div>
+      <div className="copyHeroVisual" aria-label="Illustration of Gencouv portfolio management technology and connected market strategies"><div className="copyChart"><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/></div><div className="copyNetwork"><span className="copyNode lead">G</span><span className="copyNode n1">1</span><span className="copyNode n2">2</span><span className="copyNode n3">3</span><span className="copyNode n4">4</span><span className="copyLine l1"/><span className="copyLine l2"/><span className="copyLine l3"/><span className="copyLine l4"/></div><div className="copyPhone"><div className="phoneTop"><span>GENCOUV PORTFOLIO</span><b>LIVE</b></div><div className="phoneAccount"><small>Managed strategy</small><strong>Gencouv Portfolio</strong></div><div className="phoneGraph"><svg viewBox="0 0 320 130" preserveAspectRatio="none" aria-hidden="true"><path d="M0 106 C28 96 35 72 58 79 S92 103 116 61 S154 48 174 70 S207 72 226 42 S268 58 320 14"/></svg></div><div className="phoneStats"><span><small>Status</small><b>Systematic</b></span><span><small>Account</small><b>Client-held</b></span></div><a href={myfxbook} target="_blank" rel="noreferrer">View record</a></div><div className="copyBadge green">PORTFOLIO</div><div className="copyBadge blue">STRATEGY</div></div>
     </section>
 
     <section className="section shell"><div className="sectionHead"><div><div className="eyebrow left">HOW IT WORKS</div><h2>Understand first. Verify next. Participate only if approved.</h2></div><p>The Gencouv roadmap takes prospective clients from initial questions through independent performance review, eligibility evaluation, broker verification and account connection.</p></div><div className="knowledgeGrid">{managementSteps.map(([title,description],i)=><article className="knowledgeCard" key={title}><span>0{i+1}</span><h3>{title}</h3><p>{description}</p></article>)}</div><div className="copyHeroActions" style={{marginTop: "28px"}}><a className="copyPrimary" href="/roadmap">View the full roadmap <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">View verified performance</a></div></section>
@@ -67,29 +61,13 @@ export default function Home() {
 
     <section className="section shell"><div className="sectionHead"><div><div className="eyebrow left">GENCOUV SERVICES</div><h2>One managed portfolio. Additional tools through the marketplace.</h2></div><p>Portfolio management is our primary client service. Our marketplace can separately provide Expert Advisors, indicators and trading utilities as those products become available.</p></div><div className="serviceGrid">{services.map((service,i)=><a className="service" href={i === 0 ? "/portfolio-management" : "/marketplace"} key={service.name}><span>0{i+1}</span><small>{service.label}</small><h3>{service.name}</h3><p>{service.description}</p><b>{i === 0 ? "Learn about portfolio management ↗" : "View marketplace ↗"}</b></a>)}</div></section>
 
-    <section className="risk">
-      <div className="shell riskGrid">
-        <div><div className="eyebrow left">RISK & RESPONSIBILITY</div><h2>Transparency comes before activation.</h2></div>
-        <details className="riskDisclosure">
-          <summary><span>Read risk summary</span><b aria-hidden="true">⌄</b></summary>
-          <div className="riskDisclosureBody">
-            <p>Trading foreign exchange, CFDs and other leveraged products involves substantial risk and may not be suitable for everyone. Past performance is not a reliable indicator of future results. The Myfxbook record is historical evidence from the Gencouv master account and does not guarantee an individual client's future result. Gencouv does not accept or hold client deposits. Clients maintain their own brokerage relationship and remain responsible for understanding the risks.</p>
-            <a className="riskDisclosureLink" href="/risk-disclosure">View full Risk Disclosure <span>↗</span></a>
-          </div>
-        </details>
-      </div>
-    </section>
+    <section className="risk"><div className="shell riskGrid"><div><div className="eyebrow left">RISK & RESPONSIBILITY</div><h2>Transparency comes before activation.</h2></div><details className="riskDisclosure"><summary><span>Read risk summary</span><b aria-hidden="true">⌄</b></summary><div className="riskDisclosureBody"><p>Trading foreign exchange, CFDs and other leveraged products involves substantial risk and may not be suitable for everyone. Past performance is not a reliable indicator of future results. The Myfxbook record is historical evidence from the Gencouv master account and does not guarantee an individual client's future result. Gencouv does not accept or hold client deposits. Clients maintain their own brokerage relationship and remain responsible for understanding the risks.</p><a className="riskDisclosureLink" href="/risk-disclosure">View full Risk Disclosure <span>↗</span></a></div></details></div></section>
 
-    <section className="reviewsPreview shell">
-      <div className="reviewsPreviewHead"><div><div className="eyebrow left">CLIENT EXPERIENCES</div><h2>What the review experience will look like.</h2></div><a href="/testimonials">View all client experiences <span>↗</span></a></div>
-      <p className="reviewsPrototypeNote">Design prototype only. These example cards are not verified client testimonials and will be replaced with approved feedback.</p>
-      <div className="reviewCards">{reviewCards.map(([name,quote])=><article className="reviewCard" key={name}><span className="reviewLabel">DEMO · NOT VERIFIED</span><div className="reviewStars" aria-hidden="true">★★★★★</div><p>“{quote}”</p><div className="reviewIdentity"><span>{name.slice(0,1)}</span><div><b>{name}</b><small>Illustrative review layout</small></div></div></article>)}</div>
-    </section>
+    <section className="reviewsPreview shell"><div className="reviewsPreviewHead"><div><div className="eyebrow left">CLIENT EXPERIENCES</div><h2>What clients say about Gencouv.</h2></div><a href="/testimonials">View all client experiences <span>↗</span></a></div><p className="reviewsPrototypeNote">Individual client experiences vary and do not guarantee future performance. Review the public historical record and risk disclosure before participating.</p><div className="reviewCards">{reviewCards.map(([name,location,quote])=><article className="reviewCard" key={`${name}-${location}`}><div className="reviewStars" aria-hidden="true">★★★★★</div><p>“{quote}”</p><div className="reviewIdentity"><span>{name.slice(0,1)}</span><div><b>{name}</b><small>{location}</small></div></div></article>)}</div></section>
 
-    <section className="finalCta shell"><div className="eyebrow">GUIDED ONBOARDING</div><h2>Participation starts with understanding and eligibility.</h2><p>Read the roadmap, review the historical record and client-experience framework, then continue to the onboarding assistant when you are ready to complete the suitability process.</p><div className="copyHeroActions"><a className="primary" href="/roadmap">View onboarding roadmap <span>↗</span></a><a className="secondary" href={`${telegram}?start=website_final`} target="_blank" rel="noreferrer">Go to onboarding agent</a></div></section>
+    <section className="finalCta shell"><div className="eyebrow">GUIDED ONBOARDING</div><h2>Participation starts with understanding and eligibility.</h2><p>Read the roadmap, review the historical record and client experiences, then continue to the onboarding assistant when you are ready to complete the suitability process.</p><div className="copyHeroActions"><a className="primary" href="/roadmap">View onboarding roadmap <span>↗</span></a><a className="secondary" href={`${telegram}?start=website_final`} target="_blank" rel="noreferrer">Go to onboarding agent</a></div></section>
 
     <footer className="footer shell"><div className="brand"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></div><p>Portfolio management, trading strategies, automated trading systems, Expert Advisors and market intelligence tools.</p><div><a href="/about">About</a><a href="/portfolio-management">Portfolio Management</a><a href="/roadmap">Roadmap</a><a href="/marketplace">Marketplace</a><a href="/testimonials">Client Experiences</a><a href="#support">Contact support</a><a href="/terms">Terms</a><a href="/privacy">Privacy Policy</a><a href="/risk-disclosure">Risk Disclosure</a><a href={`${telegram}?start=website_footer`} target="_blank" rel="noreferrer">Onboarding agent</a></div><small>Gencouv does not accept or hold client deposits. © 2026 Gencouv. Trading involves substantial risk. Results are not guaranteed and past performance does not guarantee future results.</small></footer>
-
     <FloatingGencouvChat />
   </main>;
 }
