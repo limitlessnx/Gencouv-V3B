@@ -18,12 +18,18 @@ const institutionalIdeas = [
   ["Client-centred", "Prospective clients are guided through eligibility, risk understanding and onboarding before participation."],
 ];
 
+const demoReviews = [
+  ["DEMO REVIEW CARD", "James A. · United Kingdom", "The onboarding process was clear and I understood that my brokerage account remained in my own name while I could monitor activity directly."],
+  ["DEMO REVIEW CARD", "M*** K. · UAE", "What stood out in the prototype journey was being able to review the historical record before deciding whether to continue with onboarding."],
+  ["DEMO REVIEW CARD", "A. N. · South Africa", "The support flow explained the service, risk and account structure before asking me to move to the next stage."],
+];
+
 export default function About() {
   return <main>
     <nav className="nav shell">
       <a className="brand" href="/"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></a>
-      <div className="links"><a href="/about">About</a><a href="/portfolio-management">Portfolio Management</a><a href="/#education">Our Approach</a><a href="/marketplace">Marketplace</a><a href="/testimonials">Testimonials</a><a href="/terms">Terms</a></div>
-      <a className="navCta" href={`${telegram}?start=about`} target="_blank" rel="noreferrer">Get on board</a>
+      <div className="links"><a href="/about">About</a><a href="/portfolio-management">Portfolio Management</a><a href="/roadmap">Roadmap</a><a href="/#education">Our Approach</a><a href="/testimonials">Client Experiences</a><a href="/terms">Terms</a></div>
+      <a className="navCta" href="/roadmap">How to get started</a>
     </nav>
 
     <section className="copyHero shell">
@@ -31,7 +37,7 @@ export default function About() {
         <div className="copyPill">ABOUT GENCOUV</div>
         <h1>Built for disciplined<br/><em>capital management.</em></h1>
         <p>Gencouv is a technology-led portfolio management company focused on systematic trading, disciplined risk management and transparent client participation. We build and operate structured market strategies for eligible clients through supported broker infrastructure.</p>
-        <div className="copyHeroActions"><a className="copyPrimary" href="/portfolio-management">Explore portfolio management <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">Review historical performance</a></div>
+        <div className="copyHeroActions"><a className="copyPrimary" href="/roadmap">See how to get started <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">Review historical performance</a></div>
       </div>
       <div className="copyHeroVisual" aria-label="Gencouv systematic portfolio management">
         <div className="copyChart"><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/></div>
@@ -45,13 +51,15 @@ export default function About() {
 
     <section className="section shell"><div className="sectionHead"><div><div className="eyebrow left">INSTITUTIONAL MINDSET</div><h2>Inspired by the disciplines that define modern investment managers.</h2></div><p>Gencouv is not BlackRock, Bridgewater or Man Group, and we do not imply their scale, history or regulatory standing. What we adopt is the institutional mindset visible across leading investment firms: systematic thinking, technology, research, risk management and a client-first operating model.</p></div><div className="knowledgeGrid">{institutionalIdeas.map(([title,description],i)=><article className="knowledgeCard" key={title}><span>0{i+1}</span><h3>{title}</h3><p>{description}</p></article>)}</div></section>
 
-    <section className="risk"><div className="shell riskGrid"><div><div className="eyebrow left">WHAT CLIENTS SHOULD EXPECT</div><h2>Clarity before commitment.</h2></div><div><p>Clients should expect a structured onboarding process, straightforward explanations of how the managed strategy works, visibility into historical performance and clear communication about risk. We do not publish invented testimonials. Verified client feedback can be added here as it is collected and approved.</p><p style={{marginTop:"18px"}}>Participation is subject to eligibility. Gencouv does not accept or hold client deposits; clients maintain their own eligible brokerage account.</p></div></div></section>
+    <section className="section shell"><div className="sectionHead"><div><div className="eyebrow left">CLIENT EXPERIENCE PROTOTYPE</div><h2>How trust cards will appear.</h2></div><p>These cards are clearly marked demo content for the design prototype. They are not presented as real Gencouv client reviews. Approved client feedback can replace them later without changing the page structure.</p></div><div className="serviceGrid">{demoReviews.map(([label,name,quote])=><article className="service" key={name}><span>{label}</span><h3>{name}</h3><p>“{quote}”</p><b>Illustrative content only</b></article>)}</div><div className="copyHeroActions" style={{marginTop:"28px"}}><a className="secondary" href="/testimonials">View client experiences page</a></div></section>
 
-    <section className="section shell"><div className="sectionHead"><div><div className="eyebrow left">OUR DIRECTION</div><h2>From trading technology to an investment platform built to endure.</h2></div><p>Our long-term direction is to deepen the infrastructure behind Gencouv: better research, stronger portfolio and risk systems, clearer reporting, more robust automation and a client experience that makes sophisticated investment processes easier to understand.</p></div></section>
+    <section className="risk"><div className="shell riskGrid"><div><div className="eyebrow left">WHAT CLIENTS SHOULD EXPECT</div><h2>Clarity before commitment.</h2></div><div><p>Clients should expect a structured onboarding process, straightforward explanations of how the managed strategy works, visibility into historical performance and clear communication about risk.</p><p style={{marginTop:"18px"}}>Participation is subject to eligibility. Gencouv does not accept or hold client deposits; clients maintain their own eligible brokerage account.</p></div></div></section>
+
+    <section className="section shell"><div className="sectionHead"><div><div className="eyebrow left">YOUR NEXT STEPS</div><h2>A defined path from research to activation.</h2></div><p>Use the Gencouv roadmap to understand the service, review client experiences, verify the public track record, complete evaluation, create your own broker account and retain visibility after connection.</p></div><div className="copyHeroActions"><a className="primary" href="/roadmap">View the Gencouv roadmap <span>↗</span></a></div></section>
 
     <section className="finalCta shell"><div className="eyebrow">GENCOUV PORTFOLIO MANAGEMENT</div><h2>Understand the strategy before you participate.</h2><p>Review how the portfolio works, examine the historical record and complete the eligibility process before making a decision.</p><div className="copyHeroActions"><a className="primary" href={`${telegram}?start=about_final`} target="_blank" rel="noreferrer">Begin onboarding <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">View historical performance</a></div></section>
 
-    <footer className="footer shell"><div className="brand"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></div><p>Technology-led portfolio management, systematic trading strategies and market intelligence tools.</p><div><a href="/about">About</a><a href="/portfolio-management">Portfolio Management</a><a href="/marketplace">Marketplace</a><a href="/terms">Terms</a><a href="/privacy">Privacy Policy</a><a href="/risk-disclosure">Risk Disclosure</a></div><small>Gencouv does not accept or hold client deposits. © 2026 Gencouv. Trading involves substantial risk. Results are not guaranteed and past performance does not guarantee future results.</small></footer>
+    <footer className="footer shell"><div className="brand"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></div><p>Technology-led portfolio management, systematic trading strategies and market intelligence tools.</p><div><a href="/about">About</a><a href="/portfolio-management">Portfolio Management</a><a href="/roadmap">Roadmap</a><a href="/testimonials">Client Experiences</a><a href="/marketplace">Marketplace</a><a href="/terms">Terms</a><a href="/privacy">Privacy Policy</a><a href="/risk-disclosure">Risk Disclosure</a></div><small>Gencouv does not accept or hold client deposits. © 2026 Gencouv. Trading involves substantial risk. Results are not guaranteed and past performance does not guarantee future results.</small></footer>
     <FloatingGencouvChat />
   </main>;
 }
