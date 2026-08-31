@@ -1,0 +1,32 @@
+import CheckoutClient from "./CheckoutClient";
+
+export default function SixtyNineCheckoutPage() {
+  return (
+    <main className="checkoutPage">
+      <nav className="nav shell"><a className="brand" href="/"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></a><div className="links"><a href="/marketplace">Marketplace</a><a href="/risk-disclosure">Risk Disclosure</a></div></nav>
+
+      <section className="checkoutShell shell">
+        <a className="back" href="/marketplace">← Back to Marketplace</a>
+        <div className="checkoutGrid">
+          <div className="productPanel">
+            <div className="eyebrow left">EXPERT ADVISOR · MT5</div>
+            <h1>SixtyNine EA MT5 v1.30</h1>
+            <p>Gold-focused automated trading software for MetaTrader 5 with six integrated strategy layers, predefined risk controls and configurable set files.</p>
+            <div className="specs"><span><b>Symbol</b>XAUUSD</span><span><b>Timeframe</b>H1 / H4</span><span><b>Platform</b>MetaTrader 5</span><span><b>Delivery</b>Digital product</span></div>
+          </div>
+
+          <aside className="paymentCard">
+            <div className="paymentTop"><span>Order total</span><strong>$2,000</strong></div>
+            <div className="line"><span>SixtyNine EA MT5 v1.30</span><b>$2,000</b></div>
+            <div className="line muted"><span>Payment method</span><b>Cryptocurrency</b></div>
+            <div className="gateway"><span>NOW</span><div><b>NOWPayments checkout</b><small>You will be redirected to select a supported cryptocurrency and complete payment.</small></div></div>
+            <CheckoutClient />
+            <div className="notice"><b>Payment notice</b><p>Do not close the payment window until NOWPayments confirms the transaction. Product access should only be released after the payment is confirmed by the payment gateway.</p></div>
+          </aside>
+        </div>
+      </section>
+
+      <style>{`.checkoutPage{min-height:100vh}.checkoutShell{padding:72px 0 110px}.back{display:inline-block;margin-bottom:30px;color:#8fa09d}.checkoutGrid{display:grid;grid-template-columns:1.2fr .8fr;gap:34px;align-items:start}.productPanel{padding:42px;border:1px solid rgba(53,228,192,.15);border-radius:26px;background:linear-gradient(145deg,rgba(7,31,31,.88),rgba(3,12,14,.95))}.productPanel h1{font-size:clamp(44px,7vw,78px);line-height:.95;letter-spacing:-.055em;margin:18px 0 24px}.productPanel>p{max-width:720px;color:#a9b8b5;font-size:17px;line-height:1.75}.specs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:30px}.specs span{padding:16px;border:1px solid rgba(255,255,255,.07);border-radius:14px;color:#d5dfdd}.specs b{display:block;margin-bottom:5px;color:#71807e;font-size:10px;text-transform:uppercase;letter-spacing:.13em}.paymentCard{padding:30px;border:1px solid rgba(53,228,192,.22);border-radius:24px;background:#061618;position:sticky;top:24px}.paymentTop{display:flex;justify-content:space-between;gap:20px;align-items:end;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.08)}.paymentTop span{color:#82918f}.paymentTop strong{font-size:38px;letter-spacing:-.04em}.line{display:flex;justify-content:space-between;gap:18px;padding:17px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:13px}.line.muted{color:#8b9997}.gateway{display:flex;gap:14px;align-items:center;margin-top:22px;padding:16px;border-radius:15px;background:rgba(53,228,192,.05);border:1px solid rgba(53,228,192,.14)}.gateway>span{display:grid;place-items:center;min-width:52px;height:40px;border-radius:10px;background:#35e4c0;color:#031010;font-weight:900}.gateway div{display:grid;gap:4px}.gateway small{color:#82918f;line-height:1.45}.notice{margin-top:22px;padding-top:20px;border-top:1px solid rgba(255,255,255,.07)}.notice b{font-size:11px;letter-spacing:.12em;color:#35e4c0;text-transform:uppercase}.notice p{color:#7f8f8c;font-size:12px;line-height:1.6}@media(max-width:850px){.checkoutShell{padding-top:42px}.checkoutGrid{grid-template-columns:1fr}.paymentCard{position:static}.productPanel{padding:28px}.specs{grid-template-columns:1fr}.productPanel h1{font-size:48px}}`}</style>
+    </main>
+  );
+}
