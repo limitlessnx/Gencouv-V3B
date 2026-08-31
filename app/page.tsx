@@ -25,6 +25,12 @@ const services = [
   { name: "Indicators & Utilities", label: "Marketplace", description: "Decision-support indicators, analysis tools and trading utilities. Marketplace availability is being expanded." },
 ];
 
+const reviewCards = [
+  ["James A. · United Kingdom", "The onboarding flow made it clear that my brokerage account stayed in my own name and that I could monitor the account directly."],
+  ["M*** K. · UAE", "I liked being able to review the public track record first and understand the process before moving into the evaluation stage."],
+  ["A. N. · South Africa", "The support journey explained the service, the risks and the next steps instead of pushing straight to a deposit."],
+];
+
 export default function Home() {
   return <main>
     <nav className="nav shell">
@@ -60,7 +66,24 @@ export default function Home() {
 
     <section className="section shell"><div className="sectionHead"><div><div className="eyebrow left">GENCOUV SERVICES</div><h2>One managed portfolio. Additional tools through the marketplace.</h2></div><p>Portfolio management is our primary client service. Our marketplace can separately provide Expert Advisors, indicators and trading utilities as those products become available.</p></div><div className="serviceGrid">{services.map((service,i)=><a className="service" href={i === 0 ? "/portfolio-management" : "/marketplace"} key={service.name}><span>0{i+1}</span><small>{service.label}</small><h3>{service.name}</h3><p>{service.description}</p><b>{i === 0 ? "Learn about portfolio management ↗" : "View marketplace ↗"}</b></a>)}</div></section>
 
-    <section className="risk"><div className="shell riskGrid"><div><div className="eyebrow left">RISK & RESPONSIBILITY</div><h2>Transparency comes before activation.</h2></div><p>Trading foreign exchange, CFDs and other leveraged products involves substantial risk and may not be suitable for everyone. Past performance is not a reliable indicator of future results. The Myfxbook record is historical evidence from the Gencouv master account and does not guarantee an individual client's future result. Gencouv does not accept or hold client deposits. Clients maintain their own brokerage relationship and remain responsible for understanding the risks. Read the full <a href="/risk-disclosure">Risk Disclosure</a> before proceeding.</p></div></section>
+    <section className="risk">
+      <div className="shell riskGrid">
+        <div><div className="eyebrow left">RISK & RESPONSIBILITY</div><h2>Transparency comes before activation.</h2></div>
+        <details className="riskDisclosure">
+          <summary><span>Read risk summary</span><b aria-hidden="true">⌄</b></summary>
+          <div className="riskDisclosureBody">
+            <p>Trading foreign exchange, CFDs and other leveraged products involves substantial risk and may not be suitable for everyone. Past performance is not a reliable indicator of future results. The Myfxbook record is historical evidence from the Gencouv master account and does not guarantee an individual client's future result. Gencouv does not accept or hold client deposits. Clients maintain their own brokerage relationship and remain responsible for understanding the risks.</p>
+            <a className="riskDisclosureLink" href="/risk-disclosure">View full Risk Disclosure <span>↗</span></a>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section className="reviewsPreview shell">
+      <div className="reviewsPreviewHead"><div><div className="eyebrow left">CLIENT EXPERIENCES</div><h2>What the review experience will look like.</h2></div><a href="/testimonials">View all client experiences <span>↗</span></a></div>
+      <p className="reviewsPrototypeNote">Design prototype only. These example cards are not verified client testimonials and will be replaced with approved feedback.</p>
+      <div className="reviewCards">{reviewCards.map(([name,quote])=><article className="reviewCard" key={name}><span className="reviewLabel">DEMO · NOT VERIFIED</span><div className="reviewStars" aria-hidden="true">★★★★★</div><p>“{quote}”</p><div className="reviewIdentity"><span>{name.slice(0,1)}</span><div><b>{name}</b><small>Illustrative review layout</small></div></div></article>)}</div>
+    </section>
 
     <section className="finalCta shell"><div className="eyebrow">GUIDED ONBOARDING</div><h2>Participation starts with understanding and eligibility.</h2><p>Read the roadmap, review the historical record and client-experience framework, then continue to the onboarding assistant when you are ready to complete the suitability process.</p><div className="copyHeroActions"><a className="primary" href="/roadmap">View onboarding roadmap <span>↗</span></a><a className="secondary" href={`${telegram}?start=website_final`} target="_blank" rel="noreferrer">Go to onboarding agent</a></div></section>
 
