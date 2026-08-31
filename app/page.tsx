@@ -1,4 +1,5 @@
 import "./copy-hero.css";
+import "./home-trust.css";
 import TradingViewMarketHero from "@/components/TradingViewMarketHero";
 import FloatingGencouvChat from "@/components/FloatingGencouvChat";
 
