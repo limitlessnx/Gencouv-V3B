@@ -1,7 +1,7 @@
 import "../copy-hero.css";
 import FloatingGencouvChat from "@/components/FloatingGencouvChat";
 
-const telegram = "https://t.me/gencouv";
+const telegram = "https://t.me/GENCOUV";
 const myfxbook = "https://www.myfxbook.com/portfolio/gencouv-lirunex-pm/12165670";
 const lirunexLegal = "https://lirunex.com/legal-documents/";
 
@@ -35,6 +35,7 @@ export default function RoadmapPage() {
       <h1>Understand first. Verify next. Join only if it fits.</h1>
       <p>Gencouv's onboarding path is designed to give prospective clients time to understand the service, review independent evidence, complete an eligibility assessment and keep control of their own brokerage account throughout the process.</p>
       <div className="heroActions" style={{justifyContent:"center"}}><a className="primary" href="#roadmap">View the roadmap <span>↓</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">View verified track record</a></div>
+      <div style={{display:"flex",justifyContent:"center",marginTop:"22px"}}><a className="primary" href={telegram} target="_blank" rel="noreferrer" style={{fontSize:"1.1rem",padding:"18px 34px",minWidth:"260px",textAlign:"center"}}>Get Started Now <span>↗</span></a></div>
     </section>
 
     <section id="roadmap" className="section shell">
