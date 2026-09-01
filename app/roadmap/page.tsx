@@ -35,7 +35,7 @@ export default function RoadmapPage() {
       <h1>Understand first. Verify next. Join only if it fits.</h1>
       <p>Gencouv's onboarding path is designed to give prospective clients time to understand the service, review independent evidence, complete an eligibility assessment and keep control of their own brokerage account throughout the process.</p>
       <div className="heroActions" style={{justifyContent:"center"}}><a className="primary" href="#roadmap">View the roadmap <span>↓</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">View verified track record</a></div>
-      <div style={{display:"flex",justifyContent:"center",marginTop:"22px"}}><a className="primary" href={telegram} target="_blank" rel="noreferrer" style={{fontSize:"1.1rem",padding:"18px 34px",minWidth:"260px",textAlign:"center"}}>Get Started Now <span>↗</span></a></div>
+      <a href={telegram} target="_blank" rel="noreferrer" style={{display:"flex",width:"min(520px,100%)",minHeight:"68px",margin:"28px auto 0",alignItems:"center",justifyContent:"center",gap:"14px",borderRadius:"18px",background:"#35e4a6",color:"#03120d",fontSize:"clamp(17px,3vw,22px)",fontWeight:900,letterSpacing:"-.02em",boxShadow:"0 18px 50px rgba(53,228,166,.28)",border:"1px solid rgba(255,255,255,.18)"}}>Get Started Now <span>↗</span></a>
     </section>
 
     <section id="roadmap" className="section shell">
