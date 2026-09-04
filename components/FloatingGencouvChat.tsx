@@ -1,8 +1,22 @@
 "use client";
 
+import { useEffect } from "react";
+
 const TELEGRAM = "https://t.me/Gencou_bot?start=website_support";
 
 export default function FloatingGencouvChat() {
+  useEffect(() => {
+    const redirectSupportHash = () => {
+      if (window.location.hash === "#support") {
+        window.location.href = TELEGRAM;
+      }
+    };
+
+    redirectSupportHash();
+    window.addEventListener("hashchange", redirectSupportHash);
+    return () => window.removeEventListener("hashchange", redirectSupportHash);
+  }, []);
+
   return (
     <div className="gencouv-chat-wrap" aria-label="Gencouv support">
       <span className="gencouv-chat-label">Chat with Gencouv Support</span>
