@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-const TELEGRAM = "https://t.me/Gencou_bot?start=website_support";
+const TELEGRAM = "https://t.me/gencouv";
 
 export default function FloatingGencouvChat() {
   useEffect(() => {
