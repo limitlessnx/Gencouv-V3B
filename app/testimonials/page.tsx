@@ -1,7 +1,7 @@
 import "../copy-hero.css";
 import "../home-trust.css";
 
-const telegram = "https://t.me/Gencou_bot?start=client_experiences";
+const telegram = "https://t.me/gencouv";
 const myfxbook = "https://www.myfxbook.com/portfolio/gencouv-lirunex-pm/12165670";
 
 const principles = [
