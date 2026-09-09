@@ -6,15 +6,22 @@ const TELEGRAM = "https://t.me/gencouv";
 
 export default function FloatingGencouvChat() {
   useEffect(() => {
+    let redirectTimer: ReturnType<typeof setTimeout> | undefined;
+
     const redirectSupportHash = () => {
       if (window.location.hash === "#support") {
-        window.location.href = TELEGRAM;
+        redirectTimer = setTimeout(() => {
+          window.location.href = TELEGRAM;
+        }, 180);
       }
     };
 
     redirectSupportHash();
     window.addEventListener("hashchange", redirectSupportHash);
-    return () => window.removeEventListener("hashchange", redirectSupportHash);
+    return () => {
+      window.removeEventListener("hashchange", redirectSupportHash);
+      if (redirectTimer) clearTimeout(redirectTimer);
+    };
   }, []);
 
   return (
