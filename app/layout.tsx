@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import GencouvAnalytics from "@/components/GencouvAnalytics";
 import MobileSidebarMenu from "@/components/MobileSidebarMenu";
 import "./globals.css";
 
@@ -13,6 +14,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en">
       <body>
         {children}
+        <GencouvAnalytics />
         <MobileSidebarMenu />
       </body>
     </html>
