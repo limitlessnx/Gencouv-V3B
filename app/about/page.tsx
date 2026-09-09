@@ -1,7 +1,7 @@
 import "../copy-hero.css";
 import FloatingGencouvChat from "@/components/FloatingGencouvChat";
 
-const telegram = "https://t.me/Gencou_bot";
+const telegram = "https://t.me/gencouv";
 const myfxbook = "https://www.myfxbook.com/portfolio/gencouv-lirunex-pm/12165670";
 
 const principles = [
@@ -57,7 +57,7 @@ export default function About() {
 
     <section className="section shell"><div className="sectionHead"><div><div className="eyebrow left">YOUR NEXT STEPS</div><h2>A defined path from research to activation.</h2></div><p>Use the Gencouv roadmap to understand the service, review client experiences, verify the public track record, complete evaluation, create your own broker account and retain visibility after connection.</p></div><div className="copyHeroActions"><a className="primary" href="/roadmap">View the Gencouv roadmap <span>↗</span></a></div></section>
 
-    <section className="finalCta shell"><div className="eyebrow">GENCOUV PORTFOLIO MANAGEMENT</div><h2>Understand the strategy before you participate.</h2><p>Review how the portfolio works, examine the historical record and complete the eligibility process before making a decision.</p><div className="copyHeroActions"><a className="primary" href={`${telegram}?start=about_final`} target="_blank" rel="noreferrer">Begin onboarding <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">View historical performance</a></div></section>
+    <section className="finalCta shell"><div className="eyebrow">GENCOUV PORTFOLIO MANAGEMENT</div><h2>Understand the strategy before you participate.</h2><p>Review how the portfolio works, examine the historical record and complete the eligibility process before making a decision.</p><div className="copyHeroActions"><a className="primary" href={telegram} target="_blank" rel="noreferrer">Begin onboarding <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">View historical performance</a></div></section>
 
     <footer className="footer shell"><div className="brand"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></div><p>Technology-led portfolio management, systematic trading strategies and market intelligence tools.</p><div><a href="/about">About</a><a href="/portfolio-management">Portfolio Management</a><a href="/roadmap">Roadmap</a><a href="/testimonials">Client Experiences</a><a href="/marketplace">Marketplace</a><a href="/terms">Terms</a><a href="/privacy">Privacy Policy</a><a href="/risk-disclosure">Risk Disclosure</a></div><small>Gencouv does not accept or hold client deposits. © 2026 Gencouv. Trading involves substantial risk. Results are not guaranteed and past performance does not guarantee future results.</small></footer>
     <FloatingGencouvChat />
