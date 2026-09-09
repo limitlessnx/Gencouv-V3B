@@ -18,14 +18,14 @@ export default function FloatingGencouvChat() {
   }, []);
 
   return (
-    <div className="gencouv-chat-wrap" aria-label="Gencouv support">
-      <span className="gencouv-chat-label">Chat with Gencouv Support</span>
+    <div className="gencouv-chat-wrap" aria-label="Talk to Gencouv">
+      <span className="gencouv-chat-label">Talk to Gencouv</span>
       <a
         href={TELEGRAM}
         target="_blank"
         rel="noreferrer"
         className="gencouv-chat-button"
-        aria-label="Open Gencouv Support on Telegram"
+        aria-label="Talk to Gencouv on Telegram"
       >
         <span className="gencouv-chat-bubble" aria-hidden="true"><i /><i /><i /></span>
         <span className="gencouv-chat-status" aria-hidden="true" />
