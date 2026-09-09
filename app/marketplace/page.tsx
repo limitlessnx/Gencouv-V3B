@@ -1,6 +1,6 @@
 import FloatingGencouvChat from "@/components/FloatingGencouvChat";
 
-const telegram = "https://t.me/GENCOUV";
+const telegram = "https://t.me/gencouv";
 
 const products = [
   {
