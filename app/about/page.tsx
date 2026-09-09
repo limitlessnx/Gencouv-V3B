@@ -29,7 +29,7 @@ export default function About() {
     <nav className="nav shell">
       <a className="brand" href="/"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></a>
       <div className="links"><a href="/about">About</a><a href="/portfolio-management">Portfolio Management</a><a href="/roadmap">Roadmap</a><a href="/#education">Our Approach</a><a href="/testimonials">Client Experiences</a><a href="/terms">Terms</a></div>
-      <a className="navCta" href="/roadmap">How to get started</a>
+      <a className="navCta" href={telegram} target="_blank" rel="noreferrer">Talk to Gencouv</a>
     </nav>
 
     <section className="copyHero shell">
@@ -37,7 +37,7 @@ export default function About() {
         <div className="copyPill">ABOUT GENCOUV</div>
         <h1>Built for disciplined<br/><em>capital management.</em></h1>
         <p>Gencouv is a technology-led portfolio management company focused on systematic trading, disciplined risk management and transparent client participation. We build and operate structured market strategies for eligible clients through supported broker infrastructure.</p>
-        <div className="copyHeroActions"><a className="copyPrimary" href="/roadmap">See how to get started <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">Review historical performance</a></div>
+        <div className="copyHeroActions"><a className="copyPrimary" href={telegram} target="_blank" rel="noreferrer">Ask about Gencouv <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">Review historical performance</a></div>
       </div>
       <div className="copyHeroVisual" aria-label="Gencouv systematic portfolio management">
         <div className="copyChart"><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/></div>
@@ -57,7 +57,7 @@ export default function About() {
 
     <section className="section shell"><div className="sectionHead"><div><div className="eyebrow left">YOUR NEXT STEPS</div><h2>A defined path from research to activation.</h2></div><p>Use the Gencouv roadmap to understand the service, review client experiences, verify the public track record, complete evaluation, create your own broker account and retain visibility after connection.</p></div><div className="copyHeroActions"><a className="primary" href="/roadmap">View the Gencouv roadmap <span>↗</span></a></div></section>
 
-    <section className="finalCta shell"><div className="eyebrow">GENCOUV PORTFOLIO MANAGEMENT</div><h2>Understand the strategy before you participate.</h2><p>Review how the portfolio works, examine the historical record and complete the eligibility process before making a decision.</p><div className="copyHeroActions"><a className="primary" href={telegram} target="_blank" rel="noreferrer">Begin onboarding <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">View historical performance</a></div></section>
+    <section className="finalCta shell"><div className="eyebrow">GENCOUV PORTFOLIO MANAGEMENT</div><h2>Questions are welcome before commitment.</h2><p>Ask about the portfolio, eligibility, account structure, historical record or anything else you need to understand before deciding whether to proceed.</p><div className="copyHeroActions"><a className="primary" href={telegram} target="_blank" rel="noreferrer">Talk to Gencouv <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">View historical performance</a></div></section>
 
     <footer className="footer shell"><div className="brand"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></div><p>Technology-led portfolio management, systematic trading strategies and market intelligence tools.</p><div><a href="/about">About</a><a href="/portfolio-management">Portfolio Management</a><a href="/roadmap">Roadmap</a><a href="/testimonials">Client Experiences</a><a href="/marketplace">Marketplace</a><a href="/terms">Terms</a><a href="/privacy">Privacy Policy</a><a href="/risk-disclosure">Risk Disclosure</a></div><small>Gencouv does not accept or hold client deposits. © 2026 Gencouv. Trading involves substantial risk. Results are not guaranteed and past performance does not guarantee future results.</small></footer>
     <FloatingGencouvChat />
