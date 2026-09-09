@@ -11,7 +11,7 @@ const links = [
   ["Terms", "/terms"],
   ["Privacy Policy", "/privacy"],
   ["Risk Disclosure", "/risk-disclosure"],
-  ["Get on board", "https://t.me/Gencou_bot?start=mobile_menu"],
+  ["Get on board", "https://t.me/gencouv"],
 ] as const;
 
 export default function MobileSidebarMenu() {
