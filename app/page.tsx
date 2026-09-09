@@ -46,7 +46,7 @@ export default function Home() {
     <nav className="nav shell">
       <a className="brand" href="/"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></a>
       <div className="links"><a href="/about">About</a><a href="/portfolio-management">Portfolio Management</a><a href="/roadmap">Roadmap</a><a href="#education">Our Approach</a><a href="/marketplace">Marketplace</a><a href="/testimonials">Client Experiences</a><a href="/terms">Terms</a></div>
-      <a className="navCta" href="/roadmap">How to get started</a>
+      <a className="navCta" href={telegram} target="_blank" rel="noreferrer">Talk to Gencouv</a>
     </nav>
 
     <section className="copyHero shell">
@@ -54,7 +54,7 @@ export default function Home() {
         <div className="copyPill">PORTFOLIO MANAGEMENT</div>
         <h1>Disciplined Strategies.<br/><em>Managed With Structure.</em></h1>
         <p>Gencouv provides a managed portfolio strategy for eligible clients through supported broker infrastructure. We do not accept or hold client deposits. You maintain your own brokerage account while Gencouv manages the strategy within the agreed framework.</p>
-        <div className="copyHeroActions"><a className="copyPrimary" href="/roadmap">See how to get started <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">View verified performance</a></div>
+        <div className="copyHeroActions"><a className="copyPrimary" href={telegram} target="_blank" rel="noreferrer">Talk to Gencouv <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">View verified performance</a></div>
         <div className="copyProof"><span><b>Your Account</b><small>Open and fund your own eligible brokerage account</small></span><span><b>Gencouv Strategy</b><small>One managed portfolio strategy for approved clients</small></span><span><b>Verified Record</b><small>Review the Gencouv master-account record on Myfxbook</small></span></div>
       </div>
       <div className="copyHeroVisual" aria-label="Illustration of Gencouv portfolio management technology and connected market strategies"><div className="copyChart"><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/></div><div className="copyNetwork"><span className="copyNode lead">G</span><span className="copyNode n1">1</span><span className="copyNode n2">2</span><span className="copyNode n3">3</span><span className="copyNode n4">4</span><span className="copyLine l1"/><span className="copyLine l2"/><span className="copyLine l3"/><span className="copyLine l4"/></div><div className="copyPhone"><div className="phoneTop"><span>GENCOUV PORTFOLIO</span><b>LIVE</b></div><div className="phoneAccount"><small>Managed strategy</small><strong>Gencouv Portfolio</strong></div><div className="phoneGraph"><svg viewBox="0 0 320 130" preserveAspectRatio="none" aria-hidden="true"><path d="M0 106 C28 96 35 72 58 79 S92 103 116 61 S154 48 174 70 S207 72 226 42 S268 58 320 14"/></svg></div><div className="phoneStats"><span><small>Status</small><b>Systematic</b></span><span><small>Account</small><b>Client-held</b></span></div><a href={myfxbook} target="_blank" rel="noreferrer">View record</a></div><div className="copyBadge green">PORTFOLIO</div><div className="copyBadge blue">STRATEGY</div></div>
