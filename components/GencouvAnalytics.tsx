@@ -8,6 +8,8 @@ const ANALYTICS_ENDPOINT =
 const SESSION_KEY = "gencouv_analytics_session";
 const LANDING_KEY = "gencouv_analytics_landing";
 const ATTRIBUTION_KEY = "gencouv_analytics_attribution";
+const CAMPAIGN_LANDING_KEY = "gencouv_campaign_landing_recorded";
+const SUPPORT_HANDOFF_KEY = "gencouv_support_handoff_recorded";
 
 type Attribution = {
   campaign?: string;
@@ -92,11 +94,29 @@ export default function GencouvAnalytics() {
     const attribution = getAttribution();
     sendEvent("page_view");
 
-    if (Object.values(attribution).some(Boolean) && !window.sessionStorage.getItem("gencouv_campaign_landing_recorded")) {
-      window.sessionStorage.setItem("gencouv_campaign_landing_recorded", "1");
+    if (Object.values(attribution).some(Boolean) && !window.sessionStorage.getItem(CAMPAIGN_LANDING_KEY)) {
+      window.sessionStorage.setItem(CAMPAIGN_LANDING_KEY, "1");
       sendEvent("email_campaign_landing");
     }
   }, [pathname]);
+
+  useEffect(() => {
+    const recordSupportHandoff = () => {
+      if (window.location.hash !== "#support") return;
+
+      const attribution = getAttribution();
+      if (!Object.values(attribution).some(Boolean)) return;
+
+      const key = `${SUPPORT_HANDOFF_KEY}:${window.location.pathname}:${window.location.search}`;
+      if (window.sessionStorage.getItem(key)) return;
+      window.sessionStorage.setItem(key, "1");
+      sendEvent("telegram_cta_click", { cta_name: "Email campaign → Telegram handoff" });
+    };
+
+    recordSupportHandoff();
+    window.addEventListener("hashchange", recordSupportHandoff);
+    return () => window.removeEventListener("hashchange", recordSupportHandoff);
+  }, []);
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
