@@ -2,9 +2,7 @@
 
 import { useEffect } from "react";
 
-const TELEGRAM_MESSAGE =
-  "Hi Gencouv, I came from your website and I'd like to learn more about how Gencouv works.";
-const TELEGRAM = `https://t.me/gencouv?text=${encodeURIComponent(TELEGRAM_MESSAGE)}`;
+const TELEGRAM = "https://t.me/gencouv";
 
 export default function FloatingGencouvChat() {
   useEffect(() => {
