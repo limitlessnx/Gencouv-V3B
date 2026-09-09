@@ -11,7 +11,7 @@ const links = [
   ["Terms", "/terms"],
   ["Privacy Policy", "/privacy"],
   ["Risk Disclosure", "/risk-disclosure"],
-  ["Get on board", "https://t.me/gencouv"],
+  ["Talk to Gencouv", "https://t.me/gencouv"],
 ] as const;
 
 export default function MobileSidebarMenu() {
@@ -63,7 +63,7 @@ export default function MobileSidebarMenu() {
                   onClick={closeMenu}
                   target={external ? "_blank" : undefined}
                   rel={external ? "noreferrer" : undefined}
-                  className={label === "Get on board" ? "onboard" : undefined}
+                  className={label === "Talk to Gencouv" ? "onboard" : undefined}
                 >
                   <span>{label}</span><b>↗</b>
                 </a>
