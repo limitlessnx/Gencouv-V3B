@@ -1,5 +1,5 @@
 -- Marketplace payment + entitlement layer.
--- Run after supabase/schema.sql.
+-- Safe to run after supabase/schema.sql and safe to re-run during development.
 
 create table if not exists public.marketplace_orders (
   id uuid primary key default gen_random_uuid(),
@@ -21,9 +21,14 @@ create table if not exists public.marketplace_orders (
   fulfilled_at timestamptz,
   fulfillment_email_sent_at timestamptz,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now(),
-  constraint marketplace_order_owner check (user_id is not null or customer_email is not null)
+  updated_at timestamptz not null default now()
 );
+
+-- Upgrade an earlier authenticated-only marketplace_orders table without dropping data.
+alter table public.marketplace_orders add column if not exists customer_email text;
+alter table public.marketplace_orders add column if not exists claimed_at timestamptz;
+alter table public.marketplace_orders add column if not exists fulfillment_email_sent_at timestamptz;
+alter table public.marketplace_orders alter column user_id drop not null;
 
 create index if not exists marketplace_orders_user_idx on public.marketplace_orders(user_id);
 create index if not exists marketplace_orders_email_idx on public.marketplace_orders(lower(customer_email));
@@ -36,15 +41,21 @@ create table if not exists public.marketplace_entitlements (
   order_id text not null references public.marketplace_orders(order_id) on delete restrict,
   product_slug text not null,
   license_tier text not null,
-  status text not null default 'active' check (status in ('active','unclaimed','expired','revoked')),
+  status text not null default 'active',
   starts_at timestamptz not null default now(),
   expires_at timestamptz,
   claimed_at timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  unique(order_id, product_slug, license_tier),
-  constraint marketplace_entitlement_owner check (user_id is not null or customer_email is not null)
+  unique(order_id, product_slug, license_tier)
 );
+
+-- Upgrade an earlier authenticated-only entitlement table for guest claims.
+alter table public.marketplace_entitlements add column if not exists customer_email text;
+alter table public.marketplace_entitlements add column if not exists claimed_at timestamptz;
+alter table public.marketplace_entitlements alter column user_id drop not null;
+alter table public.marketplace_entitlements drop constraint if exists marketplace_entitlements_status_check;
+alter table public.marketplace_entitlements add constraint marketplace_entitlements_status_check check (status in ('active','unclaimed','expired','revoked'));
 
 create index if not exists marketplace_entitlements_user_idx on public.marketplace_entitlements(user_id);
 create index if not exists marketplace_entitlements_email_idx on public.marketplace_entitlements(lower(customer_email));
@@ -52,9 +63,11 @@ create index if not exists marketplace_entitlements_email_idx on public.marketpl
 alter table public.marketplace_orders enable row level security;
 alter table public.marketplace_entitlements enable row level security;
 
+drop policy if exists "Users can view own marketplace orders" on public.marketplace_orders;
 create policy "Users can view own marketplace orders" on public.marketplace_orders
 for select using (auth.uid() = user_id);
 
+drop policy if exists "Users can view own marketplace entitlements" on public.marketplace_entitlements;
 create policy "Users can view own marketplace entitlements" on public.marketplace_entitlements
 for select using (auth.uid() = user_id);
 
