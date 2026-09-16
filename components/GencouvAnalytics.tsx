@@ -19,6 +19,12 @@ type Attribution = {
   utm_campaign?: string;
 };
 
+type AnalyticsEvent =
+  | "page_view"
+  | "telegram_cta_click"
+  | "email_campaign_landing"
+  | "support_handoff_view";
+
 function getSessionId() {
   const existing = window.localStorage.getItem(SESSION_KEY);
   if (existing) return existing;
@@ -65,7 +71,7 @@ function getDevice() {
   return "desktop";
 }
 
-function sendEvent(eventName: "page_view" | "telegram_cta_click" | "email_campaign_landing", extras: Record<string, string | undefined> = {}) {
+function sendEvent(eventName: AnalyticsEvent, extras: Record<string, string | undefined> = {}) {
   const attribution = getAttribution();
   const body = {
     event_name: eventName,
@@ -110,7 +116,7 @@ export default function GencouvAnalytics() {
       const key = `${SUPPORT_HANDOFF_KEY}:${window.location.pathname}:${window.location.search}`;
       if (window.sessionStorage.getItem(key)) return;
       window.sessionStorage.setItem(key, "1");
-      sendEvent("telegram_cta_click", { cta_name: "Email campaign → Telegram handoff" });
+      sendEvent("support_handoff_view", { cta_name: "Email campaign → Support handoff" });
     };
 
     recordSupportHandoff();
@@ -126,7 +132,9 @@ export default function GencouvAnalytics() {
 
       try {
         const url = new URL(anchor.href, window.location.href);
-        const isGencouvTelegram = url.hostname.toLowerCase() === "t.me" && url.pathname.replace(/\/+$/, "").toLowerCase() === "/gencouv";
+        const isGencouvTelegram =
+          url.hostname.toLowerCase() === "t.me" &&
+          url.pathname.replace(/\/+$/, "").toLowerCase() === "/gencouv";
         if (!isGencouvTelegram) return;
 
         const ctaName =
