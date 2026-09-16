@@ -19,6 +19,7 @@ create table if not exists public.marketplace_orders (
   paid_amount numeric(20,8),
   pay_currency text,
   fulfilled_at timestamptz,
+  fulfillment_email_sent_at timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   constraint marketplace_order_owner check (user_id is not null or customer_email is not null)
