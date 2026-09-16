@@ -1,6 +1,6 @@
 import ProductDetailShell from "@/components/marketplace/ProductDetailShell";
 import { productDetails } from "@/lib/marketplace/productDetails";
 
-export default function QuantumQueenProductPage(){
-  return <ProductDetailShell product={productDetails["quantum-queen"]} />;
+export default function LorcGoldMinerPage(){
+  return <ProductDetailShell product={productDetails["lorc-gold-miner"]} />;
 }
