@@ -1,0 +1,52 @@
+-- Marketplace payment + entitlement layer.
+-- Run after supabase/schema.sql.
+
+create table if not exists public.marketplace_orders (
+  id uuid primary key default gen_random_uuid(),
+  order_id text unique not null,
+  user_id uuid references auth.users(id) on delete set null,
+  sku text not null,
+  product_slug text not null,
+  license_tier text not null,
+  price_amount numeric(12,2) not null,
+  price_currency text not null default 'usd',
+  payment_provider text not null default 'nowpayments',
+  provider_payment_id text,
+  provider_invoice_id text,
+  payment_status text not null default 'waiting',
+  paid_amount numeric(20,8),
+  pay_currency text,
+  fulfilled_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists marketplace_orders_user_idx on public.marketplace_orders(user_id);
+create index if not exists marketplace_orders_status_idx on public.marketplace_orders(payment_status);
+
+create table if not exists public.marketplace_entitlements (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  order_id text not null references public.marketplace_orders(order_id) on delete restrict,
+  product_slug text not null,
+  license_tier text not null,
+  status text not null default 'active' check (status in ('active','expired','revoked')),
+  starts_at timestamptz not null default now(),
+  expires_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique(order_id, product_slug, license_tier)
+);
+
+create index if not exists marketplace_entitlements_user_idx on public.marketplace_entitlements(user_id);
+
+alter table public.marketplace_orders enable row level security;
+alter table public.marketplace_entitlements enable row level security;
+
+create policy "Users can view own marketplace orders" on public.marketplace_orders
+for select using (auth.uid() = user_id);
+
+create policy "Users can view own marketplace entitlements" on public.marketplace_entitlements
+for select using (auth.uid() = user_id);
+
+-- Writes are intentionally server/service-role only. There are no client insert/update policies.
