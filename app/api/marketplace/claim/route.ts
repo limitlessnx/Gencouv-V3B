@@ -1,4 +1,24 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase-server";
-import { createAdminClient } from "@/lib/supabase-admin";
-export async function POST(){try{const supabase=await createClient();const {data:{user}}=await supabase.auth.getUser();if(!user?.email)return NextResponse.json({error:"Sign in with the email used for checkout."},{status:401});const email=user.email.trim().toLowerCase();const admin=createAdminClient();const {data:orders,error}=await admin.from("marketplace_orders").select("order_id").is("user_id",null).eq("payment_status","finished").ilike("customer_email",email);if(error)throw error;const ids=(orders||[]).map(x=>x.order_id);if(!ids.length)return NextResponse.json({claimed:0});const now=new Date().toISOString();const {error:orderError}=await admin.from("marketplace_orders").update({user_id:user.id,claimed_at:now,updated_at:now}).in("order_id",ids).is("user_id",null);if(orderError)throw orderError;const {error:entitlementError}=await admin.from("marketplace_entitlements").update({user_id:user.id,status:"active",claimed_at:now,updated_at:now}).in("order_id",ids).is("user_id",null).ilike("customer_email",email);if(entitlementError)throw entitlementError;return NextResponse.json({claimed:ids.length});}catch(error){console.error("Marketplace claim error",error);return NextResponse.json({error:"Could not claim purchases."},{status:500});}}
+import { claimMarketplacePurchases } from "@/lib/marketplace/claim";
+
+export async function POST(){
+  try{
+    const supabase=await createClient();
+    const {data:{user}}=await supabase.auth.getUser();
+
+    if(!user?.email){
+      return NextResponse.json({error:"Sign in with the email used for checkout."},{status:401});
+    }
+
+    if(!user.email_confirmed_at){
+      return NextResponse.json({error:"Confirm your email before claiming marketplace purchases."},{status:403});
+    }
+
+    const result=await claimMarketplacePurchases(user);
+    return NextResponse.json(result);
+  }catch(error){
+    console.error("Marketplace claim error",error);
+    return NextResponse.json({error:"Could not claim purchases."},{status:500});
+  }
+}
