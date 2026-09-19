@@ -13,12 +13,23 @@ export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
     try {
       const supabase = createClient();
       if (mode === 'signup') {
-        const { error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${location.origin}/auth/callback` } });
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { emailRedirectTo: `${location.origin}/auth/callback?next=/dashboard` }
+        });
         if (error) throw error;
         setMessage('Account created. Check your email to confirm access.');
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+
+        // Best-effort claim for purchases made as a guest with this verified email.
+        // The server route independently verifies the authenticated user and email status.
+        try {
+          await fetch('/api/marketplace/claim', { method: 'POST' });
+        } catch {}
+
         location.href = '/dashboard';
       }
     } catch (err) { setMessage(err instanceof Error ? err.message : 'Authentication failed.'); }
