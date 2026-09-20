@@ -4,7 +4,7 @@ import { createAdminClient } from "@/lib/supabase-admin";
 import { createPMHandoff } from "@/lib/pm-handoff";
 
 const SUPPORT_TELEGRAM_URL = "https://t.me/gencouv";
-const PM_ONBOARDING_TELEGRAM_URL = "https://t.me/gencouv";
+const PM_ONBOARDING_TELEGRAM_BASE = "https://t.me/gencouv";
 const MYFXBOOK_URL = "https://www.myfxbook.com/portfolio/gencouv-lirunex-pm/12165670";
 const OPENAI_MODEL = process.env.OPENAI_SUPPORT_MODEL || "gpt-5.6-luna";
 
@@ -56,6 +56,27 @@ function pmHandoffCode() {
 function pmTelegramUrl(handoffCode: string) {
   const text = `Hi, I’m continuing my Gencouv Portfolio Management onboarding. My handoff reference is ${handoffCode}.`;
   return `${PM_ONBOARDING_TELEGRAM_URL}?text=${encodeURIComponent(text)}`;
+}
+
+function extractDeposit(message: string) {
+  const matches = [...message.matchAll(/(?:\$|usd\s*)?([0-9][0-9,]*(?:\.[0-9]{1,2})?)/gi)];
+  for (const match of matches) {
+    const value = Number((match[1] || "").replace(/,/g, ""));
+    if (Number.isFinite(value) && value >= 50 && value <= 100000000) return value;
+  }
+  return null;
+}
+
+function makeHandoffToken() {
+  return `PM-${crypto.randomUUID().replace(/-/g, "").slice(0, 10).toUpperCase()}`;
+}
+
+function pmTelegramUrl(token: string) {
+  const text = [
+    "Hi, I want to continue my Gencouv Portfolio Management onboarding.",
+    `My onboarding reference is ${token}.`,
+  ].join("\n");
+  return `${PM_ONBOARDING_TELEGRAM_BASE}?text=${encodeURIComponent(text)}`;
 }
 
 function needsHuman(message: string) {
@@ -217,6 +238,54 @@ export async function POST(request: Request) {
     const reply = (await generateAIReply(message, customerContext)) || fallbackReply(intent);
     const pmOnboarding = wantsPMOnboarding(message);
     const human = needsHuman(message);
+    let pmHandoffToken: string | null = null;
+    let pmOnboardingUrl = "";
+
+    if (pmOnboarding) {
+      const intendedDeposit = extractDeposit(message);
+      const recommendedAccountType =
+        intendedDeposit == null
+          ? null
+          : intendedDeposit < 2000
+            ? "lirunex_cent"
+            : "mt5_standard";
+
+      pmHandoffToken = makeHandoffToken();
+      pmOnboardingUrl = pmTelegramUrl(pmHandoffToken);
+
+      const { error: handoffError } = await admin
+        .from("gencouv_pm_onboarding_handoffs")
+        .insert({
+          handoff_token: pmHandoffToken,
+          conversation_id: conversation.id,
+          user_id: userId,
+          customer_email: email,
+          customer_name: name || null,
+          intended_deposit: intendedDeposit,
+          recommended_account_type: recommendedAccountType,
+          status: "pending",
+          source: "website_support_ai",
+          context: {
+            support_session_id: sessionId,
+            page_url: pageUrl || null,
+            source_message: message.slice(0, 1000),
+            intent,
+          },
+          expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date().toISOString(),
+        });
+
+      if (handoffError) {
+        console.error("Gencouv PM handoff creation failed", handoffError);
+        pmHandoffToken = null;
+        pmOnboardingUrl = PM_ONBOARDING_TELEGRAM_BASE;
+      }
+
+      await admin
+        .from("gencouv_support_conversations")
+        .update({ status: "handoff", updated_at: new Date().toISOString() })
+        .eq("id", conversation.id);
+    }
 
     let pmHandoffToken: string | null = null;
     let pmTelegramUrl = PM_ONBOARDING_TELEGRAM_URL;
