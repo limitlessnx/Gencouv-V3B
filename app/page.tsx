@@ -46,7 +46,7 @@ export default function Home() {
     <nav className="nav shell">
       <a className="brand" href="/"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></a>
       <div className="links"><a href="/about">About</a><a href="/portfolio-management">Portfolio Management</a><a href="/roadmap">Roadmap</a><a href="#education">Our Approach</a><a href="/marketplace">Trading Bots</a><a href="/testimonials">Client Experiences</a><a href="/terms">Terms</a></div>
-      <a className="navCta" href={telegram} target="_blank" rel="noreferrer">Talk to Gencouv</a>
+      <div className="navAuth"><a className="navLogin" href="/login">Log in</a><a className="navCta" href="/signup">Create account</a></div>
     </nav>
 
     <section className="copyHero shell">
@@ -76,7 +76,7 @@ export default function Home() {
 
     <section className="finalCta shell"><div className="eyebrow">START WITH A CONVERSATION</div><h2>Questions are welcome before commitment.</h2><p>Ask about the portfolio, eligibility, account structure, historical performance or onboarding process. There is no commitment required to start the conversation.</p><div className="copyHeroActions"><a className="primary" href={telegram} target="_blank" rel="noreferrer">Talk to Gencouv <span>↗</span></a><a className="secondary" href="/roadmap">View the roadmap</a></div></section>
 
-    <footer className="footer shell"><div className="brand"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></div><p>Portfolio management, trading strategies, automated trading systems, Expert Advisors and market intelligence tools.</p><div><a href="/about">About</a><a href="/portfolio-management">Portfolio Management</a><a href="/roadmap">Roadmap</a><a href="/marketplace">Trading Bots</a><a href="/testimonials">Client Experiences</a><a href="#support">Contact support</a><a href="/terms">Terms</a><a href="/privacy">Privacy Policy</a><a href="/risk-disclosure">Risk Disclosure</a><a href={telegram} target="_blank" rel="noreferrer">Talk to Gencouv</a></div><small>Gencouv does not accept or hold client deposits. © 2026 Gencouv. Trading involves substantial risk. Results are not guaranteed and past performance does not guarantee future results.</small></footer>
+    <footer className="footer shell"><div className="brand"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></div><p>Portfolio management, trading strategies, automated trading systems, Expert Advisors and market intelligence tools.</p><div><a href="/about">About</a><a href="/portfolio-management">Portfolio Management</a><a href="/roadmap">Roadmap</a><a href="/marketplace">Trading Bots</a><a href="/testimonials">Client Experiences</a><a href="/login">Log in</a><a href="/signup">Create account</a><a href="#support">Contact support</a><a href="/terms">Terms</a><a href="/privacy">Privacy Policy</a><a href="/risk-disclosure">Risk Disclosure</a><a href={telegram} target="_blank" rel="noreferrer">Talk to Gencouv</a></div><small>Gencouv does not accept or hold client deposits. © 2026 Gencouv. Trading involves substantial risk. Results are not guaranteed and past performance does not guarantee future results.</small></footer>
     <FloatingGencouvChat />
   </main>;
 }
