@@ -12,7 +12,7 @@ export type MarketplaceProduct = {
 
 export const marketplaceProducts: MarketplaceProduct[] = [
   {
-    slug:"lorc-gold-miner", name:"L.O.R.C Gold Miner", version:"", type:"Expert Advisor", origin:"GENCOUV DEVELOPED", platform:"MT5", market:"XAUUSD", strategy:"Selective + recovery", frequency:"Selective", price:"$1,000", pricePrefix:"From", validation:"FORWARD TESTING", mark:"L", image:"https://d8j0ntlcm91z4.cloudfront.net/user_3GTV38w6zCm0fb6vRYkPEmmsNnH/hf_20260920_090654_b5057447-7736-481b-a3b7-5eb2cc6f9e95.png",
+    slug:"lorc-gold-miner", name:"L.O.R.C Gold Miner", version:"", type:"Expert Advisor", origin:"GENCOUV DEVELOPED", platform:"MT5", market:"XAUUSD", strategy:"Selective + recovery", frequency:"Selective", price:"$1,000", pricePrefix:"From", validation:"FORWARD TESTING", mark:"L", image:"https://d2ol7oe51mr4n9.cloudfront.net/user_3GTV38w6zCm0fb6vRYkPEmmsNnH/6d2bb3de-a380-4e1c-ac0e-6c0b832d85bc.jpg",
     description:"Gencouv-developed XAUUSD automation built around selective execution, structured risk control and adaptive recovery logic.",
     features:["XAUUSD", "Adaptive recovery", "Set-file ecosystem"],
     plans:[
