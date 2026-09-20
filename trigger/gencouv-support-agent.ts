@@ -1,9 +1,29 @@
 import { chat } from "@trigger.dev/sdk/ai";
 import { openai } from "@ai-sdk/openai";
-import { stepCountIs } from "ai";
+import { stepCountIs, type ModelMessage } from "ai";
+import { z } from "zod";
 
 const MYFXBOOK_URL =
   "https://www.myfxbook.com/portfolio/gencouv-lirunex-pm/12165670";
+
+const customerContextSchema = z.object({
+  authenticated: z.boolean(),
+  userId: z.string().nullable(),
+  email: z.string().email().nullable(),
+  recentOrders: z.array(z.object({
+    order_id: z.string(),
+    product_slug: z.string(),
+    license_tier: z.string().nullable(),
+    payment_status: z.string(),
+    created_at: z.string(),
+  })).max(5),
+  licenses: z.array(z.object({
+    product_slug: z.string(),
+    license_tier: z.string().nullable(),
+    status: z.string(),
+    expires_at: z.string().nullable(),
+  })).max(10),
+});
 
 const SYSTEM_PROMPT = `
 You are Gencouv Support AI.
@@ -47,9 +67,29 @@ ESCALATION
 - Payment disputes, missing purchases, refund requests, account-security concerns, and unresolved access issues should be escalated to human Gencouv Support.
 `;
 
+function accountContextMessage(clientData?: z.infer<typeof customerContextSchema>): ModelMessage {
+  const context = clientData
+    ? JSON.stringify(clientData)
+    : JSON.stringify({ authenticated: false, note: "No verified account context is available for this turn." });
+
+  return {
+    role: "system",
+    content:
+      "VERIFIED CUSTOMER ACCOUNT CONTEXT\n" +
+      "This context was produced server-side by Gencouv. Use it only for support. " +
+      "If an order or entitlement is absent, do not claim that it exists.\n" +
+      context,
+  };
+}
+
 export const gencouvSupportAgent = chat.agent({
   id: "gencouv-support-agent",
   system: SYSTEM_PROMPT,
+  clientDataSchema: customerContextSchema,
+  prepareMessages: async ({ messages, clientData }) => [
+    accountContextMessage(clientData),
+    ...messages,
+  ],
   run: async ({ messages, signal, streamText }) =>
     streamText({
       model: openai(process.env.OPENAI_SUPPORT_MODEL || "gpt-5.6-luna"),
