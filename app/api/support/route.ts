@@ -218,6 +218,40 @@ export async function POST(request: Request) {
     const pmOnboarding = wantsPMOnboarding(message);
     const human = needsHuman(message);
 
+    let pmHandoffToken: string | null = null;
+    let pmTelegramUrl = PM_ONBOARDING_TELEGRAM_URL;
+
+    if (pmOnboarding) {
+      pmHandoffToken = `pm_${crypto.randomUUID().replace(/-/g, "")}`;
+      const { error:handoffError } = await admin
+        .from("gencouv_pm_onboarding_handoffs")
+        .insert({
+          handoff_token:pmHandoffToken,
+          conversation_id:conversation.id,
+          user_id:userId,
+          customer_email:email,
+          customer_name:name || null,
+          source:"website_support_ai",
+          context:{
+            session_id:sessionId,
+            page_url:pageUrl || null,
+            last_message:message.slice(0,1000),
+            intent,
+          },
+        });
+
+      if (!handoffError) {
+        const draft = `I want to continue my Gencouv PM onboarding. Handoff code: ${pmHandoffToken}`;
+        pmTelegramUrl = `${PM_ONBOARDING_TELEGRAM_URL}?text=${encodeURIComponent(draft)}`;
+        await admin.from("gencouv_support_conversations")
+          .update({ status:"handoff", updated_at:new Date().toISOString() })
+          .eq("id", conversation.id);
+      } else {
+        console.error("Gencouv PM handoff creation failed", handoffError);
+        pmHandoffToken = null;
+      }
+    }
+
     let pmHandoffId: string | null = null;
     let pmHandoffCodeValue: string | null = null;
     let pmTelegramHandoffUrl = "";
