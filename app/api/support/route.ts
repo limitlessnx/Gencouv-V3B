@@ -26,6 +26,10 @@ function normalizeEmail(value: unknown) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : null;
 }
 
+function newPMHandoffToken() {
+  return `pm_${crypto.randomUUID().replace(/-/g, "").slice(0, 20)}`;
+}
+
 function intentFor(message: string) {
   if (/myfxbook|performance|track record|trading history|results|returns|profit|proof/i.test(message)) return "performance";
   if (/lorc|l\.o\.r\.c/i.test(message)) return "lorc";
