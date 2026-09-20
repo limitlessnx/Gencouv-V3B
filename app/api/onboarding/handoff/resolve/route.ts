@@ -7,14 +7,18 @@ function bearer(request: Request) {
 }
 
 function cleanToken(value: unknown) {
-  const token = String(value || "").trim();
-  return /^pm_[a-f0-9]{32}$/.test(token) ? token : null;
+  const token = String(value || "").trim().toLowerCase();
+  return /^pm_[a-f0-9]{20}$/.test(token) ? token : null;
 }
 
 export async function POST(request: Request) {
   const expected = process.env.GENCOUV_ONBOARDING_AGENT_SECRET;
+
   if (!expected) {
-    return NextResponse.json({ success:false, error:"Onboarding handoff resolver is not configured." }, { status:503 });
+    return NextResponse.json(
+      { success:false, error:"Onboarding handoff resolver is not configured." },
+      { status:503 }
+    );
   }
 
   if (bearer(request) !== expected) {
@@ -23,14 +27,16 @@ export async function POST(request: Request) {
 
   const body = await request.json().catch(() => ({}));
   const token = cleanToken(body?.handoff_token || body?.token);
+
   if (!token) {
     return NextResponse.json({ success:false, error:"Invalid handoff token." }, { status:400 });
   }
 
   const admin = createAdminClient();
+
   const { data:handoff, error } = await admin
-    .from("gencouv_pm_onboarding_handoffs")
-    .select("id,handoff_token,conversation_id,user_id,customer_email,customer_name,country,intended_deposit,recommended_account_type,status,source,context,expires_at,started_at,created_at")
+    .from("gencouv_pm_handoffs")
+    .select("id,handoff_token,conversation_id,user_id,customer_email,customer_name,status,source,context,telegram_opened_at,created_at,updated_at")
     .eq("handoff_token", token)
     .single();
 
@@ -38,27 +44,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ success:false, error:"Handoff not found." }, { status:404 });
   }
 
-  if (new Date(handoff.expires_at).getTime() <= Date.now()) {
-    await admin
-      .from("gencouv_pm_onboarding_handoffs")
-      .update({ status:"expired", updated_at:new Date().toISOString() })
-      .eq("id", handoff.id);
-    return NextResponse.json({ success:false, error:"Handoff expired." }, { status:410 });
-  }
+  const { data:messages } = handoff.conversation_id
+    ? await admin
+        .from("gencouv_support_messages")
+        .select("role,content,created_at")
+        .eq("conversation_id", handoff.conversation_id)
+        .order("created_at", { ascending:true })
+        .limit(30)
+    : { data: [] };
 
-  const { data:messages } = await admin
-    .from("gencouv_support_messages")
-    .select("role,content,created_at")
-    .eq("conversation_id", handoff.conversation_id)
-    .order("created_at", { ascending:true })
-    .limit(20);
-
-  if (handoff.status === "pending") {
+  if (handoff.status === "created" || handoff.status === "opened") {
     await admin
-      .from("gencouv_pm_onboarding_handoffs")
+      .from("gencouv_pm_handoffs")
       .update({
-        status:"started",
-        started_at:new Date().toISOString(),
+        status:"in_progress",
         updated_at:new Date().toISOString(),
       })
       .eq("id", handoff.id);
@@ -71,14 +70,15 @@ export async function POST(request: Request) {
       customer:{
         name:handoff.customer_name,
         email:handoff.customer_email,
-        country:handoff.country,
-        intended_deposit:handoff.intended_deposit,
-        recommended_account_type:handoff.recommended_account_type,
       },
       source:handoff.source,
       context:handoff.context,
       conversation:messages || [],
-      status:handoff.status === "pending" ? "started" : handoff.status,
+      status:
+        handoff.status === "created" || handoff.status === "opened"
+          ? "in_progress"
+          : handoff.status,
+      created_at:handoff.created_at,
     },
   });
 }
