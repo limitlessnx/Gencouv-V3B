@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase-server";
 import { createAdminClient } from "@/lib/supabase-admin";
 
-const TELEGRAM_URL = "https://t.me/Gencou_bot?start=website_support_handoff";
+const SUPPORT_TELEGRAM_URL = "https://t.me/gencouv";
+const PM_ONBOARDING_TELEGRAM_URL = "https://t.me/gencouv";
 const MYFXBOOK_URL = "https://www.myfxbook.com/portfolio/gencouv-lirunex-pm/12165670";
 const OPENAI_MODEL = process.env.OPENAI_SUPPORT_MODEL || "gpt-5.6-luna";
 
@@ -33,6 +34,10 @@ function intentFor(message: string) {
   if (/order|payment|paid|checkout|invoice|nowpayments|license|library|entitlement|access/i.test(message)) return "order_access";
   if (/portfolio|managed|management|copy trading|pamm/i.test(message)) return "portfolio";
   return "general";
+}
+
+function wantsPMOnboarding(message: string) {
+  return /(join|start|begin|sign up|register|onboard|enroll|invest|participate).*(portfolio|pm|managed|management|copy trading|pamm)|(portfolio|pm|managed|management|copy trading|pamm).*(join|start|begin|sign up|register|onboard|enroll|invest|participate)/i.test(message);
 }
 
 function needsHuman(message: string) {
@@ -79,6 +84,8 @@ PERFORMANCE:
 
 SUPPORT:
 - For unresolved payment, access, refund, account-security or complaint matters, tell the customer the issue can be escalated to Gencouv Support.
+- If a customer clearly wants to join or begin the Portfolio Management service, tell them the next step is to continue with the Gencouv Telegram onboarding account at https://t.me/gencouv.
+- Do not claim PM onboarding is complete. Final participation remains subject to verification and approval.
 - Do not claim a payment is complete unless the supplied account context says it is finished.
 - Do not expose internal implementation details, secrets, service-role keys or private database information.
 
@@ -190,6 +197,7 @@ export async function POST(request: Request) {
     });
 
     const reply = (await generateAIReply(message, customerContext)) || fallbackReply(intent);
+    const pmOnboarding = wantsPMOnboarding(message);
     const human = needsHuman(message);
 
     await admin.from("gencouv_support_messages").insert({
@@ -227,7 +235,9 @@ export async function POST(request: Request) {
       intent,
       handoff:human,
       case_id:caseId,
-      telegram_url:human ? TELEGRAM_URL : "",
+      telegram_url:pmOnboarding ? PM_ONBOARDING_TELEGRAM_URL : (human ? SUPPORT_TELEGRAM_URL : ""),
+      handoff_type:pmOnboarding ? "pm_onboarding" : (human ? "human_support" : ""),
+      handoff_label:pmOnboarding ? "Continue PM Onboarding on Telegram" : (human ? "Continue with human support" : ""),
       performance_record_url:intent === "performance" ? MYFXBOOK_URL : "",
       ai_mode:process.env.OPENAI_API_KEY ? "openai" : "fallback",
     });
@@ -236,7 +246,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success:false,
       reply:"Gencouv Support is temporarily unavailable. You can still use the website resources or contact the support team directly.",
-      telegram_url:TELEGRAM_URL,
+      telegram_url:SUPPORT_TELEGRAM_URL,
     }, { status:500 });
   }
 }
