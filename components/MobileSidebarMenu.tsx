@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 const links = [
   ["About", "/about"],
   ["Copy trading", "/copy-trading"],
-  ["Marketplace", "/marketplace"],
+  ["Trading Bots", "/marketplace"],
   ["Testimonials", "/testimonials"],
   ["Contact support", "https://t.me/gencouv"],
   ["Terms", "/terms"],
