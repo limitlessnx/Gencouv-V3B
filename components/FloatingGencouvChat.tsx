@@ -19,6 +19,7 @@ export default function FloatingGencouvChat() {
   const [input,setInput]=useState("");
   const [loading,setLoading]=useState(false);
   const [handoff,setHandoff]=useState("");
+  const [handoffLabel,setHandoffLabel]=useState("Continue with human support");
   const [messages,setMessages]=useState<Message[]>([
     {role:"assistant",text:"Hi. I’m Gencouv Support AI. I can help with Trading Bots, purchases, My Library access, portfolio management, onboarding and risk information."}
   ]);
@@ -44,7 +45,10 @@ export default function FloatingGencouvChat() {
       });
       const data=await response.json();
       setMessages(prev=>[...prev,{role:"assistant",text:data?.reply||"Support could not answer that right now."}]);
-      if(data?.handoff&&data?.telegram_url)setHandoff(data.telegram_url);
+      if(data?.telegram_url){
+        setHandoff(data.telegram_url);
+        setHandoffLabel(data?.handoff_label || "Continue with human support");
+      }
     }catch{
       setMessages(prev=>[...prev,{role:"assistant",text:"Gencouv Support could not connect right now. Please try again shortly."}]);
     }finally{
@@ -63,7 +67,7 @@ export default function FloatingGencouvChat() {
           {messages.map((m,i)=><div key={i} className={`gcMsg ${m.role}`}><span>{m.text}</span></div>)}
           {loading&&<div className="gcMsg assistant"><span className="gcTyping"><i/><i/><i/></span></div>}
         </div>
-        {handoff&&<a className="gcHandoff" href={handoff} target="_blank" rel="noreferrer">Continue with human support ↗</a>}
+        {handoff&&<a className="gcHandoff" href={handoff} target="_blank" rel="noreferrer">{handoffLabel} ↗</a>}
         <form onSubmit={send}>
           <input value={input} onChange={e=>setInput(e.target.value)} maxLength={4000} placeholder="Ask Gencouv Support…" aria-label="Message Gencouv Support"/>
           <button type="submit" disabled={loading||!input.trim()} aria-label="Send message">↑</button>
