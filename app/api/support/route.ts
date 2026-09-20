@@ -41,6 +41,23 @@ function wantsPMOnboarding(message: string) {
   return /(join|start|begin|sign up|register|onboard|enroll|invest|participate).*(portfolio|pm|managed|management|copy trading|pamm)|(portfolio|pm|managed|management|copy trading|pamm).*(join|start|begin|sign up|register|onboard|enroll|invest|participate)/i.test(message);
 }
 
+function extractIntendedDeposit(message: string) {
+  const compact = message.replace(/,/g, "");
+  const match = compact.match(/(?:\$|usd\s*)?(\d{2,7})(?:\.\d{1,2})?\s*(?:usd|dollars?)?/i);
+  if (!match) return null;
+  const amount = Number(match[1]);
+  return Number.isFinite(amount) && amount > 0 ? amount : null;
+}
+
+function pmHandoffCode() {
+  return `PM-${crypto.randomUUID().replace(/-/g, "").slice(0, 10).toUpperCase()}`;
+}
+
+function pmTelegramUrl(handoffCode: string) {
+  const text = `Hi, I’m continuing my Gencouv Portfolio Management onboarding. My handoff reference is ${handoffCode}.`;
+  return `${PM_ONBOARDING_TELEGRAM_URL}?text=${encodeURIComponent(text)}`;
+}
+
 function needsHuman(message: string) {
   return /human|agent|representative|complaint|refund|charged|paid.*not|payment.*missing|not.*library|can't access|cannot access|locked out|fraud|urgent/i.test(message);
 }
@@ -200,6 +217,61 @@ export async function POST(request: Request) {
     const reply = (await generateAIReply(message, customerContext)) || fallbackReply(intent);
     const pmOnboarding = wantsPMOnboarding(message);
     const human = needsHuman(message);
+
+    let pmHandoffId: string | null = null;
+    let pmHandoffCodeValue: string | null = null;
+    let pmTelegramHandoffUrl = "";
+
+    if (pmOnboarding) {
+      const intendedDeposit = extractIntendedDeposit(message);
+      const recommendedAccountType =
+        intendedDeposit === null ? null : intendedDeposit < 2000 ? "lirunex_cent" : "mt5_standard";
+
+      const { data:existingHandoff } = await admin
+        .from("pm_onboarding_handoffs")
+        .select("id,handoff_code,telegram_url")
+        .eq("session_id", sessionId)
+        .in("onboarding_status", ["pending_telegram","telegram_opened","in_progress"])
+        .order("created_at", { ascending:false })
+        .limit(1)
+        .maybeSingle();
+
+      if (existingHandoff) {
+        pmHandoffId = existingHandoff.id;
+        pmHandoffCodeValue = existingHandoff.handoff_code;
+        pmTelegramHandoffUrl =
+          existingHandoff.telegram_url || pmTelegramUrl(existingHandoff.handoff_code);
+      } else {
+        const handoffCode = pmHandoffCode();
+        const telegramUrl = pmTelegramUrl(handoffCode);
+        const { data:newHandoff } = await admin
+          .from("pm_onboarding_handoffs")
+          .insert({
+            handoff_code:handoffCode,
+            support_conversation_id:conversation.id,
+            session_id:sessionId,
+            user_id:userId,
+            customer_email:email,
+            customer_name:name || null,
+            intended_deposit:intendedDeposit,
+            recommended_account_type:recommendedAccountType,
+            qualification_status:intendedDeposit ? "qualified" : "interested",
+            onboarding_status:"pending_telegram",
+            context:{
+              source_message:message.slice(0,1000),
+              page_url:pageUrl || null,
+              intended_deposit:intendedDeposit,
+            },
+            telegram_url:telegramUrl,
+          })
+          .select("id,handoff_code,telegram_url")
+          .single();
+
+        pmHandoffId = newHandoff?.id || null;
+        pmHandoffCodeValue = newHandoff?.handoff_code || handoffCode;
+        pmTelegramHandoffUrl = newHandoff?.telegram_url || telegramUrl;
+      }
+    }
 
     let pmHandoff: { token:string; telegramUrl:string } | null = null;
     if (pmOnboarding) {
