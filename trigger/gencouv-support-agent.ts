@@ -50,9 +50,6 @@ ESCALATION
 export const gencouvSupportAgent = chat.agent({
   id: "gencouv-support-agent",
   system: SYSTEM_PROMPT,
-  compaction: {
-    shouldCompact: ({ totalTokens }) => (totalTokens ?? 0) > 60_000,
-  },
   run: async ({ messages, signal, streamText }) =>
     streamText({
       model: openai(process.env.OPENAI_SUPPORT_MODEL || "gpt-5.6-luna"),
