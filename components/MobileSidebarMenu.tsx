@@ -7,6 +7,8 @@ const links = [
   ["Copy trading", "/copy-trading"],
   ["Trading Bots", "/marketplace"],
   ["Testimonials", "/testimonials"],
+  ["Log in", "/login"],
+  ["Create account", "/signup"],
   ["Contact support", "https://t.me/gencouv"],
   ["Terms", "/terms"],
   ["Privacy Policy", "/privacy"],
