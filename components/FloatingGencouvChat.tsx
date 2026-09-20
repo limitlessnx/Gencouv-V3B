@@ -20,6 +20,7 @@ export default function FloatingGencouvChat() {
   const [loading,setLoading]=useState(false);
   const [handoff,setHandoff]=useState("");
   const [handoffLabel,setHandoffLabel]=useState("Continue with human support");
+  const [handoffCode,setHandoffCode]=useState("");
   const [messages,setMessages]=useState<Message[]>([
     {role:"assistant",text:"Hi. I’m Gencouv Support AI. I can help with Trading Bots, purchases, My Library access, portfolio management, onboarding and risk information."}
   ]);
@@ -48,6 +49,7 @@ export default function FloatingGencouvChat() {
       if(data?.telegram_url){
         setHandoff(data.telegram_url);
         setHandoffLabel(data?.handoff_label || "Continue with human support");
+        setHandoffCode(data?.pm_handoff_code || "");
       }
     }catch{
       setMessages(prev=>[...prev,{role:"assistant",text:"Gencouv Support could not connect right now. Please try again shortly."}]);
@@ -67,7 +69,10 @@ export default function FloatingGencouvChat() {
           {messages.map((m,i)=><div key={i} className={`gcMsg ${m.role}`}><span>{m.text}</span></div>)}
           {loading&&<div className="gcMsg assistant"><span className="gcTyping"><i/><i/><i/></span></div>}
         </div>
-        {handoff&&<a className="gcHandoff" href={handoff} target="_blank" rel="noreferrer">{handoffLabel} ↗</a>}
+        {handoff&&<>
+          {handoffCode&&<p className="gcHandoffRef">Onboarding reference: {handoffCode}</p>}
+          <a className="gcHandoff" href={handoff} target="_blank" rel="noreferrer">{handoffLabel} ↗</a>
+        </>}
         <form onSubmit={send}>
           <input value={input} onChange={e=>setInput(e.target.value)} maxLength={4000} placeholder="Ask Gencouv Support…" aria-label="Message Gencouv Support"/>
           <button type="submit" disabled={loading||!input.trim()} aria-label="Send message">↑</button>
@@ -90,7 +95,7 @@ export default function FloatingGencouvChat() {
         header{display:flex;justify-content:space-between;align-items:center;padding:17px 18px;border-bottom:1px solid rgba(255,255,255,.07)}header>div{display:flex;align-items:center;gap:10px}header strong,header small{display:block}header strong{font-size:13px;color:#e9f5f2}header small{margin-top:3px;font-size:9px;color:#718681}header button{border:0;background:transparent;color:#899c98;font-size:22px;cursor:pointer}.gcDot{width:9px;height:9px;border-radius:50%;background:#35e4c0;box-shadow:0 0 12px rgba(53,228,192,.65)}
         .gcMessages{padding:18px;overflow-y:auto;display:flex;flex-direction:column;gap:11px}.gcMsg{display:flex}.gcMsg span{max-width:86%;padding:11px 13px;border-radius:14px;font-size:12px;line-height:1.55;white-space:pre-wrap}.gcMsg.assistant{justify-content:flex-start}.gcMsg.assistant span{background:#0a1718;border:1px solid rgba(255,255,255,.07);color:#c5d3cf}.gcMsg.user{justify-content:flex-end}.gcMsg.user span{background:#35e4c0;color:#03100e;font-weight:650}
         .gcTyping{display:flex!important;gap:4px}.gcTyping i{width:5px;height:5px;border-radius:50%;background:#78918b;animation:gcBlink 1.2s infinite}.gcTyping i:nth-child(2){animation-delay:.15s}.gcTyping i:nth-child(3){animation-delay:.3s}@keyframes gcBlink{0%,80%,100%{opacity:.25}40%{opacity:1}}
-        .gcHandoff{margin:0 16px 10px;padding:10px 12px;border:1px solid rgba(53,228,192,.22);border-radius:10px;color:#35e4c0;background:rgba(53,228,192,.04);font-size:10px;text-align:center}
+        .gcHandoffRef{margin:0 16px 6px;color:#718681;font-size:9px;text-align:center}.gcHandoff{margin:0 16px 10px;padding:10px 12px;border:1px solid rgba(53,228,192,.22);border-radius:10px;color:#35e4c0;background:rgba(53,228,192,.04);font-size:10px;text-align:center}
         form{display:grid;grid-template-columns:1fr 42px;gap:8px;padding:12px 14px;border-top:1px solid rgba(255,255,255,.07)}form input{min-width:0;padding:12px 13px;border:1px solid rgba(255,255,255,.1);border-radius:11px;background:#061112;color:#eef8f5;font:inherit;font-size:12px;outline:none}form input:focus{border-color:rgba(53,228,192,.55)}form button{border:0;border-radius:11px;background:#35e4c0;color:#03100e;font-size:20px;font-weight:900;cursor:pointer}form button:disabled{opacity:.35;cursor:not-allowed}.gcRisk{margin:0;padding:0 15px 13px;color:#536762;font-size:8px;line-height:1.5}
         @media(max-width:700px){.gcWrap{right:max(10px,env(safe-area-inset-right));bottom:max(12px,calc(env(safe-area-inset-bottom) + 8px));gap:7px}.gcButton{width:54px;height:54px}.gcLabel{display:none}.gcPanel{bottom:67px;width:calc(100vw - 20px);height:min(620px,calc(100vh - 96px))}}
       `}</style>
