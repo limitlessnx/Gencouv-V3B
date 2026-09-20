@@ -63,7 +63,7 @@ export default function MobileSidebarMenu() {
                   onClick={closeMenu}
                   target={external ? "_blank" : undefined}
                   rel={external ? "noreferrer" : undefined}
-                  className={label === "Talk to Gencouv" ? "onboard" : undefined}
+                  className={label === "Create account" ? "account" : label === "Talk to Gencouv" ? "onboard" : undefined}
                 >
                   <span>{label}</span><b>↗</b>
                 </a>
@@ -86,7 +86,7 @@ export default function MobileSidebarMenu() {
         .mobile-menu-layer.open .mobile-menu-drawer{transform:translateX(0)}
         .mobile-menu-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.08)}
         .mobile-menu-brand{display:flex;align-items:center;gap:10px}.mobile-menu-brand>span{width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(53,228,192,.24);border-radius:12px;color:#35e4a6;font-weight:900}.mobile-menu-brand b,.mobile-menu-brand small{display:block}.mobile-menu-brand b{font-size:12px;letter-spacing:.18em}.mobile-menu-brand small{margin-top:3px;color:#7f8c98;font-size:7px;letter-spacing:.14em}.mobile-menu-head>button{width:38px;height:38px;border:1px solid rgba(255,255,255,.1);border-radius:50%;background:rgba(255,255,255,.04);color:white;font-size:22px}
-        nav{display:grid;margin-top:18px}nav a{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:17px 3px;border-bottom:1px solid rgba(255,255,255,.08);color:#e7eeec;font-size:15px;font-weight:700}nav a b{color:#687680;font-size:13px}nav a.onboard{margin-top:18px;padding:15px 17px;border:0;border-radius:999px;background:#35e4a6;color:#03120d}nav a.onboard b{color:#03120d}.mobile-menu-drawer>p{margin:26px 2px 0;color:#6f7d88;font-size:10px;line-height:1.65}
+        nav{display:grid;margin-top:18px}nav a{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:17px 3px;border-bottom:1px solid rgba(255,255,255,.08);color:#e7eeec;font-size:15px;font-weight:700}nav a b{color:#687680;font-size:13px}nav a.account{margin-top:18px;padding:15px 17px;border:0;border-radius:999px;background:#35e4a6;color:#03120d}nav a.account b{color:#03120d}nav a.onboard{margin-top:10px;padding:15px 17px;border:1px solid rgba(53,228,166,.24);border-radius:999px;color:#35e4a6}nav a.onboard b{color:#35e4a6}.mobile-menu-drawer>p{margin:26px 2px 0;color:#6f7d88;font-size:10px;line-height:1.65}
         @media(max-width:960px){.mobile-menu-button{display:block}}
         @media(prefers-reduced-motion:reduce){.mobile-menu-backdrop,.mobile-menu-drawer{transition:none}}
       `}</style>
