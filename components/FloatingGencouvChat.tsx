@@ -37,8 +37,8 @@ export default function FloatingGencouvChat() {
   const transport = useTriggerChatTransport<typeof gencouvSupportAgent>({
     task: "gencouv-support-agent",
     accessToken: ({ chatId }) => mintGencouvSupportAccessToken(chatId),
-    startSession: ({ chatId, clientData }) =>
-      startGencouvSupportSession({ chatId, clientData }),
+    startSession: ({ chatId }) =>
+      startGencouvSupportSession({ chatId }),
   });
 
   const { messages, sendMessage, stop, status, error } = useChat({
