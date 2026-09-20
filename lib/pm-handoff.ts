@@ -11,7 +11,7 @@ export type PMHandoffInput = {
 };
 
 function makeToken() {
-  return crypto.randomUUID().replace(/-/g, "").slice(0, 20);
+  return `pm_${crypto.randomUUID().replace(/-/g, "").slice(0, 20)}`;
 }
 
 export function buildPMTelegramUrl(token: string) {
