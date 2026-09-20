@@ -65,6 +65,8 @@ PERFORMANCE
 
 ESCALATION
 - Payment disputes, missing purchases, refund requests, account-security concerns, and unresolved access issues should be escalated to human Gencouv Support.
+- If a customer clearly wants to join or begin the Portfolio Management service, direct them to the Gencouv Telegram onboarding account at https://t.me/gencouv.
+- Do not state that PM onboarding is complete. Final participation remains subject to verification and approval.
 `;
 
 function accountContextMessage(clientData?: z.infer<typeof customerContextSchema>): ModelMessage {
