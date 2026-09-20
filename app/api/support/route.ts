@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase-server";
 import { createAdminClient } from "@/lib/supabase-admin";
-import { createPMHandoff } from "@/lib/pm-handoff";
 
 const SUPPORT_TELEGRAM_URL = "https://t.me/gencouv";
 const PM_ONBOARDING_TELEGRAM_BASE = "https://t.me/gencouv";
@@ -33,29 +32,16 @@ function intentFor(message: string) {
   if (/quantum queen/i.test(message)) return "quantum_queen";
   if (/sixtynine|sixty nine|69 ea/i.test(message)) return "sixtynine";
   if (/order|payment|paid|checkout|invoice|nowpayments|license|library|entitlement|access/i.test(message)) return "order_access";
-  if (/portfolio|managed|management|copy trading|pamm/i.test(message)) return "portfolio";
+  if (/portfolio|managed|management|copy trading|pamm|pm service/i.test(message)) return "portfolio";
   return "general";
 }
 
 function wantsPMOnboarding(message: string) {
-  return /(join|start|begin|sign up|register|onboard|enroll|invest|participate).*(portfolio|pm|managed|management|copy trading|pamm)|(portfolio|pm|managed|management|copy trading|pamm).*(join|start|begin|sign up|register|onboard|enroll|invest|participate)/i.test(message);
+  return /(join|start|begin|sign up|register|onboard|enroll|invest|participate|continue).*(portfolio|pm|managed|management|copy trading|pamm)|(portfolio|pm|managed|management|copy trading|pamm).*(join|start|begin|sign up|register|onboard|enroll|invest|participate|continue)/i.test(message);
 }
 
-function extractIntendedDeposit(message: string) {
-  const compact = message.replace(/,/g, "");
-  const match = compact.match(/(?:\$|usd\s*)?(\d{2,7})(?:\.\d{1,2})?\s*(?:usd|dollars?)?/i);
-  if (!match) return null;
-  const amount = Number(match[1]);
-  return Number.isFinite(amount) && amount > 0 ? amount : null;
-}
-
-function pmHandoffCode() {
-  return `PM-${crypto.randomUUID().replace(/-/g, "").slice(0, 10).toUpperCase()}`;
-}
-
-function pmTelegramUrl(handoffCode: string) {
-  const text = `Hi, I’m continuing my Gencouv Portfolio Management onboarding. My handoff reference is ${handoffCode}.`;
-  return `${PM_ONBOARDING_TELEGRAM_URL}?text=${encodeURIComponent(text)}`;
+function needsHuman(message: string) {
+  return /human|agent|representative|complaint|refund|charged|paid.*not|payment.*missing|not.*library|can't access|cannot access|locked out|fraud|urgent/i.test(message);
 }
 
 function extractDeposit(message: string) {
@@ -76,11 +62,8 @@ function pmTelegramUrl(token: string) {
     "Hi, I want to continue my Gencouv Portfolio Management onboarding.",
     `My onboarding reference is ${token}.`,
   ].join("\n");
-  return `${PM_ONBOARDING_TELEGRAM_BASE}?text=${encodeURIComponent(text)}`;
-}
 
-function needsHuman(message: string) {
-  return /human|agent|representative|complaint|refund|charged|paid.*not|payment.*missing|not.*library|can't access|cannot access|locked out|fraud|urgent/i.test(message);
+  return `${PM_ONBOARDING_TELEGRAM_BASE}?text=${encodeURIComponent(text)}`;
 }
 
 function fallbackReply(intent: string) {
@@ -89,8 +72,8 @@ function fallbackReply(intent: string) {
   if (intent === "quantum_queen") return "Quantum Queen is an MT5 XAUUSD automated trading system listed under Gencouv Trading Bots at $2,000. Review its product page for requirements, supplied test evidence and risk information before deployment.";
   if (intent === "sixtynine") return "SixtyNine EA is an MT5 automated trading bot listed under Gencouv Trading Bots at $2,000. Review its product page and operating requirements before deployment.";
   if (intent === "order_access") return "For purchase or access issues, sign in with the same verified email used at checkout. Finished guest purchases are claimed into your Gencouv account and appear in My Library after payment verification.";
-  if (intent === "portfolio") return `Gencouv portfolio management is separate from Trading Bots. Clients keep funds in their own supported brokerage account, and participation is subject to eligibility and onboarding. Historical master-account performance is available at ${MYFXBOOK_URL}.`;
-  return "I can help with Gencouv Trading Bots, product requirements, purchases, My Library access, portfolio management, onboarding and risk information.";
+  if (intent === "portfolio") return `Gencouv Portfolio Management is separate from Trading Bots. Clients keep funds in their own supported brokerage account, and participation is subject to eligibility and onboarding. If you want to begin onboarding, I can hand you over to the Gencouv Telegram onboarding account. Historical master-account performance is available at ${MYFXBOOK_URL}.`;
+  return "I can help with Gencouv Trading Bots, product requirements, purchases, My Library access, Portfolio Management, onboarding and risk information.";
 }
 
 function systemPrompt(customerContext: string) {
@@ -99,19 +82,19 @@ function systemPrompt(customerContext: string) {
 Be concise, calm, factual and useful. Never guarantee profits, returns, recovery, approval or future trading performance. Never describe historical or backtest results as expected future results.
 
 GENCOUV:
-- Gencouv provides portfolio management and separate Trading Bots.
-- Gencouv does not accept or hold portfolio-management client deposits. Eligible clients maintain their own supported brokerage account.
+- Gencouv provides Portfolio Management and separate Trading Bots.
+- Gencouv does not accept or hold Portfolio Management client deposits. Eligible clients maintain their own supported brokerage account.
 - Portfolio participation is subject to eligibility and human onboarding approval.
-- Never tell a portfolio-management lead they are successfully onboarded until a human has verified and approved the deposit.
+- Never tell a Portfolio Management lead they are successfully onboarded until a human has verified and approved the deposit.
 - Deposit below $2,000: Lirunex Cent Trading Account.
 - Deposit $2,000 and above: MT5 Standard Account.
-- If deposit details are awaiting verification, use: "Thank you for submitting your deposit details. Your account is currently under review by our team. A Gencouv representative will verify your submission and confirm the next steps once the review process is complete."
+- If deposit details are awaiting verification, use exactly: "Thank you for submitting your deposit details. Your account is currently under review by our team. A Gencouv representative will verify your submission and confirm the next steps once the review process is complete."
 
 TRADING BOTS:
 - L.O.R.C Gold Miner: MT5, XAUUSD, Gencouv-developed. L.O.R.C Gold is $1,000/year. L.O.R.C Full Access is $5,000 lifetime.
 - Quantum Queen: MT5/XAUUSD, $2,000.
 - SixtyNine EA: MT5/XAUUSD, $2,000.
-- Trading Bots are separate from portfolio management.
+- Trading Bots are separate from Portfolio Management.
 - Buyers can purchase while signed in or as a guest.
 - Guest purchases are tied to the checkout email. After payment is verified, the buyer creates or signs into a Gencouv account with the same verified email to claim access.
 - Purchased licenses appear in My Library after entitlement activation.
@@ -121,10 +104,11 @@ PERFORMANCE:
 - Historical performance does not guarantee future results.
 - Never invent returns, win rates or product performance.
 
-SUPPORT:
-- For unresolved payment, access, refund, account-security or complaint matters, tell the customer the issue can be escalated to Gencouv Support.
-- If a customer clearly wants to join or begin the Portfolio Management service, tell them the next step is to continue with the Gencouv Telegram onboarding account at https://t.me/gencouv.
+HANDOFF:
+- If a customer clearly wants to join or begin Portfolio Management, explain that the next step is the Gencouv Telegram onboarding account at https://t.me/gencouv.
+- The website will create a handoff reference for that transition.
 - Do not claim PM onboarding is complete. Final participation remains subject to verification and approval.
+- For unresolved payment, access, refund, account-security or complaint matters, tell the customer the issue can be escalated to Gencouv Support.
 - Do not claim a payment is complete unless the supplied account context says it is finished.
 - Do not expose internal implementation details, secrets, service-role keys or private database information.
 
@@ -164,8 +148,12 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json().catch(() => ({}))) as SupportRequest;
     const message = clean(body.message);
+
     if (!message) {
-      return NextResponse.json({ success:false, reply:"Please enter a message for Gencouv Support." }, { status:400 });
+      return NextResponse.json(
+        { success: false, reply: "Please enter a message for Gencouv Support." },
+        { status: 400 }
+      );
     }
 
     const sessionId = clean(body.session_id || body.sessionId, 180) || crypto.randomUUID();
@@ -180,7 +168,7 @@ export async function POST(request: Request) {
 
     try {
       const supabase = await createClient();
-      const { data:{ user } } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         userId = user.id;
         verifiedEmail = user.email?.toLowerCase() || null;
@@ -190,56 +178,64 @@ export async function POST(request: Request) {
     const admin = createAdminClient();
 
     if (userId) {
-      const [{ data:orders }, { data:entitlements }] = await Promise.all([
-        admin.from("marketplace_orders")
+      const [{ data: orders }, { data: entitlements }] = await Promise.all([
+        admin
+          .from("marketplace_orders")
           .select("order_id,product_slug,license_tier,payment_status,created_at")
           .eq("user_id", userId)
-          .order("created_at", { ascending:false })
+          .order("created_at", { ascending: false })
           .limit(5),
-        admin.from("marketplace_entitlements")
+        admin
+          .from("marketplace_entitlements")
           .select("product_slug,license_tier,status,expires_at")
           .eq("user_id", userId)
-          .order("created_at", { ascending:false })
+          .order("created_at", { ascending: false })
           .limit(10),
       ]);
 
       customerContext = JSON.stringify({
-        authenticated:true,
-        recentOrders:orders || [],
-        licenses:entitlements || [],
+        authenticated: true,
+        recentOrders: orders || [],
+        licenses: entitlements || [],
       });
     }
 
     const email = verifiedEmail || suppliedEmail;
 
-    const { data:conversation, error:conversationError } = await admin
+    const { data: conversation, error: conversationError } = await admin
       .from("gencouv_support_conversations")
-      .upsert({
-        session_id:sessionId,
-        user_id:userId,
-        customer_email:email,
-        customer_name:name || null,
-        page_url:pageUrl || null,
-        last_intent:intent,
-        updated_at:new Date().toISOString(),
-      }, { onConflict:"session_id" })
+      .upsert(
+        {
+          session_id: sessionId,
+          user_id: userId,
+          customer_email: email,
+          customer_name: name || null,
+          page_url: pageUrl || null,
+          last_intent: intent,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "session_id" }
+      )
       .select("id")
       .single();
 
-    if (conversationError || !conversation) throw conversationError || new Error("Conversation could not be created.");
+    if (conversationError || !conversation) {
+      throw conversationError || new Error("Conversation could not be created.");
+    }
 
     await admin.from("gencouv_support_messages").insert({
-      conversation_id:conversation.id,
-      role:"user",
-      content:message,
-      metadata:{ intent, page_url:pageUrl || null },
+      conversation_id: conversation.id,
+      role: "user",
+      content: message,
+      metadata: { intent, page_url: pageUrl || null },
     });
 
     const reply = (await generateAIReply(message, customerContext)) || fallbackReply(intent);
     const pmOnboarding = wantsPMOnboarding(message);
     const human = needsHuman(message);
+
     let pmHandoffToken: string | null = null;
-    let pmOnboardingUrl = "";
+    let telegramUrl = human ? SUPPORT_TELEGRAM_URL : "";
 
     if (pmOnboarding) {
       const intendedDeposit = extractDeposit(message);
@@ -251,7 +247,7 @@ export async function POST(request: Request) {
             : "mt5_standard";
 
       pmHandoffToken = makeHandoffToken();
-      pmOnboardingUrl = pmTelegramUrl(pmHandoffToken);
+      telegramUrl = pmTelegramUrl(pmHandoffToken);
 
       const { error: handoffError } = await admin
         .from("gencouv_pm_onboarding_handoffs")
@@ -278,7 +274,7 @@ export async function POST(request: Request) {
       if (handoffError) {
         console.error("Gencouv PM handoff creation failed", handoffError);
         pmHandoffToken = null;
-        pmOnboardingUrl = PM_ONBOARDING_TELEGRAM_BASE;
+        telegramUrl = PM_ONBOARDING_TELEGRAM_BASE;
       }
 
       await admin
@@ -287,206 +283,71 @@ export async function POST(request: Request) {
         .eq("id", conversation.id);
     }
 
-    let pmHandoffToken: string | null = null;
-    let pmTelegramUrl = PM_ONBOARDING_TELEGRAM_URL;
-
-    if (pmOnboarding) {
-      pmHandoffToken = `pm_${crypto.randomUUID().replace(/-/g, "")}`;
-      const { error:handoffError } = await admin
-        .from("gencouv_pm_onboarding_handoffs")
-        .insert({
-          handoff_token:pmHandoffToken,
-          conversation_id:conversation.id,
-          user_id:userId,
-          customer_email:email,
-          customer_name:name || null,
-          source:"website_support_ai",
-          context:{
-            session_id:sessionId,
-            page_url:pageUrl || null,
-            last_message:message.slice(0,1000),
-            intent,
-          },
-        });
-
-      if (!handoffError) {
-        const draft = `I want to continue my Gencouv PM onboarding. Handoff code: ${pmHandoffToken}`;
-        pmTelegramUrl = `${PM_ONBOARDING_TELEGRAM_URL}?text=${encodeURIComponent(draft)}`;
-        await admin.from("gencouv_support_conversations")
-          .update({ status:"handoff", updated_at:new Date().toISOString() })
-          .eq("id", conversation.id);
-      } else {
-        console.error("Gencouv PM handoff creation failed", handoffError);
-        pmHandoffToken = null;
-      }
-    }
-
-    let pmHandoffId: string | null = null;
-    let pmHandoffCodeValue: string | null = null;
-    let pmTelegramHandoffUrl = "";
-
-    if (pmOnboarding) {
-      const intendedDeposit = extractIntendedDeposit(message);
-      const recommendedAccountType =
-        intendedDeposit === null ? null : intendedDeposit < 2000 ? "lirunex_cent" : "mt5_standard";
-
-      const { data:existingHandoff } = await admin
-        .from("pm_onboarding_handoffs")
-        .select("id,handoff_code,telegram_url")
-        .eq("session_id", sessionId)
-        .in("onboarding_status", ["pending_telegram","telegram_opened","in_progress"])
-        .order("created_at", { ascending:false })
-        .limit(1)
-        .maybeSingle();
-
-      if (existingHandoff) {
-        pmHandoffId = existingHandoff.id;
-        pmHandoffCodeValue = existingHandoff.handoff_code;
-        pmTelegramHandoffUrl =
-          existingHandoff.telegram_url || pmTelegramUrl(existingHandoff.handoff_code);
-      } else {
-        const handoffCode = pmHandoffCode();
-        const telegramUrl = pmTelegramUrl(handoffCode);
-        const { data:newHandoff } = await admin
-          .from("pm_onboarding_handoffs")
-          .insert({
-            handoff_code:handoffCode,
-            support_conversation_id:conversation.id,
-            session_id:sessionId,
-            user_id:userId,
-            customer_email:email,
-            customer_name:name || null,
-            intended_deposit:intendedDeposit,
-            recommended_account_type:recommendedAccountType,
-            qualification_status:intendedDeposit ? "qualified" : "interested",
-            onboarding_status:"pending_telegram",
-            context:{
-              source_message:message.slice(0,1000),
-              page_url:pageUrl || null,
-              intended_deposit:intendedDeposit,
-            },
-            telegram_url:telegramUrl,
-          })
-          .select("id,handoff_code,telegram_url")
-          .single();
-
-        pmHandoffId = newHandoff?.id || null;
-        pmHandoffCodeValue = newHandoff?.handoff_code || handoffCode;
-        pmTelegramHandoffUrl = newHandoff?.telegram_url || telegramUrl;
-      }
-    }
-
-    let pmHandoff: { token:string; telegramUrl:string } | null = null;
-    if (pmOnboarding) {
-      try {
-        pmHandoff = await createPMHandoff({
-          conversationId:conversation.id,
-          userId,
-          customerEmail:email,
-          customerName:name || null,
-          context:{
-            support_session_id:sessionId,
-            latest_message:message.slice(0,1000),
-            page_url:pageUrl || null,
-            intent,
-          },
-        });
-      } catch (error) {
-        console.error("Could not create PM onboarding handoff", error);
-      }
-    }
-
     await admin.from("gencouv_support_messages").insert({
-      conversation_id:conversation.id,
-      role:"assistant",
-      content:reply,
-      metadata:{ intent, model:process.env.OPENAI_API_KEY ? OPENAI_MODEL : "fallback" },
+      conversation_id: conversation.id,
+      role: "assistant",
+      content: reply,
+      metadata: {
+        intent,
+        model: process.env.OPENAI_API_KEY ? OPENAI_MODEL : "fallback",
+        pm_handoff_token: pmHandoffToken,
+      },
     });
 
-    let pmHandoffToken: string | null = null;
-    let pmOnboardingUrl = "";
-
-    if (pmOnboarding) {
-      const { data:existingHandoff } = await admin
-        .from("gencouv_pm_handoffs")
-        .select("handoff_token")
-        .eq("conversation_id", conversation.id)
-        .maybeSingle();
-
-      pmHandoffToken = existingHandoff?.handoff_token || `PM-${crypto.randomUUID().replace(/-/g,"").slice(0,12).toUpperCase()}`;
-
-      if (!existingHandoff) {
-        const { data:recentMessages } = await admin
-          .from("gencouv_support_messages")
-          .select("role,content,created_at")
-          .eq("conversation_id", conversation.id)
-          .order("created_at", { ascending:true })
-          .limit(30);
-
-        await admin.from("gencouv_pm_handoffs").insert({
-          handoff_token:pmHandoffToken,
-          conversation_id:conversation.id,
-          user_id:userId,
-          customer_email:email,
-          customer_name:name || null,
-          context:{
-            session_id:sessionId,
-            page_url:pageUrl || null,
-            messages:recentMessages || [],
-            detected_intent:intent,
-          },
-        });
-      }
-
-      const draft = `Hi, I’m continuing my Gencouv PM onboarding from the website. Handoff ID: ${pmHandoffToken}`;
-      pmOnboardingUrl = `${PM_ONBOARDING_TELEGRAM_BASE_URL}?text=${encodeURIComponent(draft)}`;
-
-      await admin.from("gencouv_support_conversations")
-        .update({ status:"handoff", updated_at:new Date().toISOString() })
-        .eq("id", conversation.id);
-    }
-
     let caseId: string | null = null;
-    if (human) {
-      const { data:supportCase } = await admin.from("gencouv_support_cases")
+
+    if (human && !pmOnboarding) {
+      const { data: supportCase } = await admin
+        .from("gencouv_support_cases")
         .insert({
-          conversation_id:conversation.id,
-          user_id:userId,
-          customer_email:email,
-          category:intent,
-          priority:/urgent|fraud|charged/i.test(message) ? "high" : "normal",
-          summary:message.slice(0,500),
-          context:{ session_id:sessionId, page_url:pageUrl || null },
+          conversation_id: conversation.id,
+          user_id: userId,
+          customer_email: email,
+          category: intent,
+          priority: /urgent|fraud|charged/i.test(message) ? "high" : "normal",
+          summary: message.slice(0, 500),
+          context: { session_id: sessionId, page_url: pageUrl || null },
         })
         .select("id")
         .single();
 
       caseId = supportCase?.id || null;
-      await admin.from("gencouv_support_conversations")
-        .update({ status:"handoff", updated_at:new Date().toISOString() })
+
+      await admin
+        .from("gencouv_support_conversations")
+        .update({ status: "handoff", updated_at: new Date().toISOString() })
         .eq("id", conversation.id);
     }
 
     return NextResponse.json({
-      success:true,
+      success: true,
       reply,
-      session_id:sessionId,
+      session_id: sessionId,
       intent,
-      handoff:human,
-      case_id:caseId,
-      telegram_url:pmOnboarding ? (pmHandoff?.telegramUrl || PM_ONBOARDING_TELEGRAM_URL) : (human ? SUPPORT_TELEGRAM_URL : ""),
-      handoff_type:pmOnboarding ? "pm_onboarding" : (human ? "human_support" : ""),
-      handoff_label:pmOnboarding ? "Continue PM Onboarding on Telegram" : (human ? "Continue with human support" : ""),
-      handoff_token:pmHandoff?.token || "",
-      performance_record_url:intent === "performance" ? MYFXBOOK_URL : "",
-      ai_mode:process.env.OPENAI_API_KEY ? "openai" : "fallback",
+      handoff: pmOnboarding || human,
+      handoff_type: pmOnboarding ? "pm_onboarding" : human ? "human_support" : "",
+      handoff_label: pmOnboarding
+        ? "Continue PM Onboarding on Telegram"
+        : human
+          ? "Continue with human support"
+          : "",
+      telegram_url: telegramUrl,
+      handoff_token: pmHandoffToken,
+      pm_handoff_code: pmHandoffToken,
+      case_id: caseId,
+      performance_record_url: intent === "performance" ? MYFXBOOK_URL : "",
+      ai_mode: process.env.OPENAI_API_KEY ? "openai" : "fallback",
     });
   } catch (error) {
     console.error("Gencouv Support API error", error);
-    return NextResponse.json({
-      success:false,
-      reply:"Gencouv Support is temporarily unavailable. You can still use the website resources or contact the support team directly.",
-      telegram_url:SUPPORT_TELEGRAM_URL,
-    }, { status:500 });
+
+    return NextResponse.json(
+      {
+        success: false,
+        reply: "Gencouv Support is temporarily unavailable. You can still use the website resources or contact the support team directly.",
+        telegram_url: SUPPORT_TELEGRAM_URL,
+      },
+      { status: 500 }
+    );
   }
 }
