@@ -9,7 +9,7 @@ import {
   startGencouvSupportSession,
 } from "@/app/actions/gencouv-support-chat";
 
-const HUMAN_SUPPORT = "https://t.me/Gencou_bot?start=website_support_handoff";
+const HUMAN_SUPPORT = "https://t.me/gencouv";
 
 function makeSessionId() {
   if (typeof window === "undefined") return "gencouv-support";
@@ -104,7 +104,7 @@ export default function FloatingGencouvChat() {
 
           <div className="gcActions">
             {busy && <button type="button" onClick={stop}>Stop response</button>}
-            <a href={HUMAN_SUPPORT} target="_blank" rel="noreferrer">Human support ↗</a>
+            <a href={HUMAN_SUPPORT} target="_blank" rel="noreferrer">PM onboarding / human support ↗</a>
           </div>
 
           <form onSubmit={send}>
