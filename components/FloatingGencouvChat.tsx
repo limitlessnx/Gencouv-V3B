@@ -7,6 +7,7 @@ import type { gencouvSupportAgent } from "@/trigger/gencouv-support-agent";
 import {
   mintGencouvSupportAccessToken,
   startGencouvSupportSession,
+  createGencouvPMHandoff,
 } from "@/app/actions/gencouv-support-chat";
 
 const HUMAN_SUPPORT = "https://t.me/gencouv";
@@ -32,6 +33,7 @@ function messageText(message: any) {
 export default function FloatingGencouvChat() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [handoffBusy, setHandoffBusy] = useState(false);
   const chatId = useMemo(() => makeSessionId(), []);
 
   const transport = useTriggerChatTransport<typeof gencouvSupportAgent>({
@@ -47,6 +49,25 @@ export default function FloatingGencouvChat() {
   });
 
   const busy = status === "submitted" || status === "streaming";
+
+  async function startPMHandoff() {
+    if (handoffBusy) return;
+    setHandoffBusy(true);
+    const popup = window.open("", "_blank");
+    try {
+      const handoff = await createGencouvPMHandoff(chatId);
+      if (popup) {
+        popup.location.href = handoff.telegramUrl;
+      } else {
+        window.location.href = handoff.telegramUrl;
+      }
+    } catch {
+      if (popup) popup.close();
+      window.open(HUMAN_SUPPORT, "_blank", "noopener,noreferrer");
+    } finally {
+      setHandoffBusy(false);
+    }
+  }
 
   async function send(e: FormEvent) {
     e.preventDefault();
@@ -104,7 +125,9 @@ export default function FloatingGencouvChat() {
 
           <div className="gcActions">
             {busy && <button type="button" onClick={stop}>Stop response</button>}
-            <a href={HUMAN_SUPPORT} target="_blank" rel="noreferrer">PM onboarding / human support ↗</a>
+            <button type="button" onClick={startPMHandoff} disabled={handoffBusy}>
+              {handoffBusy ? "Preparing onboarding…" : "Continue PM onboarding ↗"}
+            </button>
           </div>
 
           <form onSubmit={send}>
