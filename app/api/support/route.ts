@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase-server";
 import { createAdminClient } from "@/lib/supabase-admin";
+import { createPMHandoff } from "@/lib/pm-handoff";
 
 const SUPPORT_TELEGRAM_URL = "https://t.me/gencouv";
 const PM_ONBOARDING_TELEGRAM_URL = "https://t.me/gencouv";
@@ -200,6 +201,26 @@ export async function POST(request: Request) {
     const pmOnboarding = wantsPMOnboarding(message);
     const human = needsHuman(message);
 
+    let pmHandoff: { token:string; telegramUrl:string } | null = null;
+    if (pmOnboarding) {
+      try {
+        pmHandoff = await createPMHandoff({
+          conversationId:conversation.id,
+          userId,
+          customerEmail:email,
+          customerName:name || null,
+          context:{
+            support_session_id:sessionId,
+            latest_message:message.slice(0,1000),
+            page_url:pageUrl || null,
+            intent,
+          },
+        });
+      } catch (error) {
+        console.error("Could not create PM onboarding handoff", error);
+      }
+    }
+
     await admin.from("gencouv_support_messages").insert({
       conversation_id:conversation.id,
       role:"assistant",
@@ -235,9 +256,10 @@ export async function POST(request: Request) {
       intent,
       handoff:human,
       case_id:caseId,
-      telegram_url:pmOnboarding ? PM_ONBOARDING_TELEGRAM_URL : (human ? SUPPORT_TELEGRAM_URL : ""),
+      telegram_url:pmOnboarding ? (pmHandoff?.telegramUrl || PM_ONBOARDING_TELEGRAM_URL) : (human ? SUPPORT_TELEGRAM_URL : ""),
       handoff_type:pmOnboarding ? "pm_onboarding" : (human ? "human_support" : ""),
       handoff_label:pmOnboarding ? "Continue PM Onboarding on Telegram" : (human ? "Continue with human support" : ""),
+      handoff_token:pmHandoff?.token || "",
       performance_record_url:intent === "performance" ? MYFXBOOK_URL : "",
       ai_mode:process.env.OPENAI_API_KEY ? "openai" : "fallback",
     });
