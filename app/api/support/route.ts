@@ -403,6 +403,49 @@ export async function POST(request: Request) {
       metadata:{ intent, model:process.env.OPENAI_API_KEY ? OPENAI_MODEL : "fallback" },
     });
 
+    let pmHandoffToken: string | null = null;
+    let pmOnboardingUrl = "";
+
+    if (pmOnboarding) {
+      const { data:existingHandoff } = await admin
+        .from("gencouv_pm_handoffs")
+        .select("handoff_token")
+        .eq("conversation_id", conversation.id)
+        .maybeSingle();
+
+      pmHandoffToken = existingHandoff?.handoff_token || `PM-${crypto.randomUUID().replace(/-/g,"").slice(0,12).toUpperCase()}`;
+
+      if (!existingHandoff) {
+        const { data:recentMessages } = await admin
+          .from("gencouv_support_messages")
+          .select("role,content,created_at")
+          .eq("conversation_id", conversation.id)
+          .order("created_at", { ascending:true })
+          .limit(30);
+
+        await admin.from("gencouv_pm_handoffs").insert({
+          handoff_token:pmHandoffToken,
+          conversation_id:conversation.id,
+          user_id:userId,
+          customer_email:email,
+          customer_name:name || null,
+          context:{
+            session_id:sessionId,
+            page_url:pageUrl || null,
+            messages:recentMessages || [],
+            detected_intent:intent,
+          },
+        });
+      }
+
+      const draft = `Hi, I’m continuing my Gencouv PM onboarding from the website. Handoff ID: ${pmHandoffToken}`;
+      pmOnboardingUrl = `${PM_ONBOARDING_TELEGRAM_BASE_URL}?text=${encodeURIComponent(draft)}`;
+
+      await admin.from("gencouv_support_conversations")
+        .update({ status:"handoff", updated_at:new Date().toISOString() })
+        .eq("id", conversation.id);
+    }
+
     let caseId: string | null = null;
     if (human) {
       const { data:supportCase } = await admin.from("gencouv_support_cases")
