@@ -5,6 +5,7 @@ import { chat } from "@trigger.dev/sdk/ai";
 import type { gencouvSupportAgent } from "@/trigger/gencouv-support-agent";
 import { createClient } from "@/lib/supabase-server";
 import { createAdminClient } from "@/lib/supabase-admin";
+import { createPMHandoff } from "@/lib/pm-handoff";
 
 const startSession =
   chat.createStartSessionAction<typeof gencouvSupportAgent>("gencouv-support-agent");
@@ -88,4 +89,25 @@ export async function mintGencouvSupportAccessToken(chatId: string) {
     },
     expirationTime: "1h",
   });
+}
+
+
+export async function createGencouvPMHandoff(chatId: string) {
+  const context = await verifiedCustomerContext();
+
+  const handoff = await createPMHandoff({
+    userId: context.userId,
+    customerEmail: context.email,
+    context: {
+      trigger_chat_id: chatId,
+      authenticated: context.authenticated,
+      recent_orders: context.recentOrders,
+      licenses: context.licenses,
+    },
+  });
+
+  return {
+    token: handoff.token,
+    telegramUrl: handoff.telegramUrl,
+  };
 }
