@@ -1,80 +1,136 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
+import { useChat } from "@ai-sdk/react";
+import { useTriggerChatTransport } from "@trigger.dev/sdk/chat/react";
+import type { gencouvSupportAgent } from "@/trigger/gencouv-support-agent";
+import {
+  mintGencouvSupportAccessToken,
+  startGencouvSupportSession,
+} from "@/app/actions/gencouv-support-chat";
 
-type Message = { role:"assistant"|"user"; text:string };
+const HUMAN_SUPPORT = "https://t.me/Gencou_bot?start=website_support_handoff";
 
-function makeSessionId(){
-  if(typeof window === "undefined") return "";
-  const key="gencouv_support_session";
-  const existing=window.localStorage.getItem(key);
-  if(existing) return existing;
-  const value=crypto.randomUUID();
-  window.localStorage.setItem(key,value);
+function makeSessionId() {
+  if (typeof window === "undefined") return "gencouv-support";
+  const key = "gencouv_trigger_support_session";
+  const existing = window.localStorage.getItem(key);
+  if (existing) return existing;
+  const value = `gencouv-${crypto.randomUUID()}`;
+  window.localStorage.setItem(key, value);
   return value;
 }
 
-export default function FloatingGencouvChat() {
-  const [open,setOpen]=useState(false);
-  const [input,setInput]=useState("");
-  const [loading,setLoading]=useState(false);
-  const [handoff,setHandoff]=useState("");
-  const [messages,setMessages]=useState<Message[]>([
-    {role:"assistant",text:"Hi. I’m Gencouv Support AI. I can help with Trading Bots, purchases, My Library access, portfolio management, onboarding and risk information."}
-  ]);
-  const sessionId=useMemo(()=>typeof window!=="undefined"?makeSessionId():"",[]);
+function messageText(message: any) {
+  if (!Array.isArray(message?.parts)) return "";
+  return message.parts
+    .filter((part: any) => part?.type === "text" && typeof part?.text === "string")
+    .map((part: any) => part.text)
+    .join("");
+}
 
-  async function send(e:FormEvent){
+export default function FloatingGencouvChat() {
+  const [open, setOpen] = useState(false);
+  const [input, setInput] = useState("");
+  const chatId = useMemo(() => makeSessionId(), []);
+
+  const transport = useTriggerChatTransport<typeof gencouvSupportAgent>({
+    task: "gencouv-support-agent",
+    accessToken: ({ chatId }) => mintGencouvSupportAccessToken(chatId),
+    startSession: ({ chatId, clientData }) =>
+      startGencouvSupportSession({ chatId, clientData }),
+  });
+
+  const { messages, sendMessage, stop, status, error } = useChat({
+    id: chatId,
+    transport,
+  });
+
+  const busy = status === "submitted" || status === "streaming";
+
+  async function send(e: FormEvent) {
     e.preventDefault();
-    const text=input.trim();
-    if(!text||loading)return;
+    const text = input.trim();
+    if (!text || busy) return;
     setInput("");
-    setMessages(prev=>[...prev,{role:"user",text}]);
-    setLoading(true);
-    setHandoff("");
-    try{
-      const response=await fetch("/api/support",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          message:text,
-          session_id:sessionId,
-          page_url:window.location.href
-        })
-      });
-      const data=await response.json();
-      setMessages(prev=>[...prev,{role:"assistant",text:data?.reply||"Support could not answer that right now."}]);
-      if(data?.handoff&&data?.telegram_url)setHandoff(data.telegram_url);
-    }catch{
-      setMessages(prev=>[...prev,{role:"assistant",text:"Gencouv Support could not connect right now. Please try again shortly."}]);
-    }finally{
-      setLoading(false);
-    }
+    await sendMessage({ text });
   }
 
   return (
     <div className="gcWrap">
-      {open && <section className="gcPanel" aria-label="Gencouv Support chat">
-        <header>
-          <div><span className="gcDot"/><div><strong>Gencouv Support AI</strong><small>Trading technology support</small></div></div>
-          <button type="button" onClick={()=>setOpen(false)} aria-label="Close support chat">×</button>
-        </header>
-        <div className="gcMessages">
-          {messages.map((m,i)=><div key={i} className={`gcMsg ${m.role}`}><span>{m.text}</span></div>)}
-          {loading&&<div className="gcMsg assistant"><span className="gcTyping"><i/><i/><i/></span></div>}
-        </div>
-        {handoff&&<a className="gcHandoff" href={handoff} target="_blank" rel="noreferrer">Continue with human support ↗</a>}
-        <form onSubmit={send}>
-          <input value={input} onChange={e=>setInput(e.target.value)} maxLength={4000} placeholder="Ask Gencouv Support…" aria-label="Message Gencouv Support"/>
-          <button type="submit" disabled={loading||!input.trim()} aria-label="Send message">↑</button>
-        </form>
-        <p className="gcRisk">Trading involves substantial risk. Support information is not financial advice.</p>
-      </section>}
+      {open && (
+        <section className="gcPanel" aria-label="Gencouv Support chat">
+          <header>
+            <div>
+              <span className="gcDot" />
+              <div>
+                <strong>Gencouv Support AI</strong>
+                <small>Durable support powered by Trigger.dev</small>
+              </div>
+            </div>
+            <button type="button" onClick={() => setOpen(false)} aria-label="Close support chat">×</button>
+          </header>
 
-      {!open&&<span className="gcLabel">Support AI</span>}
-      <button type="button" onClick={()=>setOpen(v=>!v)} className="gcButton" aria-label={open?"Close Gencouv Support":"Open Gencouv Support"}>
-        {open?<span className="gcClose">×</span>:<span className="gcBubble" aria-hidden="true"><i/><i/><i/></span>}
-        {!open&&<span className="gcStatus" aria-hidden="true"/>}
+          <div className="gcMessages">
+            <div className="gcMsg assistant">
+              <span>
+                Hi. I’m Gencouv Support AI. I can help with Trading Bots, purchases, My Library access,
+                portfolio management, onboarding and risk information.
+              </span>
+            </div>
+
+            {messages.map((message) => {
+              const text = messageText(message);
+              if (!text) return null;
+              return (
+                <div key={message.id} className={`gcMsg ${message.role === "user" ? "user" : "assistant"}`}>
+                  <span>{text}</span>
+                </div>
+              );
+            })}
+
+            {busy && status === "submitted" && (
+              <div className="gcMsg assistant">
+                <span className="gcTyping"><i /><i /><i /></span>
+              </div>
+            )}
+
+            {error && (
+              <div className="gcMsg assistant">
+                <span>Support could not reconnect right now. Your conversation is preserved. Please retry shortly.</span>
+              </div>
+            )}
+          </div>
+
+          <div className="gcActions">
+            {busy && <button type="button" onClick={stop}>Stop response</button>}
+            <a href={HUMAN_SUPPORT} target="_blank" rel="noreferrer">Human support ↗</a>
+          </div>
+
+          <form onSubmit={send}>
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              maxLength={4000}
+              placeholder="Ask Gencouv Support…"
+              aria-label="Message Gencouv Support"
+            />
+            <button type="submit" disabled={busy || !input.trim()} aria-label="Send message">↑</button>
+          </form>
+
+          <p className="gcRisk">Trading involves substantial risk. Support information is not financial advice.</p>
+        </section>
+      )}
+
+      {!open && <span className="gcLabel">Support AI</span>}
+      <button
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        className="gcButton"
+        aria-label={open ? "Close Gencouv Support" : "Open Gencouv Support"}
+      >
+        {open ? <span className="gcClose">×</span> : <span className="gcBubble" aria-hidden="true"><i /><i /><i /></span>}
+        {!open && <span className="gcStatus" aria-hidden="true" />}
       </button>
 
       <style jsx>{`
@@ -86,7 +142,7 @@ export default function FloatingGencouvChat() {
         header{display:flex;justify-content:space-between;align-items:center;padding:17px 18px;border-bottom:1px solid rgba(255,255,255,.07)}header>div{display:flex;align-items:center;gap:10px}header strong,header small{display:block}header strong{font-size:13px;color:#e9f5f2}header small{margin-top:3px;font-size:9px;color:#718681}header button{border:0;background:transparent;color:#899c98;font-size:22px;cursor:pointer}.gcDot{width:9px;height:9px;border-radius:50%;background:#35e4c0;box-shadow:0 0 12px rgba(53,228,192,.65)}
         .gcMessages{padding:18px;overflow-y:auto;display:flex;flex-direction:column;gap:11px}.gcMsg{display:flex}.gcMsg span{max-width:86%;padding:11px 13px;border-radius:14px;font-size:12px;line-height:1.55;white-space:pre-wrap}.gcMsg.assistant{justify-content:flex-start}.gcMsg.assistant span{background:#0a1718;border:1px solid rgba(255,255,255,.07);color:#c5d3cf}.gcMsg.user{justify-content:flex-end}.gcMsg.user span{background:#35e4c0;color:#03100e;font-weight:650}
         .gcTyping{display:flex!important;gap:4px}.gcTyping i{width:5px;height:5px;border-radius:50%;background:#78918b;animation:gcBlink 1.2s infinite}.gcTyping i:nth-child(2){animation-delay:.15s}.gcTyping i:nth-child(3){animation-delay:.3s}@keyframes gcBlink{0%,80%,100%{opacity:.25}40%{opacity:1}}
-        .gcHandoff{margin:0 16px 10px;padding:10px 12px;border:1px solid rgba(53,228,192,.22);border-radius:10px;color:#35e4c0;background:rgba(53,228,192,.04);font-size:10px;text-align:center}
+        .gcActions{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:0 14px 10px}.gcActions button,.gcActions a{border:1px solid rgba(53,228,192,.18);border-radius:9px;background:rgba(53,228,192,.04);color:#8edccb;padding:7px 9px;font-size:9px;text-decoration:none;cursor:pointer}
         form{display:grid;grid-template-columns:1fr 42px;gap:8px;padding:12px 14px;border-top:1px solid rgba(255,255,255,.07)}form input{min-width:0;padding:12px 13px;border:1px solid rgba(255,255,255,.1);border-radius:11px;background:#061112;color:#eef8f5;font:inherit;font-size:12px;outline:none}form input:focus{border-color:rgba(53,228,192,.55)}form button{border:0;border-radius:11px;background:#35e4c0;color:#03100e;font-size:20px;font-weight:900;cursor:pointer}form button:disabled{opacity:.35;cursor:not-allowed}.gcRisk{margin:0;padding:0 15px 13px;color:#536762;font-size:8px;line-height:1.5}
         @media(max-width:700px){.gcWrap{right:max(10px,env(safe-area-inset-right));bottom:max(12px,calc(env(safe-area-inset-bottom) + 8px));gap:7px}.gcButton{width:54px;height:54px}.gcLabel{display:none}.gcPanel{bottom:67px;width:calc(100vw - 20px);height:min(620px,calc(100vh - 96px))}}
       `}</style>
