@@ -1,8 +1,11 @@
 // Navigation auth controls enabled
 import "./copy-hero.css";
+import "./home-redesign.css";
 import "./home-trust.css";
 import TradingViewMarketHero from "@/components/TradingViewMarketHero";
 import FloatingGencouvChat from "@/components/FloatingGencouvChat";
+import HomeNavigation from "@/components/home/HomeNavigation";
+import GencouvHero from "@/components/home/GencouvHero";
 
 const telegram = "https://t.me/gencouv";
 const myfxbook = "https://www.myfxbook.com/portfolio/gencouv-lirunex-pm/12165670";
@@ -44,22 +47,8 @@ const reviewCards = [
 
 export default function Home() {
   return <main>
-    <nav className="nav shell">
-      <a className="brand" href="/"><span>G</span><div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div></a>
-      <div className="links"><a href="/about">About</a><a href="/portfolio-management">Portfolio Management</a><a href="/roadmap">Roadmap</a><a href="#education">Our Approach</a><a href="/marketplace">Trading Bots</a><a href="/testimonials">Client Experiences</a><a href="/terms">Terms</a></div>
-      <div className="navAuth"><a className="navLogin" href="/login">Log in</a><a className="navCta" href="/signup">Create account</a></div>
-    </nav>
-
-    <section className="copyHero shell">
-      <div className="copyHeroText">
-        <div className="copyPill">PORTFOLIO MANAGEMENT</div>
-        <h1>Disciplined Strategies.<br/><em>Managed With Structure.</em></h1>
-        <p>Gencouv provides a managed portfolio strategy for eligible clients through supported broker infrastructure. We do not accept or hold client deposits. You maintain your own brokerage account while Gencouv manages the strategy within the agreed framework.</p>
-        <div className="copyHeroActions"><a className="copyPrimary" href={telegram} target="_blank" rel="noreferrer">Talk to Gencouv <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">View verified performance</a></div>
-        <div className="copyProof"><span><b>Your Account</b><small>Open and fund your own eligible brokerage account</small></span><span><b>Gencouv Strategy</b><small>One managed portfolio strategy for approved clients</small></span><span><b>Verified Record</b><small>Review the Gencouv master-account record on Myfxbook</small></span></div>
-      </div>
-      <div className="copyHeroVisual" aria-label="Illustration of Gencouv portfolio management technology and connected market strategies"><div className="copyChart"><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/></div><div className="copyNetwork"><span className="copyNode lead">G</span><span className="copyNode n1">1</span><span className="copyNode n2">2</span><span className="copyNode n3">3</span><span className="copyNode n4">4</span><span className="copyLine l1"/><span className="copyLine l2"/><span className="copyLine l3"/><span className="copyLine l4"/></div><div className="copyPhone"><div className="phoneTop"><span>GENCOUV PORTFOLIO</span><b>LIVE</b></div><div className="phoneAccount"><small>Managed strategy</small><strong>Gencouv Portfolio</strong></div><div className="phoneGraph"><svg viewBox="0 0 320 130" preserveAspectRatio="none" aria-hidden="true"><path d="M0 106 C28 96 35 72 58 79 S92 103 116 61 S154 48 174 70 S207 72 226 42 S268 58 320 14"/></svg></div><div className="phoneStats"><span><small>Status</small><b>Systematic</b></span><span><small>Account</small><b>Client-held</b></span></div><a href={myfxbook} target="_blank" rel="noreferrer">View record</a></div><div className="copyBadge green">PORTFOLIO</div><div className="copyBadge blue">STRATEGY</div></div>
-    </section>
+    <HomeNavigation />
+    <GencouvHero />
 
     <section className="section shell"><div className="sectionHead"><div><div className="eyebrow left">HOW IT WORKS</div><h2>Understand first. Verify next. Participate only if approved.</h2></div><p>The Gencouv roadmap takes prospective clients from initial questions through independent performance review, eligibility evaluation, broker verification and account connection.</p></div><div className="knowledgeGrid">{managementSteps.map(([title,description],i)=><article className="knowledgeCard" key={title}><span>0{i+1}</span><h3>{title}</h3><p>{description}</p></article>)}</div><div className="copyHeroActions" style={{marginTop: "28px"}}><a className="copyPrimary" href="/roadmap">View the full roadmap <span>↗</span></a><a className="secondary" href={myfxbook} target="_blank" rel="noreferrer">View verified performance</a></div></section>
 
