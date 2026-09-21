@@ -1,3 +1,4 @@
+// Navigation auth controls enabled
 import "./copy-hero.css";
 import "./home-trust.css";
 import TradingViewMarketHero from "@/components/TradingViewMarketHero";
