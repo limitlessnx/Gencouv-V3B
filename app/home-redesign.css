@@ -62,3 +62,61 @@
 .gencouvHero~.footer>div:nth-child(3) a:hover{color:#e8a934}
 
 @media(max-width:680px){.gencouvHero~.finalCta{margin-top:28px;margin-bottom:50px;padding:72px 18px;border-radius:22px}.gencouvHero~.section .service:hover{transform:none}}
+
+
+/* Mobile hero simplification: one focal device, no desktop-dashboard collision. */
+@media(max-width:700px){
+  .heroPrinciples{max-width:340px;margin:24px auto 30px;gap:6px}
+  .heroPrinciples>span{grid-template-columns:34px 1fr;padding:7px 0;text-align:left}
+  .heroPrinciples i{width:32px;height:32px}
+  .heroPrinciples b{font-size:10px}
+  .heroPrinciples small{font-size:8px}
+  .portfolioVisual{height:470px;margin-top:0}
+  .dashboardFrame{display:none}
+  .phoneFrame{
+    top:8px;left:50%;right:auto;bottom:auto;
+    width:250px;height:430px;
+    transform:translateX(-50%) rotate(0deg);
+    padding:25px 17px 18px;
+    border-radius:36px;
+    box-shadow:0 26px 70px rgba(0,0,0,.72),0 0 0 1px rgba(242,170,39,.46),0 0 52px rgba(242,170,39,.11)
+  }
+  .phoneSensor{top:10px;width:78px;height:15px}
+  .phoneHeading{margin-top:10px}
+  .phoneHeading small{font-size:7.5px}
+  .phoneTitle{margin-top:30px}
+  .phoneTitle strong{font-size:20px}
+  .phoneMiniChart{height:140px;margin-top:18px}
+  .phoneFacts{margin-top:14px;gap:8px}
+  .phoneFacts span{padding:11px}
+  .phoneFacts b{font-size:10px}
+  .phoneFrame>a{margin-top:15px;padding:12px;font-size:9.5px}
+  .heroTrustStrip{
+    grid-template-columns:1fr 1fr;
+    max-width:360px;
+    margin:0 auto;
+    row-gap:0;
+    border-top:1px solid rgba(242,170,39,.14);
+    border-bottom:1px solid rgba(242,170,39,.08);
+    padding:10px 0
+  }
+  .heroTrustItem{
+    min-height:54px;
+    justify-content:flex-start;
+    padding:8px 10px;
+    border-right:1px solid rgba(255,255,255,.055);
+    border-bottom:1px solid rgba(255,255,255,.045)
+  }
+  .heroTrustItem:nth-child(even){border-right:0}
+  .heroTrustItem:nth-child(3),.heroTrustItem:nth-child(4){border-bottom:0}
+  .heroTrustItem b{font-size:8.5px}
+  .heroTrustItem small{font-size:6.8px;line-height:1.35}
+}
+@media(max-width:430px){
+  .portfolioVisual{height:455px}
+  .phoneFrame{width:238px;height:412px}
+  .phoneMiniChart{height:130px}
+  .heroTrustStrip{grid-template-columns:1fr 1fr}
+  .heroTrustItem{border-bottom:1px solid rgba(255,255,255,.045)}
+  .heroTrustItem:nth-child(3),.heroTrustItem:nth-child(4){border-bottom:0}
+}
