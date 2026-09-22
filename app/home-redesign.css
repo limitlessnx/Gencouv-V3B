@@ -120,3 +120,105 @@
   .heroTrustItem{border-bottom:1px solid rgba(255,255,255,.045)}
   .heroTrustItem:nth-child(3),.heroTrustItem:nth-child(4){border-bottom:0}
 }
+
+
+/* Performance-story upgrade for desktop and phone hero previews. */
+.portfolioVisual{height:640px}
+.dashboardFrame{height:540px;right:120px}
+.dashMain{padding:22px 24px}
+.dashHeroStat{display:grid;grid-template-columns:1.15fr .85fr;gap:12px;margin-top:16px}
+.dashGrowth,.dashBalances{border:1px solid rgba(255,255,255,.055);border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.022),rgba(255,255,255,.008));padding:15px}
+.dashGrowth small{display:block;color:#8b9894;font-size:7px;letter-spacing:.15em;text-transform:uppercase}
+.dashGrowth strong{display:block;margin-top:9px;color:#f4f7f5;font-size:30px;line-height:1;font-weight:850;letter-spacing:-.035em}
+.dashGrowth p{margin:7px 0 0;color:#899691;font-size:9px}
+.dashBalances{display:grid;grid-template-columns:1fr;gap:8px}
+.dashBalances div{padding:10px 11px;border:1px solid rgba(255,255,255,.045);border-radius:11px;background:rgba(255,255,255,.012)}
+.dashBalances small,.dashBalances b{display:block}
+.dashBalances small{color:#6f7c78;font-size:7px}
+.dashBalances b{margin-top:5px;color:#e7ece9;font-size:14px}
+.dashMetrics{margin-top:11px;grid-template-columns:repeat(3,1fr)}
+.dashMetrics article{padding:11px 12px}
+.dashMetrics small{font-size:6px;letter-spacing:.09em;text-transform:uppercase}
+.dashMetrics strong{margin-top:6px;font-size:13px}
+.dashMetrics span{margin-top:4px;font-size:6.5px}
+.dashChart{height:210px;margin-top:11px}
+.dashChart svg{height:132px}
+.chartCaption{padding:11px 13px}
+.chartCaption small{font-size:5.5px}
+.chartCaption strong{font-size:10px}
+.chartFoot{font-size:5.5px}
+
+.phoneFrame{
+  width:270px;
+  height:500px;
+  padding:25px 17px 16px;
+  border:5px solid #151b1a;
+  border-radius:39px;
+  display:flex;
+  flex-direction:column
+}
+.phoneHeading{align-items:center}
+.phoneHeading b{font-size:8px}
+.phoneTitle{margin-top:24px}
+.phoneTitle span{font-size:8px}
+.phoneTitle strong{margin-top:7px;font-size:30px;line-height:1;letter-spacing:-.035em}
+.phoneTitle p{margin:7px 0 0;color:#8b9894;font-size:9px;line-height:1.4}
+.phoneMiniChart{height:110px;margin-top:14px}
+.phoneMiniChart .phoneChartArea{fill:url(#phoneChartFill);stroke:none}
+.phoneMiniChart .phoneChartLine{fill:none;stroke:#3ee5aa;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 7px rgba(62,229,170,.35))}
+.phonePerformanceGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px}
+.phonePerformanceGrid div{padding:9px;border:1px solid rgba(255,255,255,.055);border-radius:10px;background:rgba(255,255,255,.014)}
+.phonePerformanceGrid small,.phonePerformanceGrid b{display:block}
+.phonePerformanceGrid small{color:#65736f;font-size:5.7px}
+.phonePerformanceGrid b{margin-top:5px;color:#edf2ef;font-size:9px}
+.phoneFacts{margin-top:8px;gap:7px}
+.phoneFacts span{padding:9px}
+.phoneFacts small{font-size:5.7px}
+.phoneFacts b{font-size:9px}
+.phoneFrame>a{margin-top:10px;padding:11px}
+.phoneDisclaimer{display:block;margin-top:8px;color:#596560;font-size:5.7px;text-align:center;line-height:1.35}
+
+@media(max-width:1100px){
+  .portfolioVisual{height:610px}
+  .dashboardFrame{height:510px}
+  .phoneFrame{width:245px;height:468px}
+  .dashGrowth strong{font-size:26px}
+}
+@media(max-width:960px){
+  .portfolioVisual{height:590px}
+  .dashboardFrame{right:65px;height:490px}
+  .phoneFrame{width:232px;height:454px}
+}
+@media(max-width:700px){
+  .portfolioVisual{height:525px}
+  .dashboardFrame{display:none}
+  .phoneFrame{
+    top:8px;
+    left:50%;
+    right:auto;
+    bottom:auto;
+    width:268px;
+    height:488px;
+    transform:translateX(-50%) rotate(0deg);
+    padding:25px 17px 16px
+  }
+  .phoneTitle{margin-top:26px}
+  .phoneTitle strong{font-size:34px}
+  .phoneTitle p{font-size:9.5px}
+  .phoneMiniChart{height:118px;margin-top:14px}
+  .phonePerformanceGrid{margin-top:12px}
+  .phonePerformanceGrid div{padding:10px}
+  .phonePerformanceGrid small{font-size:6px}
+  .phonePerformanceGrid b{font-size:10px}
+  .phoneFacts span{padding:10px}
+  .phoneFacts small{font-size:6px}
+  .phoneFacts b{font-size:10px}
+  .phoneFrame>a{margin-top:10px;padding:12px;font-size:10px}
+  .phoneDisclaimer{font-size:6px;margin-top:8px}
+}
+@media(max-width:430px){
+  .portfolioVisual{height:510px}
+  .phoneFrame{width:258px;height:474px}
+  .phoneTitle strong{font-size:32px}
+  .phoneMiniChart{height:112px}
+}
