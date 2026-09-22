@@ -300,6 +300,7 @@ export async function POST(request: Request) {
       case_id: caseId,
       performance_record_url: intent === "performance" ? MYFXBOOK_URL : "",
       ai_mode: process.env.OPENAI_API_KEY ? "openai" : "fallback",
+      ai_model: process.env.OPENAI_API_KEY ? OPENAI_MODEL : null,
     });
   } catch (error) {
     console.error("Gencouv Support API error", error);
