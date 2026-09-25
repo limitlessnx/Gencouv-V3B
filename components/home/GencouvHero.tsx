@@ -15,17 +15,17 @@ export default function GencouvHero() {
       <div className="heroInner shell">
         <div className="heroKicker">AUTOMATED TRADING. DISCIPLINED EXECUTION.</div>
         <h1>A Smarter Way to<br/><em>Build With Structure.</em></h1>
-        <p>Gencouv combines managed portfolio strategies and automated trading technology with disciplined execution, client-held brokerage accounts and transparent risk information.</p>
+        <p>Gencouv Copy Trading connects eligible clients to structured master strategies while their trading capital remains in their own brokerage account, with transparent risk profiles and human-verified onboarding.</p>
 
         <div className="heroCtas">
-          <a className="heroPrimary" href="/portfolio-management">Start with Gencouv <span>↗</span></a>
+          <a className="heroPrimary" href="/copy-trading">Explore Copy Trading <span>↗</span></a>
           <a className="heroSecondary" href={myfxbook} target="_blank" rel="noreferrer">View performance</a>
         </div>
 
         <div className="heroPrinciples">
-          <span><i>▥</i><b>Managed strategies</b><small>Defined portfolio framework</small></span>
-          <span><i>⌁</i><b>Automated trading</b><small>Systematic execution</small></span>
-          <span><i>◇</i><b>Disciplined approach</b><small>Risk before returns</small></span>
+          <span><i>▥</i><b>Two risk profiles</b><small>High Yield or Balanced Yield</small></span>
+          <span><i>⌁</i><b>Copy Trading</b><small>Master-strategy execution</small></span>
+          <span><i>◇</i><b>Client-held funds</b><small>Your own broker account</small></span>
         </div>
 
         <PortfolioDashboardVisual />
