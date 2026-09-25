@@ -8,7 +8,7 @@ export default function HomeNavigation() {
 
       <div className="homeNavLinks">
         <a className="active" href="/">Home</a>
-        <a href="/portfolio-management">Portfolio Management</a>
+        <a href="/copy-trading">Copy Trading</a>
         <a href="https://www.myfxbook.com/portfolio/gencouv-lirunex-pm/12165670" target="_blank" rel="noreferrer">Performance</a>
         <a href="/marketplace">Trading Bots</a>
         <a href="/roadmap">Resources</a>
