@@ -23,7 +23,7 @@ export default function FloatingGencouvChat() {
   const [handoffCode,setHandoffCode]=useState("");
   const messagesRef=useRef<HTMLDivElement>(null);
   const [messages,setMessages]=useState<Message[]>([
-    {role:"assistant",text:"Hi. I’m Gencouv Support AI. I can explain Copy Trading, the High Yield and Balanced Yield profiles, Lirunex account setup, onboarding and risk information."}
+    {role:"assistant",text:"Welcome to Gencouv! How can I help you today?"}
   ]);
   const sessionId=useMemo(()=>typeof window!=="undefined"?makeSessionId():"",[]);
 
