@@ -107,7 +107,26 @@ export async function POST(request: Request) {
 
     const email = verifiedEmail || suppliedEmail;
     const { data: conversation, error: conversationError } = await admin.from("gencouv_support_conversations").upsert({ session_id: sessionId, user_id: userId, customer_email: email, customer_name: name || null, page_url: pageUrl || null, last_intent: intent, updated_at: new Date().toISOString() }, { onConflict: "session_id" }).select("id").single();
-    if (conversationError || !conversation) throw conversationError || new Error("Conversation could not be created.");
+    if (conversationError || !conversation) {
+      // Public visitors must still receive a support answer if persistence is temporarily
+      // unavailable (for example, if the tenant organization mapping is missing).
+      // Do not fabricate an organization_id or let a database write failure break chat.
+      console.error("Gencouv Support conversation persistence unavailable", conversationError || "No conversation row returned");
+      const ai = await generateAIReply(message, customerContext);
+      return NextResponse.json({
+        success: true,
+        reply: ai.reply || fallbackReply(intent),
+        session_id: sessionId,
+        intent,
+        handoff: true,
+        handoff_type: "human_support",
+        handoff_label: "Continue with human support",
+        telegram_url: SUPPORT_TELEGRAM_URL,
+        ai_mode: ai.mode,
+        ai_model: ai.model,
+        degraded_mode: true
+      });
+    }
     await admin.from("gencouv_support_messages").insert({ conversation_id: conversation.id, role: "user", content: message, metadata: { intent, page_url: pageUrl || null } });
 
     const ai = await generateAIReply(message, customerContext);
