@@ -38,7 +38,7 @@ function wantsRegistrationNow(message: string, history: Array<{ role?: string; t
   const text = message.toLowerCase();
   const direct = (text.includes("ready to") || text.includes("i want to") || text.includes("i would like to") || text.includes("please send") || text.includes("send me") || text.includes("give me") || text.includes("share")) && (text.includes("create an account") || text.includes("open an account") || text.includes("register") || text.includes("sign up") || text.includes("registration link") || text.includes("account creation link"));
   if (direct || text.includes("create an account now") || text.includes("register now") || text.includes("sign up now")) return true;
-  const offered = history.slice(-6).some(item => item.role === "assistant" && /would you like.{0,60}(account creation|registration|register|create your account|send you the link)|shall i send.{0,30}(link|registration)|want me to send.{0,30}(link|registration)/i.test(String(item.text || "")));
+  const offered = history.slice(-6).some(item => item.role === "assistant" && /would you like.{0,80}(account[- ]creation|registration|register|create your account|send.{0,20}link)|shall i send.{0,30}(link|registration)|want me to send.{0,30}(link|registration)/i.test(String(item.text || "")));
   return offered && /^(yes|yes please|yeah|yep|sure|please do|go ahead|okay|ok|let's do it|i'm ready|i am ready)$/i.test(message.trim());
 }
 
