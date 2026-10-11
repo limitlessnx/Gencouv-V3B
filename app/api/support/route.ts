@@ -103,6 +103,7 @@ export async function POST(request: Request) {
     const intent = intentFor(message);
     const history = Array.isArray(body.history) ? body.history.slice(-8) : [];
     const registrationNow = wantsRegistrationNow(message, history);
+    const wantsCopyTradingStart = intent === "copy_trading" && wantsPMOnboarding(message);
     const registrationReply = "Here is the Gencouv Lirunex account-creation link: " + LIRUNEX_GENCOUV_SIGNUP_URL + "\n\nStart by entering your email and verifying the OTP. After Lirunex approval, Gencouv onboarding will confirm your account type and connect your profile.";
     let userId: string | null = null, verifiedEmail: string | null = null, customerContext = "";
 
@@ -123,7 +124,7 @@ export async function POST(request: Request) {
       // unavailable (for example, if the tenant organization mapping is missing).
       // Do not fabricate an organization_id or let a database write failure break chat.
       console.error("Gencouv Support conversation persistence unavailable", conversationError || "No conversation row returned");
-      const ai = registrationNow ? { reply: registrationReply, mode: "guided" as const, model: null as string | null } : await generateAIReply(message, customerContext, history);
+      const ai = registrationNow ? { reply: registrationReply, mode: "guided" as const, model: null as string | null } : wantsCopyTradingStart ? { reply: fallbackReply(intent), mode: "guided" as const, model: null as string | null } : await generateAIReply(message, customerContext, history);
       return NextResponse.json({
         success: true,
         reply: ai.reply || fallbackReply(intent),
@@ -140,7 +141,7 @@ export async function POST(request: Request) {
     }
     await admin.from("gencouv_support_messages").insert({ conversation_id: conversation.id, role: "user", content: message, metadata: { intent, page_url: pageUrl || null } });
 
-      const ai = registrationNow ? { reply: registrationReply, mode: "guided" as const, model: null as string | null } : await generateAIReply(message, customerContext, history);
+      const ai = registrationNow ? { reply: registrationReply, mode: "guided" as const, model: null as string | null } : wantsCopyTradingStart ? { reply: fallbackReply(intent), mode: "guided" as const, model: null as string | null } : await generateAIReply(message, customerContext, history);
     const reply = ai.reply || fallbackReply(intent);
     const pmOnboarding = wantsPMOnboarding(message);
     const human = needsHuman(message);
