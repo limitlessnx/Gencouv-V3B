@@ -17,14 +17,16 @@ function makeSessionId(){
 export default function FloatingGencouvChat() {
   const [open,setOpen]=useState(false);
   const [input,setInput]=useState("");
+  const [started,setStarted]=useState(false);
+  const [contactName,setContactName]=useState("");
+  const [contactEmail,setContactEmail]=useState("");
+  const [contactError,setContactError]=useState("");
   const [loading,setLoading]=useState(false);
   const [handoff,setHandoff]=useState("");
   const [handoffLabel,setHandoffLabel]=useState("Continue with human support");
   const [handoffCode,setHandoffCode]=useState("");
   const messagesRef=useRef<HTMLDivElement>(null);
-  const [messages,setMessages]=useState<Message[]>([
-    {role:"assistant",text:"Welcome to Gencouv! How can I help you today?"}
-  ]);
+  const [messages,setMessages]=useState<Message[]>([]);
   const sessionId=useMemo(()=>typeof window!=="undefined"?makeSessionId():"",[]);
 
   useEffect(()=>{
@@ -32,6 +34,19 @@ export default function FloatingGencouvChat() {
     const el=messagesRef.current;
     if(el) el.scrollTo({top:el.scrollHeight,behavior:"smooth"});
   },[messages,loading,handoff,open]);
+
+  function startChat(e:FormEvent){
+    e.preventDefault();
+    const name=contactName.trim();
+    const email=contactEmail.trim().toLowerCase();
+    if(!name||! /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){
+      setContactError("Enter your name and a valid email address to start.");
+      return;
+    }
+    setContactError("");
+    setStarted(true);
+    setMessages([{role:"assistant",text:"Welcome to Gencouv! How can I help you today?"}]);
+  }
 
   async function send(e:FormEvent){
     e.preventDefault();
@@ -48,7 +63,10 @@ export default function FloatingGencouvChat() {
         body:JSON.stringify({
           message:text,
           session_id:sessionId,
-          page_url:window.location.href
+          page_url:window.location.href,
+          name:contactName.trim(),
+          email:contactEmail.trim().toLowerCase(),
+          history:messages.slice(-8).map(m=>({role:m.role,text:m.text}))
         })
       });
       const data=await response.json();
@@ -73,17 +91,27 @@ export default function FloatingGencouvChat() {
           <button type="button" onClick={()=>setOpen(false)} aria-label="Close support chat">×</button>
         </header>
         <div className="gcMessages" ref={messagesRef}>
-          {messages.map((m,i)=><div key={i} className={`gcMsg ${m.role}`}><span>{m.text}</span></div>)}
-          {loading&&<div className="gcMsg assistant"><span className="gcTyping"><i/><i/><i/></span></div>}
+          {!started ? <div className="gcContactGate">
+            <div className="gcMsg assistant"><span>Welcome to Gencouv! Please share your name and email to start.</span></div>
+            <form className="gcContactForm" onSubmit={startChat}>
+              <label>Your name<input value={contactName} onChange={e=>setContactName(e.target.value)} autoComplete="name" maxLength={160} required placeholder="Enter your name"/></label>
+              <label>Email address<input type="email" value={contactEmail} onChange={e=>setContactEmail(e.target.value)} autoComplete="email" maxLength={320} required placeholder="you@example.com"/></label>
+              {contactError&&<p className="gcContactError">{contactError}</p>}
+              <button type="submit">Start chat</button>
+            </form>
+          </div> : <>
+            {messages.map((m,i)=><div key={i} className={`gcMsg ${m.role}`}><span>{m.text}</span></div>)}
+            {loading&&<div className="gcMsg assistant"><span className="gcTyping"><i/><i/><i/></span></div>}
+          </>}
         </div>
         {handoff&&<>
           {handoffCode&&<p className="gcHandoffRef">Onboarding reference: {handoffCode}</p>}
           <a className="gcHandoff" href={handoff} target="_blank" rel="noreferrer">{handoffLabel} ↗</a>
         </>}
-        <form onSubmit={send}>
+        {started&&<form onSubmit={send}>
           <input value={input} onChange={e=>setInput(e.target.value)} maxLength={4000} placeholder="Ask Gencouv Support…" aria-label="Message Gencouv Support"/>
           <button type="submit" disabled={loading||!input.trim()} aria-label="Send message">↑</button>
-        </form>
+        </form>}
         <p className="gcRisk">Trading involves substantial risk. Support information is not financial advice.</p>
       </section>}
 
@@ -100,7 +128,7 @@ export default function FloatingGencouvChat() {
         .gcBubble{position:relative;width:29px;height:22px;display:flex;align-items:center;justify-content:center;gap:3px;border-radius:8px;background:#f5fffc}.gcBubble:after{content:"";position:absolute;right:4px;bottom:-5px;width:9px;height:9px;background:#f5fffc;clip-path:polygon(0 0,100% 0,100% 100%)}.gcBubble i{width:3px;height:3px;border-radius:50%;background:#0a3934}.gcStatus{position:absolute;right:3px;bottom:4px;width:13px;height:13px;border:3px solid #061817;border-radius:50%;background:#35e4a6;box-shadow:0 0 12px rgba(53,228,166,.8)}.gcClose{font-size:27px;line-height:1}
         .gcPanel{position:absolute;right:0;bottom:78px;width:min(390px,calc(100vw - 28px));height:min(610px,calc(100dvh - 120px));max-height:calc(100dvh - 120px);min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto auto auto;border:1px solid rgba(53,228,192,.2);border-radius:20px;overflow:hidden;background:linear-gradient(180deg,rgba(5,18,19,.98),rgba(2,9,10,.99));box-shadow:0 35px 90px rgba(0,0,0,.55);backdrop-filter:blur(22px)}
         header{display:flex;justify-content:space-between;align-items:center;padding:17px 18px;border-bottom:1px solid rgba(255,255,255,.07)}header>div{display:flex;align-items:center;gap:10px}header strong,header small{display:block}header strong{font-size:13px;color:#e9f5f2}header small{margin-top:3px;font-size:9px;color:#718681}header button{border:0;background:transparent;color:#899c98;font-size:22px;cursor:pointer}.gcDot{width:9px;height:9px;border-radius:50%;background:#35e4c0;box-shadow:0 0 12px rgba(53,228,192,.65)}
-        .gcMessages{min-height:0;padding:18px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:11px}.gcMsg{display:flex}.gcMsg{min-width:0}.gcMsg span{max-width:86%;min-width:0;padding:11px 13px;border-radius:14px;font-size:12px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}.gcMsg.assistant{justify-content:flex-start}.gcMsg.assistant span{background:#0a1718;border:1px solid rgba(255,255,255,.07);color:#c5d3cf}.gcMsg.user{justify-content:flex-end}.gcMsg.user span{background:#35e4c0;color:#03100e;font-weight:650}
+        .gcMessages{min-height:0;padding:18px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:11px}.gcContactGate{display:flex;flex-direction:column;gap:14px}.gcContactForm{display:flex;flex-direction:column;gap:12px;padding:0;border:0}.gcContactForm label{display:flex;flex-direction:column;gap:6px;color:#9bb0aa;font-size:11px}.gcContactForm input{width:100%;padding:13px;border:1px solid rgba(255,255,255,.12);border-radius:11px;background:#061112;color:#eef8f5;font:inherit;font-size:16px}.gcContactForm button{min-height:44px;padding:12px;border:0;border-radius:11px;background:#35e4c0;color:#03100e;font-size:13px;font-weight:800;cursor:pointer}.gcContactError{margin:0;color:#ffb4a9;font-size:11px}.gcMsg{display:flex}.gcMsg{min-width:0}.gcMsg span{max-width:86%;min-width:0;padding:11px 13px;border-radius:14px;font-size:12px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}.gcMsg.assistant{justify-content:flex-start}.gcMsg.assistant span{background:#0a1718;border:1px solid rgba(255,255,255,.07);color:#c5d3cf}.gcMsg.user{justify-content:flex-end}.gcMsg.user span{background:#35e4c0;color:#03100e;font-weight:650}
         .gcTyping{display:flex!important;gap:4px}.gcTyping i{width:5px;height:5px;border-radius:50%;background:#78918b;animation:gcBlink 1.2s infinite}.gcTyping i:nth-child(2){animation-delay:.15s}.gcTyping i:nth-child(3){animation-delay:.3s}@keyframes gcBlink{0%,80%,100%{opacity:.25}40%{opacity:1}}
         .gcHandoffRef{min-width:0;margin:0 16px 6px;overflow-wrap:anywhere;color:#718681;font-size:9px;text-align:center}.gcHandoff{display:block;min-width:0;margin:0 16px 10px;padding:10px 12px;overflow-wrap:anywhere;border:1px solid rgba(53,228,192,.22);border-radius:10px;color:#35e4c0;background:rgba(53,228,192,.04);font-size:10px;text-align:center}
         form{min-width:0;display:grid;grid-template-columns:minmax(0,1fr) 42px;gap:8px;padding:12px 14px;border-top:1px solid rgba(255,255,255,.07)}form input{min-width:0;padding:12px 13px;border:1px solid rgba(255,255,255,.1);border-radius:11px;background:#061112;color:#eef8f5;font:inherit;font-size:12px;outline:none}form input:focus{border-color:rgba(53,228,192,.55)}form button{border:0;border-radius:11px;background:#35e4c0;color:#03100e;font-size:20px;font-weight:900;cursor:pointer}form button:disabled{opacity:.35;cursor:not-allowed}.gcRisk{margin:0;padding:0 15px 13px;color:#536762;font-size:8px;line-height:1.5}
