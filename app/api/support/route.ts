@@ -10,7 +10,7 @@ const LIRUNEX_ACCOUNT_TYPES_URL = "https://lirunex.com/account-types/";
 const LIRUNEX_GENCOUV_SIGNUP_URL = "https://client.lirunex.com/auth/signup?partnerId=330505&affiliateId=37122";
 const OPENAI_MODEL = process.env.OPENAI_SUPPORT_MODEL || "gpt-5.6-luna";
 
-type SupportRequest = { message?: string; session_id?: string; sessionId?: string; name?: string; email?: string; page_url?: string; pageUrl?: string };
+type SupportRequest = { message?: string; session_id?: string; sessionId?: string; name?: string; email?: string; page_url?: string; pageUrl?: string; history?: Array<{ role?: string; text?: string }> };
 
 function clean(value: unknown, max = 4000) { return String(value || "").trim().slice(0, max); }
 function normalizeEmail(value: unknown) { const email = clean(value, 320).toLowerCase(); return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : null; }
@@ -34,6 +34,14 @@ function wantsPMOnboarding(message: string) {
 }
 function needsHuman(message: string) { return /human|agent|representative|complaint|refund|charged|paid.*not|payment.*missing|not.*library|can't access|cannot access|locked out|fraud|urgent/i.test(message); }
 
+function wantsRegistrationNow(message: string, history: Array<{ role?: string; text?: string }>) {
+  const text = message.toLowerCase();
+  const direct = (text.includes("ready to") || text.includes("i want to") || text.includes("i would like to") || text.includes("please send") || text.includes("send me") || text.includes("give me") || text.includes("share")) && (text.includes("create an account") || text.includes("open an account") || text.includes("register") || text.includes("sign up") || text.includes("registration link") || text.includes("account creation link"));
+  if (direct || text.includes("create an account now") || text.includes("register now") || text.includes("sign up now")) return true;
+  const offered = history.slice(-6).some(item => item.role === "assistant" && /would you like.{0,60}(account creation|registration|register|create your account|send you the link)|shall i send.{0,30}(link|registration)|want me to send.{0,30}(link|registration)/i.test(String(item.text || "")));
+  return offered && /^(yes|yes please|yeah|yep|sure|please do|go ahead|okay|ok|let's do it|i'm ready|i am ready)$/i.test(message.trim());
+}
+
 function fallbackReply(intent: string) {
   if (intent === "broker") return `For Gencouv copy trading, use the Gencouv Lirunex registration link when you're ready: ${LIRUNEX_GENCOUV_SIGNUP_URL}. Select an account type and country, verify your email with the OTP, enter your phone number and password, then follow Lirunex's KYC and approval steps. Current account types: ${LIRUNEX_ACCOUNT_TYPES_URL}. Once approved, contact ${SUPPORT_TELEGRAM_URL} so Gencouv can confirm compatibility and connect your profile. Never share passwords or OTPs. Trading involves substantial risk.`;
   if (intent === "performance") return `You can review Gencouv's public Lirunex master-account record here: ${MYFXBOOK_URL}. It is historical performance for independent review and does not guarantee future results.`;
@@ -41,14 +49,14 @@ function fallbackReply(intent: string) {
   if (intent === "quantum_queen") return "Quantum Queen is an MT5 XAUUSD automated trading system listed under Gencouv Trading Bots at $2,000. Review its product page for requirements, supplied test evidence and risk information before deployment.";
   if (intent === "sixtynine") return "SixtyNine EA is an MT5 automated trading bot listed under Gencouv Trading Bots at $2,000. Review its product page and operating requirements before deployment.";
   if (intent === "order_access") return "For purchase or access issues, sign in with the same verified email used at checkout. Finished guest purchases are claimed into your Gencouv account and appear in My Library after payment verification.";
-  if (intent === "copy_trading") return `Gencouv copy trading has a recommended starting balance of USD 1,000. Your trading capital stays in your own eligible Lirunex account, not with Gencouv. For balances below USD 5,000, Gencouv generally recommends a cent account, subject to availability and compatibility. Register when ready: ${LIRUNEX_GENCOUV_SIGNUP_URL}. Complete email OTP verification and any required KYC, then contact ${SUPPORT_TELEGRAM_URL} so onboarding can confirm the account type and connect the appropriate profile. For USD 10,000 or more, contact the agent before proceeding. Trading involves substantial risk; returns are not guaranteed.`;
+  if (intent === "copy_trading") return "Copy trading has a recommended starting balance of USD 1,000, and your capital stays in your own eligible broker account. Would you like me to send the account-creation link?";
   return "I can help with Gencouv Copy Trading, account setup and onboarding, Trading Bots, purchases, broker information and risk information.";
 }
 
 function systemPrompt(customerContext: string) {
   const rules = [
     "You are Gencouv Support AI, the official customer-facing web chat assistant for Gencouv. Answer simply and accurately, explain Gencouv copy trading, guide interested visitors through Lirunex account creation, and refer clients to human onboarding when needed.",
-    "STYLE: Answer the question asked first. Keep replies concise, clear, friendly and factual. Ask one clarifying question at a time when needed. Never invent information, guarantee profits or future performance, provide personalised financial advice, or pressure visitors to trade.",
+    "STYLE: Keep every reply brief, ideally 1–3 short sentences and under 60 words. Answer only the current question and give only the next step. Never dump the full onboarding process in one message. Ask one question at a time. For copy-trading interest without a clear registration request, state the USD 1,000 recommended starting balance and that funds stay in the visitor’s own eligible broker account, then ask whether they want the account-creation link. Do not include the registration URL until the visitor clearly asks to register or says yes after that offer. Never invent information, guarantee profits or pressure visitors to trade.",
     "GENCOUV: Gencouv offers three copy-trading profiles with different risk levels, trading behaviour and return characteristics. Do not invent profile names, rankings, return targets, drawdowns or exact risk metrics. The onboarding agent explains the current profile details.",
     "Gencouv uses institutional-grade Expert Advisors managed by its team. Copy-trading EAs are not generally sold separately except on special request. EA purchases/licences are separate and handled through the official Gencouv EA shop.",
     "Gencouv uses Myfxbook track records. Public master-account record: " + MYFXBOOK_URL + ". Treat records as historical only. For profile-specific records and supporting documents, refer visitors to the onboarding agent.",
@@ -72,10 +80,10 @@ function systemPrompt(customerContext: string) {
   return rules.join("\n\n");
 }
 
-async function generateAIReply(message: string, customerContext: string) {
+async function generateAIReply(message: string, customerContext: string, history: Array<{ role?: string; text?: string }> = []) {
   const key = process.env.OPENAI_API_KEY;
   if (!key) return { reply: null as string | null, mode: "fallback" as const, model: null as string | null };
-  const response = await fetch("https://api.openai.com/v1/responses", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify({ model: OPENAI_MODEL, instructions: systemPrompt(customerContext), input: message, max_output_tokens: 500 }), cache: "no-store" });
+  input: [...history.slice(-8).map(item => ({ role: item.role === "assistant" ? "assistant" : "user", content: String(item.text || "").slice(0, 1200) })), { role: "user", content: message }], max_output_tokens: 180
   if (!response.ok) { console.error("Gencouv Support AI request failed", response.status, await response.text().catch(() => "")); return { reply: null, mode: "fallback" as const, model: null }; }
   const data = await response.json();
   const reply = typeof data?.output_text === "string" ? data.output_text.trim() : null;
@@ -93,6 +101,9 @@ export async function POST(request: Request) {
     const suppliedEmail = normalizeEmail(body.email);
     const name = clean(body.name, 160);
     const intent = intentFor(message);
+    const history = Array.isArray(body.history) ? body.history.slice(-8) : [];
+    const registrationNow = wantsRegistrationNow(message, history);
+    const registrationReply = "Here is the Gencouv Lirunex account-creation link: " + LIRUNEX_GENCOUV_SIGNUP_URL + "\n\nStart by entering your email and verifying the OTP. After Lirunex approval, Gencouv onboarding will confirm your account type and connect your profile.";
     let userId: string | null = null, verifiedEmail: string | null = null, customerContext = "";
 
     try { const supabase = await createClient(); const { data: { user } } = await supabase.auth.getUser(); if (user) { userId = user.id; verifiedEmail = user.email?.toLowerCase() || null; } } catch {}
@@ -112,7 +123,7 @@ export async function POST(request: Request) {
       // unavailable (for example, if the tenant organization mapping is missing).
       // Do not fabricate an organization_id or let a database write failure break chat.
       console.error("Gencouv Support conversation persistence unavailable", conversationError || "No conversation row returned");
-      const ai = await generateAIReply(message, customerContext);
+      const ai = registrationNow ? { reply: registrationReply, mode: "guided" as const, model: null as string | null } : await generateAIReply(message, customerContext, history);
       return NextResponse.json({
         success: true,
         reply: ai.reply || fallbackReply(intent),
@@ -129,7 +140,7 @@ export async function POST(request: Request) {
     }
     await admin.from("gencouv_support_messages").insert({ conversation_id: conversation.id, role: "user", content: message, metadata: { intent, page_url: pageUrl || null } });
 
-    const ai = await generateAIReply(message, customerContext);
+      const ai = registrationNow ? { reply: registrationReply, mode: "guided" as const, model: null as string | null } : await generateAIReply(message, customerContext, history);
     const reply = ai.reply || fallbackReply(intent);
     const pmOnboarding = wantsPMOnboarding(message);
     const human = needsHuman(message);
