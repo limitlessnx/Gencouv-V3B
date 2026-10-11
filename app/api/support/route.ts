@@ -83,7 +83,7 @@ function systemPrompt(customerContext: string) {
 async function generateAIReply(message: string, customerContext: string, history: Array<{ role?: string; text?: string }> = []) {
   const key = process.env.OPENAI_API_KEY;
   if (!key) return { reply: null as string | null, mode: "fallback" as const, model: null as string | null };
-  input: [...history.slice(-8).map(item => ({ role: item.role === "assistant" ? "assistant" : "user", content: String(item.text || "").slice(0, 1200) })), { role: "user", content: message }], max_output_tokens: 180
+  const response = await fetch("https://api.openai.com/v1/responses", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify({ model: OPENAI_MODEL, instructions: systemPrompt(customerContext), input: [...history.slice(-8).map(item => ({ role: item.role === "assistant" ? "assistant" : "user", content: String(item.text || "").slice(0, 1200) })), { role: "user", content: message }], max_output_tokens: 180 }), cache: "no-store" });
   if (!response.ok) { console.error("Gencouv Support AI request failed", response.status, await response.text().catch(() => "")); return { reply: null, mode: "fallback" as const, model: null }; }
   const data = await response.json();
   const reply = typeof data?.output_text === "string" ? data.output_text.trim() : null;
