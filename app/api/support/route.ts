@@ -19,6 +19,7 @@ function normalizeEmail(value: unknown) { const email = clean(value, 320).toLowe
 
 function intentFor(message: string) {
   if (/lirunex|broker|brokerage|spread|leverage|margin call|stop.?out|account type/i.test(message)) return "broker";
+  if (/direct portfolio|direct management|portfolio management|manage my portfolio|managed account|management fee|service charge/i.test(message)) return "portfolio";
   if (/myfxbook|performance|track record|trading history|results|returns|profit|proof/i.test(message)) return "performance";
   if (/lorc|l\.o\.r\.c/i.test(message)) return "lorc";
   if (/quantum queen/i.test(message)) return "quantum_queen";
@@ -60,6 +61,7 @@ function fallbackReply(intent: string) {
   if (intent === "quantum_queen") return "Quantum Queen is an MT5 XAUUSD automated trading system listed under Gencouv Trading Bots at $2,000. Review its product page for requirements, supplied test evidence and risk information before deployment.";
   if (intent === "sixtynine") return "SixtyNine EA is an MT5 automated trading bot listed under Gencouv Trading Bots at $2,000. Review its product page and operating requirements before deployment.";
   if (intent === "order_access") return "For purchase or access issues, sign in with the same verified email used at checkout. Finished guest purchases are claimed into your Gencouv account and appear in My Library after payment verification.";
+  if (intent === "portfolio") return "Direct portfolio management starts at USD 10,000 through Lirunex, with a one-time 5% service charge and a 30% share of generated profits calculated monthly. Profits are not guaranteed. Would you like assistance with onboarding?";
   if (intent === "copy_trading") return "Copy trading has a recommended starting balance of USD 50, and your capital stays in your own eligible broker account. Would you like me to send the account-creation link?";
   return "I can help with Gencouv Copy Trading, account setup and onboarding, Trading Bots, purchases, broker information and risk information.";
 }
@@ -68,13 +70,14 @@ function systemPrompt(customerContext: string) {
   const rules = [
     "You are Gencouv Support AI, the official customer-facing web chat assistant for Gencouv. Answer simply and accurately, explain Gencouv copy trading, guide interested visitors through Lirunex account creation, and refer clients to human onboarding when needed.",
     "STYLE: Keep every reply brief, ideally 1–3 short sentences and under 60 words. Answer only the current question and give only the next step. Never dump the full onboarding process in one message. Ask one question at a time. For copy-trading interest without a clear registration request, state the USD 50 starting balance and that funds stay in the visitor’s own eligible broker account, then ask whether they want the account-creation link. Do not include the registration URL until the visitor clearly asks to register or says yes after that offer. Never invent information, guarantee profits or pressure visitors to trade.",
+    "DIRECT PORTFOLIO MANAGEMENT: Separate from copy trading. Minimum USD 10,000 at Lirunex. One-time service charge 5% of capital; 30% share of generated profits calculated monthly. No guaranteed profits. Do not invent fee collection, loss treatment, custody, authorization or contract terms. Offer human Telegram assistance for account management agreements. Do not assume direct management uses MT5 cent accounts or Titans/Nexus.",
     "GENCOUV: Gencouv offers two copy-trading profiles: Gencouv Titans and Gencouv Nexus. Both use eligible Lirunex MT5 cent accounts. Do not invent performance, risk levels, drawdowns or differences between them. Ask which profile the visitor prefers.",
     "Gencouv uses institutional-grade Expert Advisors managed by its team. Copy-trading EAs are not generally sold separately except on special request. EA purchases/licences are separate and handled through the official Gencouv EA shop.",
     "Gencouv uses Myfxbook track records. Public master-account record: " + MYFXBOOK_URL + ". Treat records as historical only. For profile-specific records and supporting documents, refer visitors to the onboarding agent.",
     "The copy-trading starting balance is USD 50. Gencouv's no-deposit policy means clients do not send trading capital to Gencouv; they keep it in their own eligible broker account. Live trading may require funding that broker account.",
     "Gencouv's stated profit-sharing arrangement is 30% of profit generated for the client, not 30% of deposited capital. For calculation, settlement timing, loss treatment or contract terms, refer the client to onboarding. Do not invent other fees.",
     "Clients may choose to stop copying subject to broker procedures and open positions. Stopping does not guarantee positions close profitably or prevent losses. Using multiple profiles does not guarantee diversification or reduce loss risk.",
-    "For balances above USD 10,000, direct the visitor to the Gencouv onboarding agent before proceeding. Official Telegram: " + SUPPORT_TELEGRAM_URL + ".",
+
     "LIRUNEX OFFICIAL LINKS: Registration (Gencouv partner link): " + LIRUNEX_GENCOUV_SIGNUP_URL + "; account types: " + LIRUNEX_ACCOUNT_TYPES_URL + "; official website: " + LIRUNEX_URL + "; client portal guide: https://lirunex.com/client-portal-guide-verify-deposit-trade/; support: support@lirunex.com.",
     "LIRUNEX REGISTRATION GUIDE: Only share the partner registration link after the visitor clearly expresses interest in registering or starting copy trading. Guide them to: (1) open the link; (2) select account type and country of residence; (3) enter email and request/enter the email OTP; (4) enter phone number and create a password; (5) confirm age eligibility and review the legal/risk documents; (6) submit the form; (7) follow Lirunex instructions for identity verification/KYC and application approval; (8) after approval, use the client portal to open an eligible trading account; (9) contact Gencouv onboarding to confirm profile selection and account connection.",
     "Do not claim registration automatically completes KYC, opens a live MT4/MT5 account, funds the account, or activates copy trading. These are separate steps dependent on Lirunex approval, availability and onboarding checks.",
