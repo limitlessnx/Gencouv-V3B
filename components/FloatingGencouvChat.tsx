@@ -108,7 +108,7 @@ export default function FloatingGencouvChat() {
           {handoffCode&&<p className="gcHandoffRef">Onboarding reference: {handoffCode}</p>}
           <a className="gcHandoff" href={handoff} target="_blank" rel="noreferrer">{handoffLabel} ↗</a>
         </>}
-        {started&&<form onSubmit={send}>
+        {started&&<form className="gcComposer" onSubmit={send}>
           <input value={input} onChange={e=>setInput(e.target.value)} maxLength={4000} placeholder="Ask Gencouv Support…" aria-label="Message Gencouv Support"/>
           <button type="submit" disabled={loading||!input.trim()} aria-label="Send message">↑</button>
         </form>}
@@ -116,10 +116,10 @@ export default function FloatingGencouvChat() {
       </section>}
 
       {!open&&<span className="gcLabel">Support AI</span>}
-      <button type="button" onClick={()=>setOpen(v=>!v)} className="gcButton" aria-label={open?"Close Gencouv Support":"Open Gencouv Support"}>
+      {!open&&<button type="button" onClick={()=>setOpen(true)} className="gcButton" aria-label={open?"Close Gencouv Support":"Open Gencouv Support"}>
         {open?<span className="gcClose">×</span>:<span className="gcBubble" aria-hidden="true"><i/><i/><i/></span>}
-        {!open&&<span className="gcStatus" aria-hidden="true"/>}
-      </button>
+        <span className="gcStatus" aria-hidden="true"/>
+      </button>}
 
       <style jsx>{`
         .gcWrap{position:fixed;right:max(20px,env(safe-area-inset-right));bottom:max(24px,calc(env(safe-area-inset-bottom) + 16px));z-index:2147483000;display:flex;align-items:flex-end;gap:12px;font-family:inherit;box-sizing:border-box}.gcWrap *{box-sizing:border-box}
@@ -131,8 +131,8 @@ export default function FloatingGencouvChat() {
         .gcMessages{min-height:0;padding:18px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:11px}.gcContactGate{display:flex;flex-direction:column;gap:14px}.gcPanel .gcMessages .gcContactForm{display:flex;flex-direction:column;grid-template-columns:none;gap:12px;padding:0;border:0}.gcPanel .gcMessages .gcContactForm label{display:flex;flex-direction:column;gap:6px;color:#9bb0aa;font-size:11px}.gcPanel .gcMessages .gcContactForm input{width:100%;padding:13px;border:1px solid rgba(255,255,255,.12);border-radius:11px;background:#061112;color:#eef8f5;font:inherit;font-size:16px}.gcPanel .gcMessages .gcContactForm button{min-height:44px;padding:12px;border:0;border-radius:11px;background:#35e4c0;color:#03100e;font-size:13px;font-weight:800;cursor:pointer}.gcContactError{margin:0;color:#ffb4a9;font-size:11px}.gcMsg{display:flex}.gcMsg{min-width:0}.gcMsg span{max-width:86%;min-width:0;padding:11px 13px;border-radius:14px;font-size:12px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}.gcMsg.assistant{justify-content:flex-start}.gcMsg.assistant span{background:#0a1718;border:1px solid rgba(255,255,255,.07);color:#c5d3cf}.gcMsg.user{justify-content:flex-end}.gcMsg.user span{background:#35e4c0;color:#03100e;font-weight:650}
         .gcTyping{display:flex!important;gap:4px}.gcTyping i{width:5px;height:5px;border-radius:50%;background:#78918b;animation:gcBlink 1.2s infinite}.gcTyping i:nth-child(2){animation-delay:.15s}.gcTyping i:nth-child(3){animation-delay:.3s}@keyframes gcBlink{0%,80%,100%{opacity:.25}40%{opacity:1}}
         .gcHandoffRef{min-width:0;margin:0 16px 6px;overflow-wrap:anywhere;color:#718681;font-size:9px;text-align:center}.gcHandoff{display:block;min-width:0;margin:0 16px 10px;padding:10px 12px;overflow-wrap:anywhere;border:1px solid rgba(53,228,192,.22);border-radius:10px;color:#35e4c0;background:rgba(53,228,192,.04);font-size:10px;text-align:center}
-        form{min-width:0;display:grid;grid-template-columns:minmax(0,1fr) 42px;gap:8px;padding:12px 14px;border-top:1px solid rgba(255,255,255,.07)}form input{min-width:0;padding:12px 13px;border:1px solid rgba(255,255,255,.1);border-radius:11px;background:#061112;color:#eef8f5;font:inherit;font-size:12px;outline:none}form input:focus{border-color:rgba(53,228,192,.55)}form button{border:0;border-radius:11px;background:#35e4c0;color:#03100e;font-size:20px;font-weight:900;cursor:pointer}form button:disabled{opacity:.35;cursor:not-allowed}.gcRisk{margin:0;padding:0 15px 13px;color:#536762;font-size:8px;line-height:1.5}
-        @media(max-width:700px){.gcWrap{right:max(10px,env(safe-area-inset-right));bottom:max(12px,calc(env(safe-area-inset-bottom) + 8px));gap:7px}.gcButton{width:54px;height:54px}.gcLabel{display:none}.gcPanel{position:fixed;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));top:max(10px,env(safe-area-inset-top));bottom:max(10px,env(safe-area-inset-bottom));width:auto;height:auto;max-height:none;border-radius:18px}.gcMessages{padding:14px}.gcMsg span{max-width:88%;font-size:13px;line-height:1.5}header{padding:15px 16px}form{padding:10px 12px max(10px,env(safe-area-inset-bottom))}form input{font-size:16px}.gcRisk{padding:0 13px 10px}.gcButton{z-index:2}}
+        .gcComposer{min-width:0;display:grid;grid-template-columns:minmax(0,1fr) 42px;gap:8px;padding:12px 14px;border-top:1px solid rgba(255,255,255,.07)}.gcComposer input{min-width:0;padding:12px 13px;border:1px solid rgba(255,255,255,.1);border-radius:11px;background:#061112;color:#eef8f5;font:inherit;font-size:12px;outline:none}.gcComposer input:focus{border-color:rgba(53,228,192,.55)}.gcComposer button{border:0;border-radius:11px;background:#35e4c0;color:#03100e;font-size:20px;font-weight:900;cursor:pointer}.gcComposer button:disabled{opacity:.35;cursor:not-allowed}.gcRisk{margin:0;padding:0 15px 13px;color:#536762;font-size:8px;line-height:1.5}
+        @media(max-width:700px){.gcWrap{right:max(10px,env(safe-area-inset-right));bottom:max(12px,calc(env(safe-area-inset-bottom) + 8px));gap:7px}.gcButton{width:54px;height:54px}.gcLabel{display:none}.gcPanel{position:fixed;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));top:auto;bottom:max(16px,calc(env(safe-area-inset-bottom) + 10px));width:auto;height:min(560px,70dvh);max-height:calc(100dvh - 100px);border-radius:18px;grid-template-rows:auto minmax(0,1fr) auto auto auto}.gcMessages{padding:14px}.gcMsg span{max-width:88%;font-size:13px;line-height:1.5}header{padding:14px 16px}header button{min-width:44px;min-height:44px;display:grid;place-items:center}.gcComposer{padding:10px 12px 8px;grid-template-columns:minmax(0,1fr) 48px;align-items:center}.gcComposer input{font-size:16px;min-height:48px}.gcComposer button{min-width:48px;min-height:48px;display:grid;place-items:center}.gcRisk{padding:0 13px 10px}}
       `}</style>
     </div>
   );
