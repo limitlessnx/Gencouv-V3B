@@ -8,6 +8,8 @@ const MYFXBOOK_URL = "https://www.myfxbook.com/portfolio/gencouv-lirunex-pm/1216
 const LIRUNEX_URL = "https://lirunex.com/";
 const LIRUNEX_ACCOUNT_TYPES_URL = "https://lirunex.com/account-types/";
 const LIRUNEX_GENCOUV_SIGNUP_URL = "https://client.lirunex.com/auth/signup?partnerId=330505&affiliateId=37122";
+const TITANS_URL = "https://client.lirunex.com/socialtradingstrategydetails?moneyManagerPublishRequestId=7613";
+const NEXUS_URL = "https://client.lirunex.com/socialtradingstrategydetails?moneyManagerPublishRequestId=1650";
 const OPENAI_MODEL = process.env.OPENAI_SUPPORT_MODEL || "gpt-5.6-luna";
 
 type SupportRequest = { message?: string; session_id?: string; sessionId?: string; name?: string; email?: string; page_url?: string; pageUrl?: string; history?: Array<{ role?: string; text?: string }> };
@@ -42,39 +44,50 @@ function wantsRegistrationNow(message: string, history: Array<{ role?: string; t
   return offered && /^(yes|yes please|yeah|yep|sure|please do|go ahead|okay|ok|let's do it|i'm ready|i am ready)$/i.test(message.trim());
 }
 
+function selectedProfile(message: string, history: Array<{role?: string; text?: string}>) {
+  const text = message.trim().toLowerCase();
+  if (/\btitans?\b/.test(text)) return "titans";
+  if (/\bnexus\b/.test(text)) return "nexus";
+  const offered = history.slice(-8).some(item => item.role === "assistant" && /gencouv titans|gencouv nexus|choose.*profile/i.test(String(item.text || "")));
+  if (offered && /^(?:profile\s*)?(?:1|one|first)$/.test(text)) return "titans";
+  if (offered && /^(?:profile\s*)?(?:2|two|second)$/.test(text)) return "nexus";
+  return null;
+}
 function fallbackReply(intent: string) {
-  if (intent === "broker") return `For Gencouv copy trading, use the Gencouv Lirunex registration link when you're ready: ${LIRUNEX_GENCOUV_SIGNUP_URL}. Select an account type and country, verify your email with the OTP, enter your phone number and password, then follow Lirunex's KYC and approval steps. Current account types: ${LIRUNEX_ACCOUNT_TYPES_URL}. Once approved, contact ${SUPPORT_TELEGRAM_URL} so Gencouv can confirm compatibility and connect your profile. Never share passwords or OTPs. Trading involves substantial risk.`;
+  if (intent === "broker") return "Gencouv copy trading uses eligible Lirunex MT5 cent accounts. Would you like help creating your broker account?";
   if (intent === "performance") return `You can review Gencouv's public Lirunex master-account record here: ${MYFXBOOK_URL}. It is historical performance for independent review and does not guarantee future results.`;
   if (intent === "lorc") return "L.O.R.C Gold Miner is a Gencouv-developed MT5 trading bot focused on XAUUSD. Gold access is $1,000 per year, while Full Access is $5,000 lifetime. Trading performance is not guaranteed.";
   if (intent === "quantum_queen") return "Quantum Queen is an MT5 XAUUSD automated trading system listed under Gencouv Trading Bots at $2,000. Review its product page for requirements, supplied test evidence and risk information before deployment.";
   if (intent === "sixtynine") return "SixtyNine EA is an MT5 automated trading bot listed under Gencouv Trading Bots at $2,000. Review its product page and operating requirements before deployment.";
   if (intent === "order_access") return "For purchase or access issues, sign in with the same verified email used at checkout. Finished guest purchases are claimed into your Gencouv account and appear in My Library after payment verification.";
-  if (intent === "copy_trading") return "Copy trading has a recommended starting balance of USD 1,000, and your capital stays in your own eligible broker account. Would you like me to send the account-creation link?";
+  if (intent === "copy_trading") return "Copy trading has a recommended starting balance of USD 50, and your capital stays in your own eligible broker account. Would you like me to send the account-creation link?";
   return "I can help with Gencouv Copy Trading, account setup and onboarding, Trading Bots, purchases, broker information and risk information.";
 }
 
 function systemPrompt(customerContext: string) {
   const rules = [
     "You are Gencouv Support AI, the official customer-facing web chat assistant for Gencouv. Answer simply and accurately, explain Gencouv copy trading, guide interested visitors through Lirunex account creation, and refer clients to human onboarding when needed.",
-    "STYLE: Keep every reply brief, ideally 1–3 short sentences and under 60 words. Answer only the current question and give only the next step. Never dump the full onboarding process in one message. Ask one question at a time. For copy-trading interest without a clear registration request, state the USD 1,000 recommended starting balance and that funds stay in the visitor’s own eligible broker account, then ask whether they want the account-creation link. Do not include the registration URL until the visitor clearly asks to register or says yes after that offer. Never invent information, guarantee profits or pressure visitors to trade.",
-    "GENCOUV: Gencouv offers three copy-trading profiles with different risk levels, trading behaviour and return characteristics. Do not invent profile names, rankings, return targets, drawdowns or exact risk metrics. The onboarding agent explains the current profile details.",
+    "STYLE: Keep every reply brief, ideally 1–3 short sentences and under 60 words. Answer only the current question and give only the next step. Never dump the full onboarding process in one message. Ask one question at a time. For copy-trading interest without a clear registration request, state the USD 50 starting balance and that funds stay in the visitor’s own eligible broker account, then ask whether they want the account-creation link. Do not include the registration URL until the visitor clearly asks to register or says yes after that offer. Never invent information, guarantee profits or pressure visitors to trade.",
+    "GENCOUV: Gencouv offers two copy-trading profiles: Gencouv Titans and Gencouv Nexus. Both use eligible Lirunex MT5 cent accounts. Do not invent performance, risk levels, drawdowns or differences between them. Ask which profile the visitor prefers.",
     "Gencouv uses institutional-grade Expert Advisors managed by its team. Copy-trading EAs are not generally sold separately except on special request. EA purchases/licences are separate and handled through the official Gencouv EA shop.",
     "Gencouv uses Myfxbook track records. Public master-account record: " + MYFXBOOK_URL + ". Treat records as historical only. For profile-specific records and supporting documents, refer visitors to the onboarding agent.",
-    "The recommended minimum copy-trading balance is USD 1,000. Gencouv's no-deposit policy means clients do not send trading capital to Gencouv; they keep it in their own eligible broker account. Live trading may require funding that broker account.",
+    "The copy-trading starting balance is USD 50. Gencouv's no-deposit policy means clients do not send trading capital to Gencouv; they keep it in their own eligible broker account. Live trading may require funding that broker account.",
     "Gencouv's stated profit-sharing arrangement is 30% of profit generated for the client, not 30% of deposited capital. For calculation, settlement timing, loss treatment or contract terms, refer the client to onboarding. Do not invent other fees.",
     "Clients may choose to stop copying subject to broker procedures and open positions. Stopping does not guarantee positions close profitably or prevent losses. Using multiple profiles does not guarantee diversification or reduce loss risk.",
     "For balances above USD 10,000, direct the visitor to the Gencouv onboarding agent before proceeding. Official Telegram: " + SUPPORT_TELEGRAM_URL + ".",
     "LIRUNEX OFFICIAL LINKS: Registration (Gencouv partner link): " + LIRUNEX_GENCOUV_SIGNUP_URL + "; account types: " + LIRUNEX_ACCOUNT_TYPES_URL + "; official website: " + LIRUNEX_URL + "; client portal guide: https://lirunex.com/client-portal-guide-verify-deposit-trade/; support: support@lirunex.com.",
     "LIRUNEX REGISTRATION GUIDE: Only share the partner registration link after the visitor clearly expresses interest in registering or starting copy trading. Guide them to: (1) open the link; (2) select account type and country of residence; (3) enter email and request/enter the email OTP; (4) enter phone number and create a password; (5) confirm age eligibility and review the legal/risk documents; (6) submit the form; (7) follow Lirunex instructions for identity verification/KYC and application approval; (8) after approval, use the client portal to open an eligible trading account; (9) contact Gencouv onboarding to confirm profile selection and account connection.",
     "Do not claim registration automatically completes KYC, opens a live MT4/MT5 account, funds the account, or activates copy trading. These are separate steps dependent on Lirunex approval, availability and onboarding checks.",
-    "ACCOUNT-TYPE GUIDANCE: Gencouv generally recommends a Lirunex cent account for copy-trading balances below USD 5,000 because account size, position sizing and slippage matter. State this is Gencouv's onboarding recommendation, not a universal Lirunex requirement. Confirm availability and compatibility with onboarding. Lirunex labels cent-account currency USC; do not describe it as a USD-denominated balance. For USD 5,000–9,999.99, do not invent a mandatory type; ask onboarding to confirm. For USD 10,000 or more, contact onboarding before proceeding.",
+    "ACCOUNT-TYPE GUIDANCE: Gencouv uses an eligible Lirunex MT5 cent account for both copy-trading profiles. State this is Gencouv's onboarding recommendation, not a universal Lirunex requirement. Confirm availability and compatibility with onboarding. Lirunex labels cent-account currency USC; do not describe it as a USD-denominated balance. Check broker eligibility and account conditions before funding; do not promise that USD 50 satisfies all broker or strategy-specific minimums.",
     "Lirunex account types, minimums, features, commissions, spreads, leverage, platform availability and eligibility may change and vary by jurisdiction. Use Lirunex's official account-type page and the terms shown during registration as the authority. Never guess broker conditions or present Gencouv preferences as Lirunex requirements.",
     "For OTP issues, advise checking the email address and spam folder, requesting a fresh code through the official page, and following the displayed error. For KYC/account-type/country restrictions or unresolved portal issues, contact Lirunex support and Gencouv onboarding. Never advise bypassing KYC, using false information or creating duplicate accounts to evade restrictions.",
     "Never ask visitors to share passwords, OTPs, payment-card details, private keys or identity documents in Gencouv chat or Telegram. Identity documents should be submitted only through official Lirunex channels.",
-    "EA PRODUCTS: L.O.R.C Gold Miner is MT5/XAUUSD; L.O.R.C Gold is USD 1,000/year and Full Access is USD 5,000 lifetime. Quantum Queen is MT5/XAUUSD, listed at USD 2,000. SixtyNine EA is MT5/XAUUSD, listed at USD 2,000. Do not confuse these products with the three copy-trading profiles. Refer visitors to the official Gencouv product pages for availability and licensing.",
+    "EA PRODUCTS: L.O.R.C Gold Miner is MT5/XAUUSD; L.O.R.C Gold is USD 1,000/year and Full Access is USD 5,000 lifetime. Quantum Queen is MT5/XAUUSD, listed at USD 2,000. SixtyNine EA is MT5/XAUUSD, listed at USD 2,000. Do not confuse these products with the two copy-trading profiles. Refer visitors to the official Gencouv product pages for availability and licensing.",
     "RISK: Leveraged trading involves substantial risk, including losing some or all funds. Past performance does not guarantee future results. Do not invent performance figures, verified status, risk scores or documents.",
-    "HANDOFF: For a visitor who wants to start copy trading, select a profile, connect an account, or has a balance above USD 10,000, direct them to " + SUPPORT_TELEGRAM_URL + ". For unresolved broker registration, OTP, KYC or portal issues, also refer them to support@lirunex.com. Never claim a client is onboarded or connected until a human has verified and approved it.",
+    "HANDOFF: Offer optional human help when requested or when an issue cannot be resolved. Human support: " + SUPPORT_TELEGRAM_URL + ". For unresolved broker registration, OTP, KYC or portal issues, also refer them to support@lirunex.com. Never claim a client is onboarded or connected until a human has verified and approved it.",
     "Do not disclose internal EA configurations, source code, private trading logic, credentials, secrets, database details or non-public procedures.",
+    "SELF-SERVICE: Guide visitors one step at a time through Lirunex registration, broker KYC, creating an eligible MT5 cent account, funding through official broker channels, selecting Gencouv Titans or Gencouv Nexus, and subscribing through the corresponding strategy link. Never claim funding or subscription is complete without confirmation.",
+    "PROFILE LINKS: Gencouv Titans " + TITANS_URL + "; Gencouv Nexus " + NEXUS_URL + ". Only share the link for the profile the visitor selected. Telegram support is optional.",
     "CUSTOMER CONTEXT: " + (customerContext || "Guest visitor. No authenticated account information is available.")
   ];
   return rules.join("\n\n");
@@ -103,8 +116,10 @@ export async function POST(request: Request) {
     const intent = intentFor(message);
     const history = Array.isArray(body.history) ? body.history.slice(-8) : [];
     const registrationNow = wantsRegistrationNow(message, history);
+    const profile = selectedProfile(message, history);
+    const profileReply = profile === "titans" ? "You selected Gencouv Titans. Open its Lirunex strategy page: " + TITANS_URL + "\n\nReview the broker requirements and confirm your subscription there." : profile === "nexus" ? "You selected Gencouv Nexus. Open its Lirunex strategy page: " + NEXUS_URL + "\n\nReview the broker requirements and confirm your subscription there." : null;
     const wantsCopyTradingStart = intent === "copy_trading" && wantsPMOnboarding(message);
-    const registrationReply = "Here is the Gencouv Lirunex account-creation link: " + LIRUNEX_GENCOUV_SIGNUP_URL + "\n\nStart by entering your email and verifying the OTP. After Lirunex approval, Gencouv onboarding will confirm your account type and connect your profile.";
+    const registrationReply = "Here is the Gencouv Lirunex account-creation link: " + LIRUNEX_GENCOUV_SIGNUP_URL + "\n\nStart by entering your email and verifying the OTP. After broker approval, create an eligible MT5 cent account. I can guide you through the next step.";
     let userId: string | null = null, verifiedEmail: string | null = null, customerContext = "";
 
     try { const supabase = await createClient(); const { data: { user } } = await supabase.auth.getUser(); if (user) { userId = user.id; verifiedEmail = user.email?.toLowerCase() || null; } } catch {}
@@ -124,16 +139,16 @@ export async function POST(request: Request) {
       // unavailable (for example, if the tenant organization mapping is missing).
       // Do not fabricate an organization_id or let a database write failure break chat.
       console.error("Gencouv Support conversation persistence unavailable", conversationError || "No conversation row returned");
-      const ai = registrationNow ? { reply: registrationReply, mode: "guided" as const, model: null as string | null } : wantsCopyTradingStart ? { reply: fallbackReply(intent), mode: "guided" as const, model: null as string | null } : await generateAIReply(message, customerContext, history);
+      const ai = profileReply ? { reply: profileReply, mode: "guided" as const, model: null as string | null } : registrationNow ? { reply: registrationReply, mode: "guided" as const, model: null as string | null } : wantsCopyTradingStart ? { reply: fallbackReply(intent), mode: "guided" as const, model: null as string | null } : await generateAIReply(message, customerContext, history);
       return NextResponse.json({
         success: true,
         reply: ai.reply || fallbackReply(intent),
         session_id: sessionId,
         intent,
-        handoff: true,
-        handoff_type: "human_support",
-        handoff_label: "Continue with human support",
-        telegram_url: SUPPORT_TELEGRAM_URL,
+        handoff: needsHuman(message),
+        handoff_type: needsHuman(message) ? "human_support" : "",
+        handoff_label: needsHuman(message) ? "Continue with human support" : "",
+        telegram_url: needsHuman(message) ? SUPPORT_TELEGRAM_URL : "",
         ai_mode: ai.mode,
         ai_model: ai.model,
         degraded_mode: true
@@ -141,9 +156,9 @@ export async function POST(request: Request) {
     }
     await admin.from("gencouv_support_messages").insert({ conversation_id: conversation.id, role: "user", content: message, metadata: { intent, page_url: pageUrl || null } });
 
-      const ai = registrationNow ? { reply: registrationReply, mode: "guided" as const, model: null as string | null } : wantsCopyTradingStart ? { reply: fallbackReply(intent), mode: "guided" as const, model: null as string | null } : await generateAIReply(message, customerContext, history);
+      const ai = profileReply ? { reply: profileReply, mode: "guided" as const, model: null as string | null } : registrationNow ? { reply: registrationReply, mode: "guided" as const, model: null as string | null } : wantsCopyTradingStart ? { reply: fallbackReply(intent), mode: "guided" as const, model: null as string | null } : await generateAIReply(message, customerContext, history);
     const reply = ai.reply || fallbackReply(intent);
-    const pmOnboarding = wantsPMOnboarding(message);
+    const pmOnboarding = false; // Self-service is default; human support is optional.
     const human = needsHuman(message);
     let pmHandoffToken: string | null = null;
     let telegramUrl = human ? SUPPORT_TELEGRAM_URL : "";
@@ -165,7 +180,7 @@ export async function POST(request: Request) {
       await admin.from("gencouv_support_conversations").update({ status: "handoff", updated_at: new Date().toISOString() }).eq("id", conversation.id);
     }
 
-    return NextResponse.json({ success: true, reply, session_id: sessionId, intent, handoff: pmOnboarding || human, handoff_type: pmOnboarding ? "pm_onboarding" : human ? "human_support" : "", handoff_label: pmOnboarding ? (intent === "copy_trading" ? "Continue Copy Trading Onboarding on Telegram" : "Continue PM Onboarding on Telegram") : human ? "Continue with human support" : "", telegram_url: telegramUrl, handoff_token: pmHandoffToken, pm_handoff_code: pmHandoffToken, case_id: caseId, performance_record_url: intent === "performance" ? MYFXBOOK_URL : "", broker_url: intent === "broker" ? LIRUNEX_URL : "", registration_url: intent === "copy_trading" ? LIRUNEX_GENCOUV_SIGNUP_URL : "", ai_mode: ai.mode, ai_model: ai.model });
+    return NextResponse.json({ success: true, reply, session_id: sessionId, intent, handoff: pmOnboarding || human, handoff_type: pmOnboarding ? "pm_onboarding" : human ? "human_support" : "", handoff_label: pmOnboarding ? (intent === "copy_trading" ? "Continue Copy Trading Onboarding on Telegram" : "Continue PM Onboarding on Telegram") : human ? "Continue with human support" : "", telegram_url: telegramUrl, handoff_token: pmHandoffToken, pm_handoff_code: pmHandoffToken, case_id: caseId, performance_record_url: intent === "performance" ? MYFXBOOK_URL : "", broker_url: intent === "broker" ? LIRUNEX_URL : "", registration_url: registrationNow ? LIRUNEX_GENCOUV_SIGNUP_URL : "", ai_mode: ai.mode, ai_model: ai.model });
   } catch (error) {
     console.error("Gencouv Support API error", error);
     return NextResponse.json({ success: false, reply: "Gencouv Support is temporarily unavailable. You can still use the website resources or contact the support team directly.", telegram_url: SUPPORT_TELEGRAM_URL }, { status: 500 });
