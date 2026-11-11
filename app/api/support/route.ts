@@ -62,14 +62,15 @@ function fallbackReply(intent: string) {
   if (intent === "sixtynine") return "SixtyNine EA is an MT5 automated trading bot listed under Gencouv Trading Bots at $2,000. Review its product page and operating requirements before deployment.";
   if (intent === "order_access") return "For purchase or access issues, sign in with the same verified email used at checkout. Finished guest purchases are claimed into your Gencouv account and appear in My Library after payment verification.";
   if (intent === "portfolio") return "Direct portfolio management starts at USD 10,000 through Lirunex, with a one-time 5% service charge and a 30% share of generated profits calculated monthly. Profits are not guaranteed. Would you like assistance with onboarding?";
-  if (intent === "copy_trading") return "Copy trading has a recommended starting balance of USD 50, and your capital stays in your own eligible broker account. Would you like me to send the account-creation link?";
+  if (intent === "copy_trading") return "Welcome to Gencouv! I can help you get started with copy trading through Lirunex. Have you already created a Lirunex account, or are you starting from scratch?";
   return "I can help with Gencouv Copy Trading, account setup and onboarding, Trading Bots, purchases, broker information and risk information.";
 }
 
 function systemPrompt(customerContext: string) {
   const rules = [
     "You are Gencouv Support AI, the official customer-facing web chat assistant for Gencouv. Answer simply and accurately, explain Gencouv copy trading, guide interested visitors through Lirunex account creation, and refer clients to human onboarding when needed.",
-    "STYLE: Keep every reply brief, ideally 1–3 short sentences and under 60 words. Answer only the current question and give only the next step. Never dump the full onboarding process in one message. Ask one question at a time. For copy-trading interest without a clear registration request, state the USD 50 starting balance and that funds stay in the visitor’s own eligible broker account, then ask whether they want the account-creation link. Do not include the registration URL until the visitor clearly asks to register or says yes after that offer. Never invent information, guarantee profits or pressure visitors to trade.",
+    "CUSTOMER SERVICE STYLE: Speak like a skilled, attentive human support representative: acknowledge the actual request, answer directly, and offer the next useful step. Be warm, clear, and natural without scripted sales pitches. Use 1-4 sentences for simple questions; explain more when the customer needs it. Ask at most one relevant question, never repeat a question already answered, and never automatically pivot every reply to registration. Do not invent information, guarantee profits or pressure visitors to trade.",
+    "ONBOARDING INTENT: If a visitor says they want to start copy trading, welcome them and ask whether they already have a Lirunex account or are starting from scratch. Do not open by reciting the USD 50 minimum or saying their capital stays in their account unless they ask about cost, funding or safety. Guide them from their current step. Only share the registration URL when they ask for it or agree to receive it.",
     "DIRECT PORTFOLIO MANAGEMENT: Separate from copy trading. Minimum USD 10,000 at Lirunex. One-time service charge 5% of capital; 30% share of generated profits calculated monthly. No guaranteed profits. Do not invent fee collection, loss treatment, custody, authorization or contract terms. Offer human Telegram assistance for account management agreements. Do not assume direct management uses MT5 cent accounts or Titans/Nexus.",
     "GENCOUV: Gencouv offers two copy-trading profiles: Gencouv Titans and Gencouv Nexus. Both use eligible Lirunex MT5 cent accounts. Do not invent performance, risk levels, drawdowns or differences between them. Ask which profile the visitor prefers.",
     "Gencouv uses institutional-grade Expert Advisors managed by its team. Copy-trading EAs are not generally sold separately except on special request. EA purchases/licences are separate and handled through the official Gencouv EA shop.",
@@ -122,6 +123,7 @@ export async function POST(request: Request) {
     const profile = selectedProfile(message, history);
     const profileReply = profile === "titans" ? "You selected Gencouv Titans. Open its Lirunex strategy page: " + TITANS_URL + "\n\nReview the broker requirements and confirm your subscription there." : profile === "nexus" ? "You selected Gencouv Nexus. Open its Lirunex strategy page: " + NEXUS_URL + "\n\nReview the broker requirements and confirm your subscription there." : null;
     const wantsCopyTradingStart = intent === "copy_trading" && wantsPMOnboarding(message);
+    const asksCopyMinimum = /(?:minimum|minim|how much|deposit|balance|capital|cost|fund)/i.test(message);
     const registrationReply = "Here is the Gencouv Lirunex account-creation link: " + LIRUNEX_GENCOUV_SIGNUP_URL + "\n\nStart by entering your email and verifying the OTP. After broker approval, create an eligible MT5 cent account. I can guide you through the next step.";
     let userId: string | null = null, verifiedEmail: string | null = null, customerContext = "";
 
@@ -142,7 +144,7 @@ export async function POST(request: Request) {
       // unavailable (for example, if the tenant organization mapping is missing).
       // Do not fabricate an organization_id or let a database write failure break chat.
       console.error("Gencouv Support conversation persistence unavailable", conversationError || "No conversation row returned");
-      const ai = profileReply ? { reply: profileReply, mode: "guided" as const, model: null as string | null } : registrationNow ? { reply: registrationReply, mode: "guided" as const, model: null as string | null } : wantsCopyTradingStart ? { reply: fallbackReply(intent), mode: "guided" as const, model: null as string | null } : await generateAIReply(message, customerContext, history);
+      const ai = profileReply ? { reply: profileReply, mode: "guided" as const, model: null as string | null } : registrationNow ? { reply: registrationReply, mode: "guided" as const, model: null as string | null } : wantsCopyTradingStart && !asksCopyMinimum ? { reply: fallbackReply(intent), mode: "guided" as const, model: null as string | null } : await generateAIReply(message, customerContext, history);
       return NextResponse.json({
         success: true,
         reply: ai.reply || fallbackReply(intent),
