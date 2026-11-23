@@ -6,6 +6,7 @@ const links = [
   ["About", "/about"],
   ["Copy trading", "/copy-trading"],
   ["Trading Bots", "/marketplace"],
+  ["Investment Intelligence", "/investment-intelligence"],
   ["Testimonials", "/testimonials"],
   ["Log in", "/login"],
   ["Create account", "/signup"],
