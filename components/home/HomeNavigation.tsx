@@ -11,6 +11,7 @@ export default function HomeNavigation() {
         <a href="/copy-trading">Copy Trading</a>
         <a href="https://www.myfxbook.com/portfolio/gencouv-lirunex-pm/12165670" target="_blank" rel="noreferrer">Performance</a>
         <a href="/marketplace">Trading Bots</a>
+        <a href="/investment-intelligence">Investment Intelligence</a>
         <a href="/roadmap">Resources</a>
         <a href="/about">About</a>
       </div>
