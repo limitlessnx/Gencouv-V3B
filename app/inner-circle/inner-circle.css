@@ -202,3 +202,10 @@
 .gcicVerifyCard .gcicVerified{color:#b2e2bf;background:rgba(71,166,99,.11)}
 .gcicVerifyCard .gcicVerifyError{color:#ffc0b1;background:rgba(205,76,58,.12)}
 @media(max-width:650px){.gcicVerifyCard{margin:22px 0 43px}}
+
+/* Approved-only Telegram handoff */
+.gcicApprovedAccess{display:grid;justify-items:start;gap:12px}
+.gcicApprovedAccess .gcicVerified{margin:0}
+.gcicInviteButton{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:13px 20px;border-radius:99px;background:linear-gradient(120deg,#f6c66c,#e9a739);color:#201404;font-size:13px;font-weight:800;text-align:center}
+.gcicApprovedAccess small{max-width:570px;color:#97a595;line-height:1.65;font-size:11px}
+@media(max-width:650px){.gcicInviteButton{width:100%}}
