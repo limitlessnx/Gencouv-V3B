@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import HomeNavigation from "@/components/home/HomeNavigation";
 import FloatingGencouvChat from "@/components/FloatingGencouvChat";
+import ResearchNewsletterForm from "@/components/research/ResearchNewsletterForm";
 import "../home-redesign.css";
 import "../copy-hero.css";
 import "./research.css";
@@ -38,7 +39,7 @@ export default function InvestmentIntelligencePage() {
     </section>
 
     <section id="newsletter" className="researchNewsletter">
-      <div className="shell researchSplit"><div><span className="researchKicker">THE FREE BRIEF</span><h2>Follow the markets. Understand the context.</h2><p>Our planned market newsletter will bring together stock and crypto watchlists, major developments, and accessible explanations of the risks and evidence behind each research theme.</p><div className="researchTagRow"><span>Market commentary</span><span>Research watchlists</span><span>Investor education</span></div></div><div className="researchJoinCard"><span className="researchKicker">NEWSLETTER · IN PREPARATION</span><h3>Get early access updates.</h3><p>We're preparing the first edition. Contact the Gencouv team to express interest and ask about the launch. No subscription or payment is taken on this page.</p><a href="https://t.me/gencouv" target="_blank" rel="noreferrer" className="researchPrimary">Contact Gencouv <span aria-hidden="true">↗</span></a><small>Research communications will be sent only to subscribers who opt in.</small></div></div>
+      <div className="shell researchSplit"><div><span className="researchKicker">THE FREE BRIEF</span><h2>Follow the markets. Understand the context.</h2><p>Our planned market newsletter will bring together stock and crypto watchlists, major developments, and accessible explanations of the risks and evidence behind each research theme.</p><div className="researchTagRow"><span>Market commentary</span><span>Research watchlists</span><span>Investor education</span></div></div><div className="researchJoinCard"><span className="researchKicker">FREE RESEARCH NEWSLETTER</span><h3>Subscribe to the Gencouv Research Brief.</h3><p>Get independent market commentary and research updates in your inbox. Subscribe below, then confirm the email we send you.</p><ResearchNewsletterForm /></div></div>
     </section>
 
     <section id="inner-circle" className="researchSection shell">
