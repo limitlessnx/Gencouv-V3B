@@ -33,14 +33,32 @@ export async function POST(request:Request){
   const product=paymentProduct(order.sku);if(!product)return NextResponse.json({error:"Order SKU is invalid."},{status:409});
   const priceAmount=numeric(payload?.price_amount),paidAmount=numeric(payload?.actually_paid??payload?.pay_amount),priceCurrency=String(payload?.price_currency||"").toLowerCase();
   const amountMatches=priceAmount!==null&&Math.abs(priceAmount-Number(order.price_amount))<.01,currencyMatches=priceCurrency===String(order.price_currency).toLowerCase();
+  // Never mark an order finished until the signed notification matches the
+  // immutable invoice amount/currency. A mismatched status must not be claimable.
+  if(status==="finished"&&(!amountMatches||!currencyMatches))
+    return NextResponse.json({error:"Payment does not match order."},{status:409});
+  if(order.payment_status==="finished"&&status!=="finished")
+    return NextResponse.json({received:true,fulfilled:Boolean(order.fulfilled_at),ignored:"stale_status"});
   await admin.from("marketplace_orders").update({payment_status:status,provider_payment_id:String(payload?.payment_id||order.provider_payment_id||""),paid_amount:paidAmount,pay_currency:String(payload?.pay_currency||""),updated_at:new Date().toISOString()}).eq("order_id",orderId);
   if(status!=="finished")return NextResponse.json({received:true,fulfilled:false});
-  if(!amountMatches||!currencyMatches)return NextResponse.json({error:"Payment does not match order."},{status:409});
+
   const origin=new URL(request.url).origin;
-  if(order.fulfilled_at){const emailSent=await deliverEmail(admin,order,product,origin);return NextResponse.json({received:true,fulfilled:true,idempotent:true,emailSent:emailSent||Boolean(order.fulfillment_email_sent_at)});}
+  if(order.fulfilled_at){
+    if(product.slug==="inner-circle"){
+      const {error:verificationError}=await admin.from("gencouv_inner_circle_verifications").upsert({order_id:orderId,user_id:order.user_id||null},{onConflict:"order_id",ignoreDuplicates:true});
+      if(verificationError)return NextResponse.json({error:"Member verification setup pending"},{status:500});
+    }
+    const emailSent=await deliverEmail(admin,order,product,origin);return NextResponse.json({received:true,fulfilled:true,idempotent:true,emailSent:emailSent||Boolean(order.fulfillment_email_sent_at)});}
   const expiresAt=product.durationDays?new Date(Date.now()+product.durationDays*86400000).toISOString():null,claimed=Boolean(order.user_id);
   const {error:entitlementError}=await admin.from("marketplace_entitlements").upsert({user_id:order.user_id||null,customer_email:order.customer_email||null,order_id:orderId,product_slug:order.product_slug,license_tier:order.license_tier,status:claimed?"active":"unclaimed",starts_at:new Date().toISOString(),expires_at:expiresAt,claimed_at:claimed?new Date().toISOString():null,updated_at:new Date().toISOString()},{onConflict:"order_id,product_slug,license_tier"});
   if(entitlementError){console.error("Could not grant marketplace entitlement",{orderId,entitlementError});return NextResponse.json({error:"Payment verified; entitlement pending."},{status:500});}
+  if(product.slug==="inner-circle"){
+    const {error:verificationError}=await admin.from("gencouv_inner_circle_verifications").upsert({order_id:orderId,user_id:order.user_id||null},{onConflict:"order_id",ignoreDuplicates:true});
+    if(verificationError){
+      console.error("Could not create membership verification record",{orderId,verificationError});
+      return NextResponse.json({error:"Payment verified; membership setup pending."},{status:500});
+    }
+  }
   const fulfilledAt=new Date().toISOString();await admin.from("marketplace_orders").update({fulfilled_at:fulfilledAt,updated_at:fulfilledAt}).eq("order_id",orderId).is("fulfilled_at",null);
   const emailSent=await deliverEmail(admin,{...order,fulfilled_at:fulfilledAt},product,origin);
   return NextResponse.json({received:true,fulfilled:true,claimRequired:!claimed,emailSent});
