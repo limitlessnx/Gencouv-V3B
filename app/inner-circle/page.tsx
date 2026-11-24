@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import HomeNavigation from "@/components/home/HomeNavigation";
 import FloatingGencouvChat from "@/components/FloatingGencouvChat";
+import ResearchFooter from "@/components/research/ResearchFooter";
 import "../home-redesign.css";
 import "../investment-intelligence/research.css";
 import "./inner-circle.css";
@@ -136,8 +137,13 @@ export default function InnerCirclePage() {
     </section>
 
     <section className="researchSection shell"><div className="researchSectionIntro"><div><span className="researchKicker">TRANSPARENCY</span><h2>Review published research before you subscribe.</h2></div><p>Read real Gencouv publications as they are independently reviewed and made public. We will not substitute fictional performance histories for actual reporting.</p></div><a className="researchPrimary" href="/research">Browse research archive ↗</a></section>
-    <section className="researchDisclaimer shell"><h2>Important information &amp; risk</h2><p>Gencouv Inner Circle is a proposed future research membership. This page does not sell membership, provide personalized financial advice, guarantee profits, or solicit transactions in securities or digital assets. All investments can lose value. Any specific paid trading calls, securities recommendations or advisory activities require the applicable authorization and jurisdictional review before they may be offered. Proposed analyst appointments and track records are not yet verified. Third-party proprietary research will not be redistributed without permission.</p><a href="/risk-disclosure">Review Gencouv risk disclosure ↗</a></section>
-    <footer className="researchFooter shell"><a href="/investment-intelligence">← Investment Intelligence</a><span>© 2026 Gencouv Capital</span><a href="/privacy">Privacy</a><a href="/terms">Terms</a></footer>
+    <section className="researchDisclosureSection shell" aria-label="Important risk information">
+      <details className="researchLegalDetails">
+        <summary><span><strong>Important information and risk</strong><small>Inner Circle is a proposed membership. Research and market commentary do not guarantee returns.</small></span><b aria-hidden="true">+</b></summary>
+        <div className="researchLegalBody"><p>Gencouv Inner Circle is a proposed future research membership. This page does not sell membership, give personalized financial advice, guarantee profits or solicit trades. Stock, crypto and forex trading can result in losses. Paid trading calls, investment recommendations or advisory activities will only be offered where the necessary authorizations and jurisdictional requirements are satisfied. Analyst claims and performance records must be independently verified.</p><a href="/risk-disclosure">Read the full risk disclosure ↗</a></div>
+      </details>
+    </section>
+    <ResearchFooter />
     <FloatingGencouvChat />
   </main>;
 }
