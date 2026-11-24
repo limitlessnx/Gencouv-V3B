@@ -186,3 +186,19 @@
 @media(max-width:950px){.gcicSectionHead,.gcicApproachGrid,.gcicBonusCard,.gcicMembership,.gcicCheckoutGrid{grid-template-columns:1fr;gap:34px}.gcicSectionHead{gap:14px}.gcicMembership aside{width:100%}}
 @media(max-width:650px){.gcicHero{padding-top:85px}.gcicHeroEyebrow{font-size:9px;justify-content:center;letter-spacing:.08em}.gcicHero h1{font-size:clamp(42px,12vw,57px);margin:22px auto}.gcicHeroLead{font-size:14px}.gcicHeroActions{display:grid;width:100%}.gcicHeroActions>a{width:100%}.gcicHeroProof{grid-template-columns:repeat(2,1fr);margin-top:52px;gap:20px}.gcicHeroProof>div:nth-child(2){border-right:0}.gcicHeroProof strong{font-size:30px}.gcicHeroProof span{font-size:10px}.gcicSection{padding:65px 0}.gcicMarkets,.gcMemberCompanies{grid-template-columns:1fr}.gcicMarketCard{min-height:0;padding:26px}.gcicMarketCard h3{margin-top:28px}.gcicApproach{padding:65px 0}.gcicBonusCard,.gcicMembership{padding:25px;border-radius:19px}.gcicBonusMark{margin-top:20px}.gcicPrice{font-size:60px}.gcicBenefits{grid-template-columns:1fr}.gcicCheckoutBox{padding:24px}.gcicCheckoutGrid{gap:25px}.gcicCheckout{padding:65px 0 90px}.gcicFaq summary{font-size:14px}.gcMemberHero{padding-top:70px}.gcMemberHead{display:grid}}
 @media(prefers-reduced-motion:reduce){.gcicButton,.gcicOutlineButton{transition:none}}
+
+/* Verified payment code and private-group review */
+.gcicVerifyCard{display:grid;gap:13px;margin:35px 0 55px;padding:clamp(24px,4vw,42px);border:1px solid rgba(241,182,70,.26);border-radius:22px;background:linear-gradient(145deg,#151c14,#090e0b)}
+.gcicVerifyCard h2{font-size:clamp(25px,3vw,39px);letter-spacing:-.04em;line-height:1.16;margin:0;font-weight:580}
+.gcicVerifyCard>p{color:#a9b7a8;font-size:13px;line-height:1.8;max-width:780px;margin:0}
+.gcicVerifyCard form{display:grid;gap:13px;max-width:490px;margin-top:10px}
+.gcicVerifyCard label{color:#e3e6d8;font-size:12px}
+.gcicVerifyCard input{width:100%;padding:15px;border:1px solid rgba(237,173,60,.3);border-radius:11px;background:#060c09;color:#fff;font-size:16px;letter-spacing:.02em}
+.gcicVerifyCard button{padding:15px;border:0;border-radius:99px;background:#edb75a;color:#191000;font-size:13px;font-weight:800;cursor:pointer}
+.gcicVerifyCard button:disabled{opacity:.55;cursor:not-allowed}
+.gcicVerifyCard small{font-size:11px;color:#91a093;line-height:1.6;overflow-wrap:anywhere}
+.gcicVerifyCard .gcicPending,.gcicVerifyCard .gcicVerified,.gcicVerifyCard .gcicVerifyError{border-radius:12px;padding:13px 15px;line-height:1.6;font-size:12px}
+.gcicVerifyCard .gcicPending{color:#e5bf77;background:rgba(214,158,45,.1)}
+.gcicVerifyCard .gcicVerified{color:#b2e2bf;background:rgba(71,166,99,.11)}
+.gcicVerifyCard .gcicVerifyError{color:#ffc0b1;background:rgba(205,76,58,.12)}
+@media(max-width:650px){.gcicVerifyCard{margin:22px 0 43px}}
