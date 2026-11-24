@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       const { data: current, error: lookupError } = await db.from("gencouv_research_subscribers")
         .select("email,status,last_confirmation_sent_at").eq("email", email).maybeSingle();
       if (lookupError) throw lookupError;
-      if (current?.status === "active" || current?.status === "unsubscribed") return json(genericResponse);
+      if (current?.status === "active") return json(genericResponse);
       if (current?.last_confirmation_sent_at && Date.now() - new Date(current.last_confirmation_sent_at).getTime() < 10 * 60 * 1000) return json(genericResponse);
 
       const token = randomBytes(32).toString("hex");
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
         email, status: "pending", consent_scope: "research_newsletter",
         consent_source: "investment_intelligence_page", consent_at: now,
         token_hash: hash(token), token_expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-        last_confirmation_sent_at: now, updated_at: now
+        last_confirmation_sent_at: now, verified_at: null, unsubscribed_at: null, updated_at: now
       };
       const { error: saveError } = await db.from("gencouv_research_subscribers").upsert(payload, { onConflict: "email" });
       if (saveError) throw saveError;
