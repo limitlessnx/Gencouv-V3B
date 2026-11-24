@@ -1,0 +1,29 @@
+/* Defensive global styles for fixed client-side support and navigation.
+   Prevents a missing scoped-style chunk from exposing an unstyled drawer. */
+.mobile-menu-button{display:none;position:fixed;top:max(12px,env(safe-area-inset-top));right:14px;z-index:2147482500;width:46px;height:46px;padding:0;border:1px solid rgba(239,168,40,.3);border-radius:14px;background:#0a1010;box-shadow:0 10px 35px rgba(0,0,0,.42);cursor:pointer}
+.mobile-menu-button span{display:block;width:20px;height:2px;margin:4px auto;border-radius:99px;background:#f3fffb}
+.mobile-menu-layer{position:fixed;inset:0;z-index:2147482600;display:none;pointer-events:none}
+.mobile-menu-layer.open{display:block;pointer-events:auto}
+.mobile-menu-backdrop{position:absolute;inset:0;width:100%;height:100%;border:0;background:rgba(0,0,0,.72)}
+.mobile-menu-drawer{position:absolute;top:0;right:0;width:min(86vw,360px);height:100%;padding:20px 18px calc(24px + env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;border-left:1px solid rgba(239,168,40,.2);background:#070d0e;box-shadow:-25px 0 70px rgba(0,0,0,.55);color:#e7eeeb}
+.mobile-menu-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0 20px;border-bottom:1px solid rgba(255,255,255,.1)}
+.mobile-menu-brand{display:flex;align-items:center;gap:10px}.mobile-menu-brand>span{width:36px;height:36px;display:grid;place-items:center;border:1px solid #986b30;border-radius:12px;color:#e9b451}.mobile-menu-brand b,.mobile-menu-brand small{display:block}.mobile-menu-brand b{font-size:12px;letter-spacing:.15em}.mobile-menu-brand small{font-size:8px;color:#93a29a;margin-top:4px}.mobile-menu-head>button{width:40px;height:40px;border:1px solid rgba(255,255,255,.15);border-radius:50%;background:#151b1a;color:#fff;font-size:23px;cursor:pointer}
+.mobile-menu-drawer nav{display:grid;margin-top:12px;gap:0}.mobile-menu-drawer nav a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 2px;border-bottom:1px solid rgba(255,255,255,.08);color:#e9eeea;font-size:14px;font-weight:650;line-height:1.45}.mobile-menu-drawer nav a b{color:#dca247;font-size:12px}.mobile-menu-drawer nav a.account{background:#efad3e;color:#171004;padding:13px;border-radius:12px;margin-top:16px}.mobile-menu-drawer nav a.onboard{border:1px solid #8d702f;padding:13px;border-radius:12px;margin-top:12px;color:#efb958}.mobile-menu-drawer>p{margin-top:23px;color:#8b9b94;font-size:11px;line-height:1.6}
+@media(max-width:960px){.mobile-menu-button{display:block}}
+@media(min-width:961px){.mobile-menu-layer{display:none!important}}
+/* Support assistant: keep it floating, never inside page flow. */
+.gcWrap{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(22px,calc(env(safe-area-inset-bottom) + 14px));z-index:2147482400;display:flex;align-items:flex-end;gap:10px;font-family:inherit}
+.gcWrap *{box-sizing:border-box}
+.gcLabel{font-size:12px;color:#dffcf4;padding:9px 13px;margin-bottom:12px;border:1px solid rgba(53,228,192,.3);border-radius:99px;background:#061716}
+.gcButton{position:relative;display:grid;place-items:center;width:58px;height:58px;border:1px solid #35e4c0;border-radius:50%;background:#092a27;box-shadow:0 13px 35px rgba(0,0,0,.55);cursor:pointer;color:#fff}
+.gcBubble{display:flex;align-items:center;justify-content:center;gap:3px;width:29px;height:24px;border-radius:8px;background:#f5fffc}.gcBubble i{height:4px;width:4px;border-radius:50%;background:#12443e}
+.gcStatus{position:absolute;right:3px;bottom:3px;width:12px;height:12px;background:#35e4a6;border:2px solid #041a17;border-radius:50%}
+.gcPanel{position:absolute;right:0;bottom:74px;width:min(390px,calc(100vw - 28px));height:min(610px,calc(100dvh - 120px));display:grid;grid-template-rows:auto minmax(0,1fr) auto auto auto;overflow:hidden;border:1px solid rgba(53,228,192,.25);border-radius:20px;background:#071212;box-shadow:0 25px 90px rgba(0,0,0,.7);color:#e7f2ee}
+.gcPanel>header{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:16px;border-bottom:1px solid rgba(255,255,255,.1)}
+.gcPanel>header>div{display:flex;align-items:center;gap:9px}.gcPanel>header strong,.gcPanel>header small{display:block}.gcPanel>header strong{font-size:14px}.gcPanel>header small{color:#91aaa1;font-size:10px}.gcPanel>header button{border:0;background:transparent;color:#fff;font-size:23px}
+.gcDot{width:8px;height:8px;border-radius:50%;background:#35e4c0}
+.gcMessages{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:16px}
+.gcContactGate{display:grid;gap:13px}.gcMsg{display:flex}.gcMsg span{max-width:86%;padding:12px;border-radius:12px;font-size:13px;line-height:1.6;overflow-wrap:anywhere}.gcMsg.assistant span{background:#152321;color:#c7d7d1}.gcMsg.user{justify-content:flex-end}.gcMsg.user span{background:#35e4c0;color:#05221e}
+.gcContactForm{display:grid;gap:12px}.gcContactForm label{display:grid;gap:6px;color:#abbdb6;font-size:12px}.gcContactForm input,.gcComposer input{min-width:0;width:100%;padding:12px;border:1px solid #40524d;border-radius:10px;background:#091816;color:#fff;font-size:16px}.gcContactForm button,.gcComposer button{min-height:44px;padding:11px;border:0;border-radius:10px;background:#35e4c0;color:#04221c;font-weight:800}
+.gcContactError{color:#ffc2ba;font-size:12px}.gcComposer{display:grid;grid-template-columns:minmax(0,1fr) 46px;gap:8px;padding:12px}.gcRisk{color:#8ea69e;font-size:10px;padding:0 14px 12px;line-height:1.5}.gcHandoff{display:block;color:#45e8c3;padding:10px;text-align:center}.gcHandoffRef{color:#96aea6;text-align:center;font-size:11px}
+@media(max-width:700px){.gcWrap{right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom))}.gcLabel{display:none}.gcButton{height:54px;width:54px}.gcPanel{position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));width:auto;height:min(560px,73dvh)}}
