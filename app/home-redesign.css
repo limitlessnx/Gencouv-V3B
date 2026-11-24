@@ -222,3 +222,18 @@
   .phoneTitle strong{font-size:32px}
   .phoneMiniChart{height:112px}
 }
+
+/* Homepage research overview: distinct free research and premium routes */
+.gencouvResearchHomeGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.gencouvResearchHomeCard{display:flex;flex-direction:column;min-width:0;min-height:310px;padding:30px;border:1px solid rgba(238,168,43,.16);border-radius:21px;background:linear-gradient(150deg,#111813,#070d0b)}
+.gencouvResearchHomeCard>span{color:#dba84b;font-size:10px;letter-spacing:.12em;font-weight:700}
+.gencouvResearchHomeCard h3{font-size:clamp(21px,2.6vw,28px);line-height:1.15;letter-spacing:-.025em;margin:36px 0 14px;color:#f3f4ef}
+.gencouvResearchHomeCard p{color:#8d9b91;line-height:1.75;font-size:13px;margin:0 0 20px}
+.gencouvResearchHomeCard>a{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid rgba(255,255,255,.1);padding-top:19px;color:#e5b45b;font-size:12px;font-weight:700}
+.gencouvResearchHomePremium{background:radial-gradient(circle at 90% 0%,rgba(235,162,42,.13),transparent 54%),linear-gradient(155deg,#161710,#090d0a);border-color:rgba(239,168,44,.31)}
+.gencouvResearchChips{display:flex;gap:7px;flex-wrap:wrap;margin:auto 0 20px}
+.gencouvResearchChips span{border:1px solid rgba(232,177,70,.23);border-radius:99px;padding:7px 10px;color:#d7c19b;font-size:10px}
+.gencouvResearchHomeCard>a.gencouvResearchJoin{border:0;align-self:flex-start;min-height:43px;display:inline-flex;gap:28px;padding:13px 19px;border-radius:999px;background:linear-gradient(130deg,#ffd36a,#eda52b);color:#1a1103;font-weight:800}
+.gencouvResearchFinePrint{color:#7e8d84;font-size:11px;line-height:1.7;margin:20px 0 0}
+@media(max-width:960px){.gencouvResearchHomeGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.gencouvResearchHomePremium{grid-column:1/-1}.gencouvResearchHomeCard{min-height:260px}}
+@media(max-width:680px){.gencouvResearchHomeGrid{grid-template-columns:1fr}.gencouvResearchHomePremium{grid-column:auto}.gencouvResearchHomeCard{min-height:0;padding:25px}.gencouvResearchHomeCard h3{margin-top:22px}.gencouvResearchChips{margin:5px 0 22px}.gencouvResearchHomeCard>a{margin-top:12px}}
