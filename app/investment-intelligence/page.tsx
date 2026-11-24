@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import HomeNavigation from "@/components/home/HomeNavigation";
 import FloatingGencouvChat from "@/components/FloatingGencouvChat";
+import ResearchFooter from "@/components/research/ResearchFooter";
 import ResearchNewsletterForm from "@/components/research/ResearchNewsletterForm";
 import "../home-redesign.css";
 import "../copy-hero.css";
@@ -50,8 +51,13 @@ export default function InvestmentIntelligencePage() {
     <section className="researchSection shell"><div className="researchSectionIntro"><div><span className="researchKicker">OUR STANDARD</span><h2>Show the reasoning, not just the conclusion.</h2></div><p>Our aim is to document the thesis, supporting evidence, what could invalidate it, and the outcome over time. Research is not a promise of performance.</p></div><div className="researchMethod"><article><b>01 / Thesis</b><p>Define what makes the asset or market theme worth studying.</p></article><article><b>02 / Evidence</b><p>Examine fundamentals, data quality, alternatives, and counterarguments.</p></article><article><b>03 / Risk</b><p>Describe uncertainties, key catalysts, and scenarios where the thesis fails.</p></article><article><b>04 / Review</b><p>Revisit assumptions as facts change, including unsuccessful ideas.</p></article></div></section>
 
     <section className="researchSection shell"><div className="researchSectionIntro"><div><span className="researchKicker">ORIGINAL GENCOUV RESEARCH</span><h2>Explore published analysis.</h2></div><p>As our research team begins publishing, approved public research notes and their dated evidence will be available in the research archive.</p></div><div className="researchActions"><a className="researchPrimary" href="/research">View the research archive ↗</a></div></section>
-    <section className="researchDisclaimer shell"><h2>Important information</h2><p>This page describes planned research and educational services. Nothing here is personalized financial advice, a solicitation to purchase an asset, or a guarantee of investment returns. Stocks and digital assets involve risk, including possible loss of capital. Specific paid recommendations or advisory services will not be offered before applicable legal and regulatory requirements are addressed. Premium third-party research is not redistributed without permission.</p><a href="/risk-disclosure">Read Gencouv's risk disclosure ↗</a></section>
-    <footer className="researchFooter shell"><a href="/">← Back to Gencouv Capital</a><span>© 2026 Gencouv Capital</span><a href="/privacy">Privacy</a><a href="/terms">Terms</a></footer>
+    <section className="researchDisclosureSection shell" aria-label="Important risk information">
+      <details className="researchLegalDetails">
+        <summary><span><strong>Important information and risk</strong><small>Research is educational and carries investment risk. Always consider your circumstances and the possibility of losses.</small></span><b aria-hidden="true">+</b></summary>
+        <div className="researchLegalBody"><p>This page describes research and educational services. Nothing here is personalized financial advice, an offer to transact in financial instruments, or a guarantee of investment returns. Stocks, crypto and leveraged forex products can lose value. Paid trade calls or specific financial recommendations will only be offered after any required legal and regulatory approvals. Third-party proprietary research will not be redistributed without permission.</p><a href="/risk-disclosure">Read the full risk disclosure ↗</a></div>
+      </details>
+    </section>
+    <ResearchFooter />
     <FloatingGencouvChat />
   </main>;
 }
