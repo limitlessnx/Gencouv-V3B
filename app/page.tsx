@@ -63,7 +63,7 @@ export default function Home() {
     <section className="section shell gencouvResearchHome" aria-labelledby="research-intro-title">
       <div className="sectionHead">
         <div><div className="eyebrow left">GENCOUV INVESTMENT INTELLIGENCE</div><h2 id="research-intro-title">Research, market intelligence and a deeper circle.</h2></div>
-        <p>Start with free market research, explore published analysis, or discover planned premium trade-call coverage across stocks, crypto and forex. Clear research and risk awareness at every level.</p>
+        <p>Start with free market research, explore published analysis, or discover planned planned premium intelligence across stocks, crypto, precious and industrial metals, and CFDs. Clear research and risk awareness at every level.</p>
       </div>
       <div className="gencouvResearchHomeGrid">
         <article className="gencouvResearchHomeCard">
@@ -81,8 +81,8 @@ export default function Home() {
         <article className="gencouvResearchHomeCard gencouvResearchHomePremium">
           <span>03 / GENCOUV INNER CIRCLE</span>
           <h3>Premium trade calls &amp; intelligence</h3>
-          <p>Explore our planned premium membership covering stock, crypto and forex market setups, research briefings and private discussions. Availability is subject to launch readiness and applicable authorization.</p>
-          <div className="gencouvResearchChips"><span>Stocks</span><span>Crypto</span><span>Forex</span></div>
+          <p>Explore the proposed $1,000 annual membership covering equities, crypto, metals, CFDs, macro briefings and the Robotics 20 welcome dossier. Specific trade calls require authorization.</p>
+          <div className="gencouvResearchChips"><span>Stocks</span><span>Crypto</span><span>Metals</span><span>CFDs</span></div>
           <a className="gencouvResearchJoin" href="/inner-circle">Join Now <span aria-hidden="true">↗</span></a>
         </article>
       </div>
