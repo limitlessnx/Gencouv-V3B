@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import HomeNavigation from "@/components/home/HomeNavigation";
 import FloatingGencouvChat from "@/components/FloatingGencouvChat";
-import "../../app/home-redesign.css";
+import "../home-redesign.css";
 import "../investment-intelligence/research.css";
 import "./inner-circle.css";
 
