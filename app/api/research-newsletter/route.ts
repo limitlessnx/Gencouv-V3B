@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
         .select("email,status,last_confirmation_sent_at").eq("email", email).maybeSingle();
       if (lookupError) throw lookupError;
       if (current?.status === "active") return json(genericResponse);
-      if (current?.last_confirmation_sent_at && Date.now() - new Date(current.last_confirmation_sent_at).getTime() < 10 * 60 * 1000) return json(genericResponse);
+      if (current?.status === "pending" && current.last_confirmation_sent_at && Date.now() - new Date(current.last_confirmation_sent_at).getTime() < 10 * 60 * 1000) return json(genericResponse);
 
       const token = randomBytes(32).toString("hex");
       const now = new Date().toISOString();
