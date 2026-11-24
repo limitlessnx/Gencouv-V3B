@@ -60,13 +60,33 @@ export default function Home() {
 
     <section className="section shell"><div className="sectionHead"><div><div className="eyebrow left">GENCOUV SERVICES</div><h2>Copy Trading first. Additional tools through Trading Bots.</h2></div><p>Copy Trading is our current primary client journey. Trading Bots separately provides Expert Advisors, indicators and trading utilities.</p></div><div className="serviceGrid">{services.map((service,i)=><a className="service" href={i === 0 ? "/copy-trading" : "/marketplace"} key={service.name}><span>0{i+1}</span><small>{service.label}</small><h3>{service.name}</h3><p>{service.description}</p><b>{i === 0 ? "Explore Copy Trading ↗" : "View Trading Bots ↗"}</b></a>)}</div></section>
 
-    <section className="section shell" aria-labelledby="research-intro-title">
-      <div className="sectionHead"><div><div className="eyebrow left">GENCOUV INVESTMENT INTELLIGENCE</div><h2 id="research-intro-title">Research that puts perspective before prediction.</h2></div><p>Explore independent stock and crypto market research, educational watchlists, and informed perspectives on global financial markets. A dedicated space for the questions behind every investment idea.</p></div>
-      <div className="knowledgeGrid">
-        <article className="knowledgeCard"><span>01 / FREE RESEARCH</span><h3>Stock and crypto insights</h3><p>Understand company fundamentals, market trends, digital assets, and the risks shaping potential opportunities.</p></article>
-        <article className="knowledgeCard"><span>02 / INNER CIRCLE</span><h3>Go deeper with research</h3><p>Discover our planned annual premium research membership, in-depth briefings, and private member discussions. Enrollment is not yet open.</p></article>
+    <section className="section shell gencouvResearchHome" aria-labelledby="research-intro-title">
+      <div className="sectionHead">
+        <div><div className="eyebrow left">GENCOUV INVESTMENT INTELLIGENCE</div><h2 id="research-intro-title">Research, market intelligence and a deeper circle.</h2></div>
+        <p>Start with free market research, explore published analysis, or discover planned premium trade-call coverage across stocks, crypto and forex. Clear research and risk awareness at every level.</p>
       </div>
-      <div className="copyHeroActions" style={{marginTop:"28px"}}><a className="copyPrimary" href="/investment-intelligence">Explore Investment Intelligence <span>↗</span></a></div>
+      <div className="gencouvResearchHomeGrid">
+        <article className="gencouvResearchHomeCard">
+          <span>01 / FREE RESEARCH</span>
+          <h3>Research Brief</h3>
+          <p>Free stock and crypto research notes, market commentary, watchlists and educational updates, delivered to confirmed subscribers.</p>
+          <a href="/investment-intelligence#newsletter">Join the free newsletter <span aria-hidden="true">↗</span></a>
+        </article>
+        <article className="gencouvResearchHomeCard">
+          <span>02 / RESEARCH LIBRARY</span>
+          <h3>Explore our insights</h3>
+          <p>Review published market analysis, research theses and documented risk considerations in one dedicated archive.</p>
+          <a href="/research">Browse research <span aria-hidden="true">↗</span></a>
+        </article>
+        <article className="gencouvResearchHomeCard gencouvResearchHomePremium">
+          <span>03 / GENCOUV INNER CIRCLE</span>
+          <h3>Premium trade calls &amp; intelligence</h3>
+          <p>Explore our planned premium membership covering stock, crypto and forex market setups, research briefings and private discussions. Availability is subject to launch readiness and applicable authorization.</p>
+          <div className="gencouvResearchChips"><span>Stocks</span><span>Crypto</span><span>Forex</span></div>
+          <a className="gencouvResearchJoin" href="/inner-circle">Join Now <span aria-hidden="true">↗</span></a>
+        </article>
+      </div>
+      <p className="gencouvResearchFinePrint">The Inner Circle is currently pre-launch. Joining its landing page does not purchase membership or provide trading signals. Financial markets involve risk.</p>
     </section>
 
     <section className="risk"><div className="shell riskGrid"><div><div className="eyebrow left">RISK & RESPONSIBILITY</div><h2>Transparency comes before activation.</h2></div><details className="riskDisclosure"><summary><span>Read risk summary</span><b aria-hidden="true">⌄</b></summary><div className="riskDisclosureBody"><p>Trading foreign exchange, CFDs and other leveraged products involves substantial risk and may not be suitable for everyone. Past performance is not a reliable indicator of future results. The Myfxbook record is historical evidence from the Gencouv master account and does not guarantee an individual client's future result. Gencouv does not accept or hold client deposits. Clients maintain their own brokerage relationship and remain responsible for understanding the risks.</p><a className="riskDisclosureLink" href="/risk-disclosure">View full Risk Disclosure <span>↗</span></a></div></details></div></section>
