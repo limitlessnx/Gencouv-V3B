@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase-admin";
 import { paymentProduct } from "@/lib/marketplace/paymentProducts";
 import { sendMarketplaceFulfilledEmail } from "@/lib/marketplace/resend";
+import { sendInnerCircleFulfilledEmail } from "@/lib/inner-circle/fulfillment";
 
 function sortObject(value:unknown):unknown{if(Array.isArray(value))return value.map(sortObject);if(value&&typeof value==="object")return Object.keys(value as Record<string,unknown>).sort().reduce<Record<string,unknown>>((out,key)=>{out[key]=sortObject((value as Record<string,unknown>)[key]);return out;},{});return value;}
 function validSignature(payload:unknown,received:string,secret:string){const expected=createHmac("sha512",secret).update(JSON.stringify(sortObject(payload))).digest("hex");const a=Buffer.from(expected,"utf8"),b=Buffer.from(received,"utf8");return a.length===b.length&&timingSafeEqual(a,b);}
@@ -12,7 +13,11 @@ function licenseName(tier:string){if(tier==="gold")return "L.O.R.C Gold — 1 Ye
 async function deliverEmail(admin:ReturnType<typeof createAdminClient>,order:any,product:any,origin:string){
  if(order.fulfillment_email_sent_at||!order.customer_email)return false;
  try{
-  await sendMarketplaceFulfilledEmail({email:order.customer_email,productName:product.name,licenseName:licenseName(order.license_tier),orderId:order.order_id,guest:!order.user_id,origin});
+  if(product.slug==="inner-circle"){
+    await sendInnerCircleFulfilledEmail({email:order.customer_email,orderId:order.order_id,guest:!order.user_id,origin});
+  }else{
+    await sendMarketplaceFulfilledEmail({email:order.customer_email,productName:product.name,licenseName:licenseName(order.license_tier),orderId:order.order_id,guest:!order.user_id,origin});
+  }
   await admin.from("marketplace_orders").update({fulfillment_email_sent_at:new Date().toISOString(),updated_at:new Date().toISOString()}).eq("order_id",order.order_id).is("fulfillment_email_sent_at",null);
   return true;
  }catch(error){console.error("Marketplace fulfillment email failed",{orderId:order.order_id,error});return false;}
