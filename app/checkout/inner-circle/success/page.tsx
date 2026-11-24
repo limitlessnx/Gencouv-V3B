@@ -1,5 +1,5 @@
 import HomeNavigation from "@/components/home/HomeNavigation";
-import "../../home-redesign.css";
+import "../../../home-redesign.css";
 import "../../../investment-intelligence/research.css";
 import "../../../inner-circle/inner-circle.css";
 export default function InnerCircleCheckoutReturn(){
