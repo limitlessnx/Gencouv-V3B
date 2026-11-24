@@ -7,7 +7,7 @@ export const runtime = "nodejs";
 const sender = "Gencouv Research <research@gencouv.com>";
 const origin = "https://gencouv.com";
 const genericResponse = "If this address is eligible, we have sent a confirmation link. Check your inbox.";
-const allowedEmail = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+const allowedEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function json(message: string, status = 200) {
   return NextResponse.json({ message }, { status, headers: { "Cache-Control": "no-store" } });
