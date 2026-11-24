@@ -20,8 +20,8 @@ export default function InnerCircleCheckoutPage(){
       <div className="gcicCheckoutIntro">
        <span className="researchKicker">ANNUAL MEMBERSHIP / SECURE PAYMENT</span>
        <h1>Gencouv Inner Circle.</h1>
-       <p>One annual membership for multi-asset market research across global equities, digital assets, metals and CFDs, subject to availability and eligibility.</p>
-       <ul><li>Bi-weekly macro market briefings (planned)</li><li>20-company Robotics &amp; Physical AI educational watchlist</li><li>Member research access after payment verification</li><li>Private Telegram access following member verification, when available</li></ul>
+       <p>Annual Inner Circle access covers an educational multi-asset research area, subject to verified regional eligibility. The Robotics 20 member research page is built; live calls are not included in the current deliverable.</p>
+       <ul><li>Bi-weekly macro briefings (schedule pending operational verification)</li><li>20-company Robotics &amp; Physical AI educational watchlist</li><li>Member research access after payment verification</li><li>Private Telegram access after verification, once the invite system is operational</li></ul>
       </div>
       <aside className="gcicCheckoutBox">
        <span className="researchKicker">MEMBERSHIP TOTAL</span>
