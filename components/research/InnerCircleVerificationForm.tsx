@@ -20,7 +20,7 @@ export default function InnerCircleVerificationForm({orderId,status}:{orderId:st
   <h2 id="gcic-verify-heading">Verify your membership before Telegram access.</h2>
   <p>Sign in with your confirmed checkout email. Enter the unique code sent only after NOWPayments verifies your annual membership payment. Your request will be reviewed before any private group invitation is issued.</p>
   {status==="approved"?
-    <p role="status" className="gcicVerified">Your verification has been approved. Contact Gencouv support for your individual invite.</p>:
+    <div className="gcicApprovedAccess"><p role="status" className="gcicVerified">Your payment and membership verification are approved.</p><a href="/api/inner-circle/invite" target="_blank" rel="noopener noreferrer" className="gcicInviteButton">Open your private Telegram invitation ↗</a><small>Keep the invitation private. The Gencouv group administrator must approve your Telegram join request.</small></div>:
     status==="pending_review"?
     <p role="status" className="gcicPending">Your verification is awaiting manual review. You will not be added automatically.</p>:
     <form onSubmit={submit}>
