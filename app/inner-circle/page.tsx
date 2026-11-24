@@ -7,13 +7,14 @@ import "../investment-intelligence/research.css";
 import "./inner-circle.css";
 
 export const metadata: Metadata = {
-  title: "Gencouv Inner Circle | Stock & Crypto Investment Intelligence",
-  description: "Explore the planned Gencouv Inner Circle: analyst-led stock and crypto research, structured market theses, transparent risk analysis and a private research community.",
+  title: "Gencouv Inner Circle | Stocks, Crypto & Forex Research",
+  description: "Explore the planned Gencouv Inner Circle: stock, crypto and forex market intelligence, structured market theses, transparent risk analysis and a private research community.",
   alternates: { canonical: "/inner-circle" },
 };
 
 const offer = [
   ["Stock intelligence", "Company quality, earnings, valuation, sector outlooks and business catalysts, with a clear thesis and downside analysis."],
+  ["Forex market setups (planned)", "Structured currency-market watchlists, technical trade setups and risk scenarios. Specific paid calls will only be offered where legally authorized."],
   ["Crypto intelligence", "Blockchain adoption, token economics, on-chain signals, liquidity, market cycles, catalyst tracking and critical risk factors."],
   ["Market updates", "Actionable context when material new information changes a published research thesis, rather than constant alerts for their own sake."],
   ["Private research room", "A planned moderated Telegram space for research discussions, follow-up questions and analyst-led education."],
@@ -27,14 +28,14 @@ const steps = [
 ];
 
 const schedule = [
-  ["Weekly", "Market intelligence brief", "A structured stock-and-crypto briefing covering developments, assets under review, key levels and material risks."],
+  ["Weekly", "Market intelligence brief", "A structured stocks, crypto and forex market briefing covering themes, assets under review, key levels and material risks."],
   ["Monthly", "In-depth research dossier", "A deeper company or digital-asset investigation with sources, scenarios and a documented thesis."],
-  ["Event-led", "Thesis update", "Follow-ups when earnings, regulation, token supply, market conditions or other material events change the underlying case."],
+  ["Event-led", "Thesis update", "Follow-ups when earnings, regulation, token supply, forex drivers or other material events change the underlying case."],
   ["Monthly", "Research discussion", "A proposed analyst Q&A focused on understanding research, methodology and risk rather than individual trading instructions."],
 ];
 
 const questions = [
-  ["What am I paying $500 for?", "The proposed annual membership covers original research reports, structured market briefings, material thesis updates, a research archive and an analyst-led discussion community. The final launch deliverables and service terms will be published before payment is enabled."],
+  ["What am I paying $500 for?", "The proposed annual membership covers stock, crypto and forex research, market briefings, educational trade-setup reviews, a research archive and moderated discussions. Any paid live calls remain subject to authorization. The final launch deliverables and service terms will be published before payment is enabled."],
   ["Will Gencouv tell me exactly what stocks or coins to buy?", "The proposed pre-launch product is general research and education, not personal financial advice or guaranteed trading calls. Whether more specific regulated recommendations can be offered depends on appropriate authorization and jurisdictional review."],
   ["Who produces the research?", "Gencouv is assembling a research team with separate stock-market and cryptocurrency specialisms. Named biographies, verified qualifications, duties and approved disclosures will appear when those appointments are finalized."],
   ["Can I verify a research idea?", "The planned research log will record the original thesis date, relevant supporting sources, material updates, risks and eventual outcomes. Illustrative examples are clearly labeled and never presented as historical performance."],
@@ -51,7 +52,8 @@ export default function InnerCirclePage() {
       <div className="researchEyebrow"><span/> GENCOUV CAPITAL / INVESTMENT INTELLIGENCE</div>
       <span className="innerPrelaunch">PRIVATE RESEARCH MEMBERSHIP · PRE-LAUNCH</span>
       <h1>See beyond the market.<br/><em>Understand the opportunity.</em></h1>
-      <p className="innerLead">Premium stock and crypto investment intelligence for people who value independent analysis, experienced perspectives and knowing the risks before making a decision.</p>
+      <p className="innerLead">Planned premium stock, crypto and forex market intelligence for people who value independent analysis, experienced perspectives and knowing the risks before making a decision.</p>
+      <div className="innerMarketCoverage"><span>Stocks</span><span>Crypto</span><span>Forex</span><small>Premium live calls: planned, subject to authorization</small></div>
       <div className="researchActions">
         <a className="researchPrimary" href="/investment-intelligence#newsletter">Get research launch updates <span aria-hidden="true">↗</span></a>
         <a className="researchSecondary" href="#membership">Explore the membership</a>
@@ -122,8 +124,8 @@ export default function InnerCirclePage() {
         <div className="innerOfferMain">
           <span className="researchKicker">GENCOUV INNER CIRCLE / PLANNED ANNUAL ACCESS</span>
           <div className="innerAmount">$500 <span>/ year</span></div>
-          <p>Proposed access to analyst-led stock and crypto market briefings, original research dossiers, material research updates, archives and moderated private discussions.</p>
-          <div className="innerBenefits"><span>Equity &amp; crypto intelligence</span><span>Weekly proposed briefings</span><span>Monthly proposed deep dives</span><span>Material thesis updates</span><span>Research methodology &amp; archives</span><span>Private Telegram room (planned)</span></div>
+          <p>Proposed stock, crypto and forex market intelligence, original research, trade-setup analysis, research archives and moderated community discussions. Specific trade calls remain subject to authorization and launch readiness.</p>
+          <div className="innerBenefits"><span>Stock, crypto &amp; forex intelligence</span><span>Weekly proposed briefings</span><span>Monthly proposed deep dives</span><span>Material thesis updates</span><span>Research methodology &amp; archives</span><span>Private Telegram room (planned)</span></div>
           <a className="researchPrimary" href="/investment-intelligence#newsletter">Get pre-launch research updates ↗</a>
           <small>Join the free newsletter and verify your email. This does not reserve, activate or charge for Inner Circle membership. No automatic payments.</small>
         </div>
