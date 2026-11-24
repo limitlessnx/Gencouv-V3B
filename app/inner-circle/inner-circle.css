@@ -54,3 +54,135 @@
 .innerMarketCoverage span{padding:9px 15px;background:rgba(234,177,72,.07);border:1px solid rgba(236,177,73,.24);border-radius:99px;color:#edcf97;font-size:12px;font-weight:700}
 .innerMarketCoverage small{color:#98a69b;font-size:11px;line-height:1.5}
 @media(max-width:680px){.innerMarketCoverage{justify-content:center;gap:8px}.innerMarketCoverage span{padding:8px 12px;font-size:11px}.innerMarketCoverage small{flex-basis:100%;text-align:center}}
+
+/* Inner Circle: dedicated multi-asset landing and checkout */
+.gcicLanding{overflow-x:clip}
+.gcicHero{padding:108px 0 75px;text-align:center;background:radial-gradient(ellipse at 50% 20%,rgba(240,171,49,.065),transparent 54%)}
+.gcicHeroEyebrow{display:inline-flex;align-items:center;gap:10px;color:#e7bc70;font-size:10px;letter-spacing:.16em;line-height:1.8;font-weight:800}
+.gcicDot{display:block;width:7px;height:7px;background:#efb34b;border-radius:50%;box-shadow:0 0 14px rgba(245,174,46,.5)}
+.gcicPrivate{margin:24px auto 0!important;color:#7e8b82;font-size:10px!important;letter-spacing:.15em;line-height:1.5}
+.gcicHero h1{max-width:1100px;margin:26px auto 22px;font-size:clamp(47px,7.1vw,97px);line-height:.99;letter-spacing:-.065em;font-weight:560}
+.gcicHero h1 em{font-style:normal;color:transparent;background:linear-gradient(120deg,#fff0d1,#f3c16a,#bc8435);background-clip:text;-webkit-background-clip:text}
+.gcicHeroLead{font-size:16px;line-height:1.85;color:#a0aba4;max-width:780px;margin:0 auto}
+.gcicHeroActions{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin:34px auto 0}
+.gcicButton,.gcicOutlineButton{display:inline-flex;align-items:center;justify-content:center;gap:15px;text-align:center;border-radius:999px;padding:16px 23px;min-height:52px;font-size:12px;font-weight:800;line-height:1.4;transition:transform .2s ease,border-color .2s ease}
+.gcicButton{background:linear-gradient(120deg,#ffd36a,#eca133);color:#1b1305;box-shadow:0 12px 32px rgba(231,164,47,.14)}
+.gcicOutlineButton{color:#dddfd3;border:1px solid rgba(233,177,84,.27);background:rgba(234,174,64,.035)}
+.gcicButton:hover,.gcicOutlineButton:hover{transform:translateY(-2px)}
+.gcicHeroNote{max-width:790px;margin:20px auto 0;color:#85938a;font-size:11px;line-height:1.7}
+.gcicHeroNote strong{color:#c9ba98;font-weight:600}
+.gcicHeroProof{display:grid;grid-template-columns:repeat(4,1fr);gap:0;max-width:940px;margin:80px auto 0;padding:22px 0;border-top:1px solid rgba(238,172,68,.2);border-bottom:1px solid rgba(238,172,68,.1)}
+.gcicHeroProof>div{display:grid;gap:7px;border-right:1px solid rgba(255,255,255,.08);padding:6px 17px}
+.gcicHeroProof>div:last-child{border-right:0}
+.gcicHeroProof strong{color:#f0d39e;font-size:36px;line-height:1;letter-spacing:-.055em;font-weight:540}
+.gcicHeroProof span{color:#96a199;font-size:11px;line-height:1.5}
+.gcicSection{padding:92px 0}
+.gcicSectionHead{display:grid;grid-template-columns:1.35fr .65fr;align-items:end;gap:70px;margin-bottom:38px}
+.gcicSectionHead h2{font-weight:550;line-height:1.06;letter-spacing:-.055em;font-size:clamp(38px,4.9vw,67px);margin:18px 0 0}
+.gcicSectionHead h2 em{font-style:normal;color:#e8b35b}
+.gcicSectionHead p{color:#91a097;font-size:14px;line-height:1.8;margin:0}
+.gcicMarkets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.gcicMarketCard{display:flex;flex-direction:column;min-height:435px;border:1px solid rgba(238,168,43,.17);border-radius:22px;padding:33px;background:radial-gradient(circle at 98% 0%,rgba(235,164,40,.08),transparent 42%),linear-gradient(145deg,#111912,#080e0b)}
+.gcicMarketTop{display:flex;align-items:center;justify-content:space-between;color:#d9ab5a;font-size:10px;letter-spacing:.13em;font-weight:800}
+.gcicMarketCard h3{font-size:clamp(33px,4vw,51px);letter-spacing:-.055em;line-height:1.06;font-weight:530;margin:40px 0 5px}
+.gcicMarketSubtitle{color:#e1c48e!important;font-size:14px!important;margin:0 0 18px!important}
+.gcicMarketCard>p:not(.gcicMarketSubtitle){font-size:13px;line-height:1.85;color:#9aa99f;margin:0 0 21px}
+.gcicMarketTags{display:flex;gap:7px;flex-wrap:wrap;margin-top:auto;margin-bottom:22px}
+.gcicMarketTags span{font-size:10px;border:1px solid rgba(240,174,60,.2);color:#c9b89a;border-radius:99px;padding:7px 10px}
+.gcicMarketRisk{border-top:1px solid rgba(255,255,255,.08);padding-top:16px;font-size:11px;color:#9a9f93;line-height:1.6}
+.gcicApproach{padding:90px 0;background:linear-gradient(180deg,#0b120e,#080e0b);border-block:1px solid rgba(239,172,49,.14)}
+.gcicApproachGrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px}
+.gcicApproach h2{font-size:clamp(36px,4.6vw,60px);letter-spacing:-.055em;font-weight:550;line-height:1.06;margin:18px 0 25px}
+.gcicApproach p{font-size:14px;line-height:1.8;color:#9aa89f}
+.gcicApproachList{display:grid;gap:0}
+.gcicApproachList article{display:grid;grid-template-columns:45px 1fr;gap:12px;padding:22px 0;border-top:1px solid rgba(255,255,255,.09)}
+.gcicApproachList article:last-child{border-bottom:1px solid rgba(255,255,255,.09)}
+.gcicApproachList article>span{color:#dfac53;font-size:11px}
+.gcicApproachList h3{font-size:19px;margin:0 0 8px;font-weight:600}
+.gcicApproachList p{margin:0;font-size:13px}
+.gcicBonusCard{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:stretch;padding:47px;border:1px solid rgba(240,173,58,.32);border-radius:29px;background:radial-gradient(circle at 15% 0%,rgba(232,161,45,.15),transparent 50%),linear-gradient(125deg,#141810,#090f0c)}
+.gcicBonusMark{width:86px;height:86px;display:grid;place-items:center;font-size:48px;font-weight:550;letter-spacing:-.07em;margin:28px 0 15px;border:1px solid rgba(232,174,70,.3);border-radius:18px;color:#f0bb60;background:rgba(235,167,49,.055)}
+.gcicBonusCard h2{font-size:clamp(41px,5.1vw,71px);letter-spacing:-.06em;line-height:1.05;font-weight:560;margin:16px 0 18px}
+.gcicBonusLead{font-size:16px;color:#aeb9ac;line-height:1.8}
+.gcicBonusChips{display:flex;flex-wrap:wrap;gap:7px;margin:22px 0}
+.gcicBonusChips span{border:1px solid rgba(230,171,68,.25);border-radius:99px;padding:8px 11px;color:#e2c99c;font-size:11px}
+.gcicBonusSmall{color:#89978c;line-height:1.7;font-size:12px;margin-bottom:25px}
+.gcicBonusPillars{display:flex;flex-direction:column;justify-content:center;gap:0}
+.gcicBonusPillarsHead{font-size:11px;letter-spacing:.14em;color:#e7b966;margin-bottom:22px;font-weight:800}
+.gcicPillar{display:grid;grid-template-columns:40px 1fr;gap:12px;border-top:1px solid rgba(255,255,255,.09);padding:22px 0}
+.gcicPillar:last-child{border-bottom:1px solid rgba(255,255,255,.09)}
+.gcicPillar>span{color:#e8b665;font-size:11px}
+.gcicPillar h3{font-size:17px;margin:0 0 8px}
+.gcicPillar p{font-size:12px;line-height:1.7;color:#9aab9f;margin:0}
+.gcicMembership{display:grid;grid-template-columns:1fr .54fr;gap:40px;padding:44px;border:1px solid rgba(238,174,72,.3);background:radial-gradient(circle at 70% 5%,rgba(230,160,39,.1),transparent 40%),#0e160f;border-radius:26px}
+.gcicPrice{font-size:clamp(58px,7.6vw,92px);letter-spacing:-.07em;line-height:1;margin:22px 0;color:#f5efe2}
+.gcicPrice small{font-size:18px;letter-spacing:0;color:#acb6aa}
+.gcicMembership p{font-size:14px;line-height:1.85;color:#a4b09f}
+.gcicBenefits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:25px 0 30px}
+.gcicBenefits span{font-size:12px;color:#d5dfd1;line-height:1.5}
+.gcicBenefits span:before{content:'✓';color:#e3b654;margin-right:7px}
+.gcicMembership small{display:block;max-width:560px;margin-top:18px;color:#8d9d90;line-height:1.65;font-size:11px}
+.gcicMembership aside{border:1px solid rgba(255,255,255,.09);border-radius:18px;background:rgba(255,255,255,.025);padding:28px;align-self:start}
+.gcicMembership aside h3{font-size:25px;line-height:1.14;letter-spacing:-.04em;font-weight:600;margin:17px 0}
+.gcicMembership aside p{font-size:12px}
+.gcicMembership aside a{display:inline-block;color:#efba68;margin-top:15px;font-size:12px;font-weight:700}
+.gcicFaq{max-width:940px;margin:0 auto}
+.gcicFaq details{border-bottom:1px solid rgba(255,255,255,.1)}
+.gcicFaq details:first-child{border-top:1px solid rgba(255,255,255,.1)}
+.gcicFaq summary{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:23px 0;list-style:none;cursor:pointer;color:#e9f0e7;font-size:16px;font-weight:600;line-height:1.4}
+.gcicFaq summary::-webkit-details-marker{display:none}
+.gcicFaq summary span{color:#e9b758;font-size:21px}
+.gcicFaq details[open] summary span{transform:rotate(45deg)}
+.gcicFaq details>p{margin:0;padding:0 32px 24px 0;font-size:13px;line-height:1.9;color:#9ca99e;max-width:780px}
+.gcicCheckout{padding:85px 0 110px}
+.gcicCheckout>a{font-size:12px;color:#d7ae66}
+.gcicCheckoutGrid{display:grid;grid-template-columns:1fr .9fr;gap:55px;margin-top:40px;align-items:start}
+.gcicCheckoutIntro h1{font-size:clamp(49px,7vw,79px);letter-spacing:-.06em;line-height:1;font-weight:550;margin:20px 0}
+.gcicCheckoutIntro>p{color:#9ba99e;line-height:1.8}
+.gcicCheckoutIntro ul{padding-left:20px;line-height:2;color:#bdc7bc;font-size:13px;margin-top:30px}
+.gcicCheckoutBox{padding:32px;border:1px solid rgba(236,173,71,.28);background:#111912;border-radius:23px}
+.gcicCheckoutAmount{font-size:57px;font-weight:550;letter-spacing:-.06em;margin:15px 0}
+.gcicCheckoutAmount small{font-size:16px;color:#aab4a8;letter-spacing:0}
+.gcicCheckoutBox>p{font-size:13px;line-height:1.8;color:#a4afa3}
+.gcicPaymentForm{display:grid;gap:13px;margin-top:23px}
+.gcicPaymentForm>label{font-size:12px;color:#e5ebdf}
+.gcicPaymentForm input[type=email]{width:100%;border-radius:9px;padding:14px;background:#080f0c;color:#fff;border:1px solid #6d6b53;font-size:16px}
+.gcicPaymentForm .gcicConsent{display:flex;gap:10px;align-items:start;color:#b4bfae;line-height:1.6}
+.gcicPaymentForm .gcicConsent input{margin-top:4px;accent-color:#e8b558}
+.gcicPaymentForm button{width:100%;border:0;background:#edb452;border-radius:100px;color:#171002;font-size:13px;font-weight:800;padding:16px;cursor:pointer}
+.gcicPaymentForm button:disabled{opacity:.5;cursor:not-allowed}
+.gcicPaymentForm small{font-size:11px;color:#929e91;line-height:1.7}
+.gcicPendingNotice{padding:21px;border-radius:12px;background:rgba(231,164,45,.07);border:1px solid rgba(237,177,66,.21)}
+.gcicPendingNotice strong{color:#f0cc8e}
+.gcicPendingNotice p{font-size:12px;line-height:1.75;color:#a7b4a7}
+.gcicWaitlistLink{display:block;text-align:center;background:#e7b85e;color:#151006;padding:14px;border-radius:99px;font-size:13px;font-weight:800}
+.gcicPaymentError{color:#ffc1b5}
+.gcicCheckoutRisk a{color:#e9b55a;text-decoration:underline}
+.gcicReturn{padding:130px 0 160px;text-align:center;max-width:780px}
+.gcicReturn h1{font-size:clamp(48px,8vw,84px);letter-spacing:-.06em}
+.gcicReturn>p{line-height:1.8;color:#a4b1a5}
+.gcicReturn>a{margin:15px 5px}
+.gcMemberPage{min-height:100vh}
+.gcMemberHead{padding:27px 0;display:flex;justify-content:space-between;gap:20px;color:#d4b97f;font-size:11px;border-bottom:1px solid #293328}
+.gcMemberHead>a{color:#e4ba6e}
+.gcMemberHero{padding:90px 0 65px}
+.gcMemberHero h1{font-size:clamp(55px,8vw,100px);font-weight:550;letter-spacing:-.065em;margin:15px 0}
+.gcMemberHero p{font-size:16px;line-height:1.8;color:#a1afa4;max-width:800px}
+.gcMemberFacts{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.gcMemberFacts span{border:1px solid #55482c;border-radius:30px;padding:9px 13px;color:#dfba7c;font-size:11px}
+.gcMemberPillar{padding:44px 0;border-top:1px solid #29372d}
+.gcMemberPillar h2{font-size:clamp(31px,4vw,50px);letter-spacing:-.045em}
+.gcMemberPillar>div:first-child>p{color:#93a499}
+.gcMemberCompanies{display:grid;grid-template-columns:repeat(2,1fr);gap:13px;margin-top:30px}
+.gcMemberCompany{border:1px solid #2b392e;border-radius:17px;padding:24px;background:#0c140e}
+.gcMemberCompany>div{display:flex;align-items:center;gap:16px}
+.gcMemberCompany strong{color:#f4c374;font-size:21px}
+.gcMemberCompany>div span{color:#e0e7d9;font-size:14px}
+.gcMemberCompany p{font-size:13px;color:#adb9a9;line-height:1.6;margin:14px 0}
+.gcMemberCompany small{font-size:11px;color:#8f9d91;line-height:1.6}
+.gcMemberNote{border-top:1px solid #333a2b;padding:50px 0 90px}
+.gcMemberNote h2{font-size:26px}.gcMemberNote p{font-size:13px;line-height:1.85;color:#a5b1a6}
+.gcMemberNote a{color:#e7b966}
+@media(max-width:950px){.gcicSectionHead,.gcicApproachGrid,.gcicBonusCard,.gcicMembership,.gcicCheckoutGrid{grid-template-columns:1fr;gap:34px}.gcicSectionHead{gap:14px}.gcicMembership aside{width:100%}}
+@media(max-width:650px){.gcicHero{padding-top:85px}.gcicHeroEyebrow{font-size:9px;justify-content:center;letter-spacing:.08em}.gcicHero h1{font-size:clamp(42px,12vw,57px);margin:22px auto}.gcicHeroLead{font-size:14px}.gcicHeroActions{display:grid;width:100%}.gcicHeroActions>a{width:100%}.gcicHeroProof{grid-template-columns:repeat(2,1fr);margin-top:52px;gap:20px}.gcicHeroProof>div:nth-child(2){border-right:0}.gcicHeroProof strong{font-size:30px}.gcicHeroProof span{font-size:10px}.gcicSection{padding:65px 0}.gcicMarkets,.gcMemberCompanies{grid-template-columns:1fr}.gcicMarketCard{min-height:0;padding:26px}.gcicMarketCard h3{margin-top:28px}.gcicApproach{padding:65px 0}.gcicBonusCard,.gcicMembership{padding:25px;border-radius:19px}.gcicBonusMark{margin-top:20px}.gcicPrice{font-size:60px}.gcicBenefits{grid-template-columns:1fr}.gcicCheckoutBox{padding:24px}.gcicCheckoutGrid{gap:25px}.gcicCheckout{padding:65px 0 90px}.gcicFaq summary{font-size:14px}.gcMemberHero{padding-top:70px}.gcMemberHead{display:grid}}
+@media(prefers-reduced-motion:reduce){.gcicButton,.gcicOutlineButton{transition:none}}
