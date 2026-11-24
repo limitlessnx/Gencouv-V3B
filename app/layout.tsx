@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import GencouvAnalytics from "@/components/GencouvAnalytics";
 import MobileSidebarMenu from "@/components/MobileSidebarMenu";
 import "./globals.css";
+import "./mobile-overlay-fallback.css";
 
 export const metadata: Metadata = {
   title: "Gencouv | AI Trading Automation, EAs & Indicators",
