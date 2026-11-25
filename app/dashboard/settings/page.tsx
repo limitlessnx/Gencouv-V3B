@@ -1,0 +1,4 @@
+import {createClient} from "@/lib/supabase-server";
+import {redirect} from "next/navigation";
+import SettingsForm from "./SettingsForm";
+export default async function Settings(){const db=await createClient();const {data:{user}}=await db.auth.getUser();if(!user)redirect("/login");return <main className="dashboard-main"><header><div><span className="eyebrow">Client workspace</span><h1>Account settings</h1><p>Manage your profile and account security.</p></div></header><section className="dash-panel"><div><h2>Account identity</h2><p>{user.email}</p><p>Email: {user.email_confirmed_at?"Verified":"Not verified"}</p></div></section><SettingsForm name={typeof user.user_metadata?.display_name==="string"?user.user_metadata.display_name:""} email={user.email||""}/></main>}
