@@ -10,6 +10,7 @@ const links=[
  ["Investment Intelligence","/dashboard/investment-intelligence","M3 3v18h18 M6 15l5-6 4 3 6-7"],
  ["Portfolio management","/dashboard/portfolio","M3 7h18v13H3z M8 7V4h8v3 M3 12h18"],
  ["Transactions","/dashboard/transactions","M5 3h14v18l-3-2-4 2-4-2-3 2z M8 8h8 M8 12h8 M8 16h5"],
+ ["Settings","/dashboard/settings","M4 8h16 M4 16h16 M8 5v6 M16 13v6"],
  ["Support","https://t.me/Gencou_bot?start=dashboard","M4 13v-2a8 8 0 0116 0v2 M4 13h4v6H4z M16 13h4v6h-4z"]
 ];
 export default function ClientNavigation({email}:{email:string}){
