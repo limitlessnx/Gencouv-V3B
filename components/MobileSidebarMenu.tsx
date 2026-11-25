@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 const links = [
   ["About", "/about"],
@@ -19,17 +20,23 @@ const links = [
 
 export default function MobileSidebarMenu() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const clientArea = pathname === "/dashboard" || pathname?.startsWith("/dashboard/");
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    document.body.style.overflow = open && !clientArea ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open]);
+  }, [open, clientArea]);
+
+  useEffect(() => { setOpen(false); }, [pathname]);
 
   function closeMenu() {
     setOpen(false);
   }
+
+  if (clientArea) return null;
 
   return (
     <>
