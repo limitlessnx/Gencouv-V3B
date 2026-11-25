@@ -40,6 +40,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
   return <form className="auth-form" onSubmit={submit}>
     <label>Email address<input autoComplete="email" type="email" required value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" /></label>
     <div style={{display:"grid",gap:8}}><label htmlFor="auth-password">Password</label><div style={{position:"relative"}}><input id="auth-password" autoComplete={mode === "signup" ? "new-password" : "current-password"} type={visible ? "text" : "password"} minLength={mode === "signup" ? 8 : undefined} required value={password} onChange={e=>setPassword(e.target.value)} placeholder={mode === "signup" ? "Minimum 8 characters" : "Enter your password"} style={{paddingRight:76}}/><button type="button" aria-label={visible ? "Hide password" : "Show password"} aria-pressed={visible} onClick={()=>setVisible(v=>!v)} style={{position:"absolute",right:4,top:4,bottom:4,padding:"0 12px",background:"transparent",border:0,color:"var(--green)",font:"inherit",cursor:"pointer"}}>{visible ? "Hide" : "Show"}</button></div></div>
+    {mode === "login" && <a href="/forgot-password">Forgot password?</a>}
     <button className="button primary wide" disabled={loading}>{loading ? 'Processing…' : mode === 'signup' ? 'Create secure account' : 'Sign in'}</button>
     {message && <p className="form-message" role="status">{message}</p>}
   </form>;
