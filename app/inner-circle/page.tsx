@@ -7,8 +7,8 @@ import "../investment-intelligence/research.css";
 import "./inner-circle.css";
 
 export const metadata:Metadata={
- title:"Gencouv Inner Circle | Multi-Asset Research, Metals & CFDs",
- description:"Explore Gencouv's $1,000 annual Inner Circle offering: equities, digital assets, gold and industrial metals, CFD market intelligence, bi-weekly macro research and a 20-stock Robotics & Physical AI watchlist.",
+ title:"Gencouv Principal Access | Multi-Asset Research, Metals & CFDs",
+ description:"Explore Gencouv's $1,000 annual Principal Access offering: equities, digital assets, gold and industrial metals, CFD market intelligence, bi-weekly macro research and a 20-stock Robotics & Physical AI watchlist.",
  alternates:{canonical:"/inner-circle"},
 };
 
@@ -33,7 +33,7 @@ const faqs=[
  ["Is the Robotics 20 a buy list?","No. The welcome dossier is an educational research universe spanning four areas of the robotics value chain. It is not a personalized recommendation, and it does not promise entry levels or returns."],
  ["When will I enter the private Telegram room?","After NOWPayments confirms the membership fee, we send a unique verification code. The member creates an account using the checkout email, confirms that email, and submits the code. Gencouv reviews the payment and identity match before providing a private Telegram invite. The group link is never public."],
  ["Can I buy access today?","The annual membership is a fee for research-community access, not a deposit for Gencouv to trade or manage. NOWPayments is integrated. Billing remains unavailable until membership scope, terms and private-invite delivery have been validated."],
- ["Does Inner Circle include EA licenses or copy trading?","No. Automated trading systems, copy trading and research membership are separate products with different terms, eligibility and risks."],
+ ["Does Gencouv Principal Access include EA licenses or copy trading?","No. Automated trading systems, copy trading and research membership are separate products with different terms, eligibility and risks."],
 ];
 
 export default function InnerCirclePage(){
@@ -41,7 +41,7 @@ export default function InnerCirclePage(){
   <HomeNavigation/>
   <section className="shell gcicHero">
    <div className="gcicHeroEyebrow"><span className="gcicDot"/> EQUITIES · DIGITAL ASSETS · PRECIOUS &amp; INDUSTRIAL METALS · CFDs</div>
-   <p className="gcicPrivate">GENCOUV CAPITAL / INNER CIRCLE · PRIVATE MEMBERSHIP</p>
+   <p className="gcicPrivate">GENCOUV PRINCIPAL ACCESS · PRIVATE MEMBERSHIP</p>
    <h1>Capital Moves Before the Narrative.<br/><em>We Position Before Both.</em></h1>
    <p className="gcicHeroLead">Multi-asset research and market watchlists across stocks, crypto, metals and CFDs. Follow the themes, catalysts and risk factors worth watching, then make your own trading and investment decisions.</p>
    <div className="gcicHeroActions"><a className="gcicButton" href="/checkout/inner-circle">Secure Annual Access — $1,000/yr <span aria-hidden="true">↗</span></a><a className="gcicOutlineButton" href="#markets">Explore asset coverage</a></div>
@@ -82,10 +82,10 @@ export default function InnerCirclePage(){
   </section>
 
   <section className="shell gcicSection" id="membership">
-   <div className="gcicSectionHead"><div><span className="researchKicker">GENCOUV INNER CIRCLE</span><h2>Research that earns your attention.</h2></div><p>Designed as one annual relationship, with clear deliverables, explicit risk disclosures and separate access from our Expert Advisor and copy-trading products.</p></div>
+   <div className="gcicSectionHead"><div><span className="researchKicker">GENCOUV PRINCIPAL ACCESS</span><h2>Research that earns your attention.</h2></div><p>Designed as one annual relationship, with clear deliverables, explicit risk disclosures and separate access from our Expert Advisor and copy-trading products.</p></div>
    <div className="gcicMembership">
     <div><span className="researchKicker">PRIVATE ANNUAL ACCESS</span><div className="gcicPrice">$1,000 <small>/ year</small></div><p>Research-community membership designed for experienced market participants, with independent coverage of equities, digital assets, precious and industrial metals, and CFDs.</p><div className="gcicBenefits"><span>Multi-asset desk intelligence</span><span>Bi-weekly macro briefings</span><span>Robotics 20 welcome dossier</span><span>Research archive access</span><span>Risk-aware setup analysis</span><span>Private Telegram group after verification</span></div><a className="gcicButton" href="/checkout/inner-circle">Secure Annual Access — $1,000/yr ↗</a><small>NOWPayments checkout is integrated. Payments remain unavailable until authorization, eligibility and fulfillment checks are verified. No automatic renewal.</small></div>
-    <aside><span className="researchKicker">THE RIGHT EXPECTATIONS</span><h3>Serious analysis. No invented certainty.</h3><p>We will not claim historical calls at specific Bitcoin or Solana lows, verified analyst credentials or institutional trading results without independently reviewable evidence.</p><p>The Inner Circle covers general market observations, independent research and assets to monitor. It does not include managed accounts, personalized trading orders or promises of profitable entries.</p><a href="/investment-intelligence#newsletter">Get free research and launch updates ↗</a></aside>
+    <aside><span className="researchKicker">THE RIGHT EXPECTATIONS</span><h3>Serious analysis. No invented certainty.</h3><p>We will not claim historical calls at specific Bitcoin or Solana lows, verified analyst credentials or institutional trading results without independently reviewable evidence.</p><p>Gencouv Principal Access covers general market observations, independent research and assets to monitor. It does not include managed accounts, personalized trading orders or promises of profitable entries.</p><a href="/investment-intelligence#newsletter">Get free research and launch updates ↗</a></aside>
    </div>
   </section>
 
@@ -93,7 +93,7 @@ export default function InnerCirclePage(){
    <div className="gcicSectionHead"><div><span className="researchKicker">COMMON QUESTIONS</span><h2>Clarity before membership.</h2></div><p>Review the actual member deliverables, unresolved access requirements and relevant market risks.</p></div>
    <div className="gcicFaq">{faqs.map(([q,a])=><details key={q}><summary>{q}<span aria-hidden="true">+</span></summary><p>{a}</p></details>)}</div>
   </section>
-  <section className="shell researchDisclosureSection"><details className="researchLegalDetails"><summary><span><strong>Important risk and regulatory information</strong><small>CFDs, cryptocurrencies and securities can lose value. Click for the full membership notice.</small></span><b aria-hidden="true">+</b></summary><div className="researchLegalBody"><p>Gencouv Inner Circle offers market commentary, educational research and watchlists. The annual fee buys content and community access, not custody or management of member investment capital. Members are responsible for their own decisions, and specific paid buy or sell instructions are not included. Specific paid securities advice, trade calls or CFD recommendations will not be offered without required regulatory authorization and eligibility controls. CFDs involve leverage and can cause rapid losses. Educational watchlists and research are not personalized investment advice. The Robotics 20 dossier is a research starting universe, not an independently audited return record. The membership does not accept or manage investor trading capital, and no performance is guaranteed.</p><a href="/risk-disclosure">Read full risk disclosure ↗</a></div></details></section>
+  <section className="shell researchDisclosureSection"><details className="researchLegalDetails"><summary><span><strong>Important risk and regulatory information</strong><small>CFDs, cryptocurrencies and securities can lose value. Click for the full membership notice.</small></span><b aria-hidden="true">+</b></summary><div className="researchLegalBody"><p>Gencouv Principal Access offers market commentary, educational research and watchlists. The annual fee buys content and community access, not custody or management of member investment capital. Members are responsible for their own decisions, and specific paid buy or sell instructions are not included. Specific paid securities advice, trade calls or CFD recommendations will not be offered without required regulatory authorization and eligibility controls. CFDs involve leverage and can cause rapid losses. Educational watchlists and research are not personalized investment advice. The Robotics 20 dossier is a research starting universe, not an independently audited return record. The membership does not accept or manage investor trading capital, and no performance is guaranteed.</p><a href="/risk-disclosure">Read full risk disclosure ↗</a></div></details></section>
   <ResearchFooter/>
   <FloatingGencouvChat/>
  </main>;
