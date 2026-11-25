@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase-browser';
 export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -37,9 +38,9 @@ export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
   }
 
   return <form className="auth-form" onSubmit={submit}>
-    <label>Email<input type="email" required value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" /></label>
-    <label>Password<input type="password" minLength={8} required value={password} onChange={e=>setPassword(e.target.value)} placeholder="Minimum 8 characters" /></label>
+    <label>Email address<input autoComplete="email" type="email" required value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" /></label>
+    <div style={{display:"grid",gap:8}}><label htmlFor="auth-password">Password</label><div style={{position:"relative"}}><input id="auth-password" autoComplete={mode === "signup" ? "new-password" : "current-password"} type={visible ? "text" : "password"} minLength={mode === "signup" ? 8 : undefined} required value={password} onChange={e=>setPassword(e.target.value)} placeholder={mode === "signup" ? "Minimum 8 characters" : "Enter your password"} style={{paddingRight:76}}/><button type="button" aria-label={visible ? "Hide password" : "Show password"} aria-pressed={visible} onClick={()=>setVisible(v=>!v)} style={{position:"absolute",right:4,top:4,bottom:4,padding:"0 12px",background:"transparent",border:0,color:"var(--green)",font:"inherit",cursor:"pointer"}}>{visible ? "Hide" : "Show"}</button></div></div>
     <button className="button primary wide" disabled={loading}>{loading ? 'Processing…' : mode === 'signup' ? 'Create secure account' : 'Sign in'}</button>
-    {message && <p className="form-message">{message}</p>}
+    {message && <p className="form-message" role="status">{message}</p>}
   </form>;
 }
