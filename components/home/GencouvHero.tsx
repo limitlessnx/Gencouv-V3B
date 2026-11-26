@@ -1,4 +1,3 @@
-import PortfolioDashboardVisual from "./PortfolioDashboardVisual";
 import HeroTrustStrip from "./HeroTrustStrip";
 
 const myfxbook = "https://www.myfxbook.com/portfolio/gencouv-lirunex-pm/12165670";
@@ -28,7 +27,7 @@ export default function GencouvHero() {
           <span><i>◇</i><b>Client-held funds</b><small>Your own broker account</small></span>
         </div>
 
-        <PortfolioDashboardVisual />
+        <figure className="gencouvTeamHeroVisual"><img src="/assets/gencouv-brand-cover.jpeg" alt="Gencouv Trading brand artwork" loading="eager" /><figcaption>Multi-asset research · systematic trading · risk awareness</figcaption></figure>
         <HeroTrustStrip />
       </div>
     </section>
