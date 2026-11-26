@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Gencouv | AI Trading Automation, EAs & Indicators",
   description: "Explore automated trading systems, Expert Advisors, AI-assisted indicators and guided onboarding for systematic market participation.",
   metadataBase: new URL("https://gencouv.com"),
+  icons: { icon: "/assets/gencouv-logo-white.png", apple: "/assets/gencouv-logo-white.png" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
