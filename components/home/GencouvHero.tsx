@@ -27,7 +27,7 @@ export default function GencouvHero() {
           <span><i>◇</i><b>Client-held funds</b><small>Your own broker account</small></span>
         </div>
 
-        <figure className="gencouvTeamHeroVisual"><img src="/assets/gencouv-portfolio-team.webp" alt="Illustration of financial analysts collaborating in an investment research office" loading="eager" /><figcaption>Multi-asset research · systematic trading · risk awareness</figcaption></figure>
+        <figure className="gencouvTeamHeroVisual"><img src="/assets/gencouv-portfolio-team-sharp.webp" alt="Illustration of financial analysts collaborating in an investment research office" loading="eager" /><figcaption>Multi-asset research · systematic trading · risk awareness</figcaption></figure>
         <HeroTrustStrip />
       </div>
     </section>
