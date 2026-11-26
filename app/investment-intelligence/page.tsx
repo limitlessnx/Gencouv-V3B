@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 import HomeNavigation from "@/components/home/HomeNavigation";
 import FloatingGencouvChat from "@/components/FloatingGencouvChat";
 import ResearchFooter from "@/components/research/ResearchFooter";
-import ResearchNewsletterForm from "@/components/research/ResearchNewsletterForm";
 import "../home-redesign.css";
 import "../copy-hero.css";
 import "./research.css";
 
 export const metadata: Metadata = {
   title: "Investment Intelligence | Gencouv Capital",
-  description: "Explore Gencouv's investment research, stock and crypto market intelligence, educational briefings, and upcoming Inner Circle membership.",
+  description: "Explore Gencouv's Prime Trade Calls Access, macro commentary and private multi-asset market discussions.",
   alternates: { canonical: "/investment-intelligence" },
 };
 
@@ -28,8 +27,8 @@ export default function InvestmentIntelligencePage() {
       <h1>Clarity for a world of <em>moving markets.</em></h1>
       <p>Independent financial market research, evidence-led analysis, and educational insights across global equities, cryptocurrencies, and macroeconomic trends. Built for curious investors who value the thinking behind an idea.</p>
       <div className="researchActions">
-        <a className="researchPrimary" href="#newsletter">Explore free research <span aria-hidden="true">↗</span></a>
-        <a className="researchSecondary" href="/inner-circle">Discover Inner Circle</a>
+        <a className="researchPrimary" href="/checkout/inner-circle">Get Prime Access <span aria-hidden="true">↗</span></a>
+        <a className="researchSecondary" href="/inner-circle">Explore Prime Access</a>
       </div>
       <div className="researchTrust"><span>Evidence before excitement</span><span>Risk alongside opportunity</span><span>No guaranteed returns</span></div>
     </section>
@@ -39,13 +38,9 @@ export default function InvestmentIntelligencePage() {
       <div className="researchGrid">{researchAreas.map(([number, title, description]) => <article className="researchCard" key={title}><span>{number}</span><h3>{title}</h3><p>{description}</p></article>)}</div>
     </section>
 
-    <section id="newsletter" className="researchNewsletter">
-      <div className="shell researchSplit"><div><span className="researchKicker">THE FREE BRIEF</span><h2>Follow the markets. Understand the context.</h2><p>Our planned market newsletter will bring together stock and crypto watchlists, major developments, and accessible explanations of the risks and evidence behind each research theme.</p><div className="researchTagRow"><span>Market commentary</span><span>Research watchlists</span><span>Investor education</span></div></div><div className="researchJoinCard"><span className="researchKicker">FREE RESEARCH NEWSLETTER</span><h3>Subscribe to the Gencouv Research Brief.</h3><p>Get independent market commentary and research updates in your inbox. Subscribe below, then confirm the email we send you.</p><ResearchNewsletterForm /></div></div>
-    </section>
-
     <section id="inner-circle" className="researchSection shell">
-      <div className="researchSectionIntro"><div><span className="researchKicker">PREMIUM MULTI-ASSET MEMBERSHIP</span><h2>The Gencouv Inner Circle.</h2></div><p>Explore the proposed private research desk spanning equities, digital assets, precious and industrial metals, and leveraged CFDs. Specific trade calls remain subject to authorization.</p></div>
-      <div className="researchMemberCard"><div><span className="researchKicker">PROPOSED ANNUAL MEMBERSHIP</span><div className="researchPrice">$1,000 <small>/ year</small></div><p>Planned benefits include bi-weekly macro briefings, stock, crypto, metals and CFD market research, the Robotics 20 educational watchlist, and moderated Telegram discussion following access verification.</p><div className="researchTagRow"><span>Weekly briefings</span><span>Investment theses</span><span>Research Q&A</span><span>Private community</span></div></div><aside><strong>Launching after regulatory review</strong><p>Enrollment and payments are not yet open. Features, pricing, access rules, and eligibility will be confirmed before any paid launch.</p><a className="researchSecondary" href="/inner-circle">Join Now · Explore Inner Circle ↗</a></aside></div>
+      <div className="researchSectionIntro"><div><span className="researchKicker">PREMIUM MULTI-ASSET MEMBERSHIP</span><h2>Gencouv Prime Trade Calls Access.</h2></div><p>Private market commentary and trade-setup discussions spanning equities, digital assets, forex, metals and CFDs. Members make their own trading decisions.</p></div>
+      <div className="researchMemberCard"><div><span className="researchKicker">ANNUAL PRIVATE MEMBERSHIP</span><div className="researchPrice">$1,000 <small>/ year</small></div><p>Membership is designed for multi-asset market observations, macro briefings, setups and catalysts to watch, and access to the private Telegram community following paid-order and account verification.</p><div className="researchTagRow"><span>Macro commentary</span><span>Trade setups to watch</span><span>Risk scenarios</span><span>Private community</span></div></div><aside><strong>Payment verification and access</strong><p>Checkout handles annual membership invoicing where activated. A verified payment generates an access code; Telegram joining requires manual approval.</p><a className="researchSecondary" href="/checkout/inner-circle">Get Prime Access ↗</a></aside></div>
     </section>
 
     <section className="researchSection shell"><div className="researchSectionIntro"><div><span className="researchKicker">OUR STANDARD</span><h2>Show the reasoning, not just the conclusion.</h2></div><p>Our aim is to document the thesis, supporting evidence, what could invalidate it, and the outcome over time. Research is not a promise of performance.</p></div><div className="researchMethod"><article><b>01 / Thesis</b><p>Define what makes the asset or market theme worth studying.</p></article><article><b>02 / Evidence</b><p>Examine fundamentals, data quality, alternatives, and counterarguments.</p></article><article><b>03 / Risk</b><p>Describe uncertainties, key catalysts, and scenarios where the thesis fails.</p></article><article><b>04 / Review</b><p>Revisit assumptions as facts change, including unsuccessful ideas.</p></article></div></section>
