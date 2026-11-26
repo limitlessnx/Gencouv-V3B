@@ -57,3 +57,11 @@
 @media(min-width:1200px){.dashboard-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:960px){.dashboard-shell{display:block}.dashboard-shell>aside{position:relative;height:auto;gap:12px;padding:18px 20px;border-right:0;border-bottom:1px solid var(--dash-line)}.dashboard-shell>aside nav{display:flex;flex-wrap:wrap;gap:4px}.dashboard-shell>aside nav a{font-size:13px;padding:10px}.dashboard-shell>aside>.button{display:none}.dashboard-main{padding:20px}.dashboard-main .panelHead{display:block}.dashboard-main .panelHead .button{margin-top:12px}}
 @media(max-width:480px){.dashboard-grid{grid-template-columns:1fr;gap:12px}.dashboard-main{padding:16px}.dashboard-shell>aside{padding:14px 16px}.dashboard-main .dash-panel{padding:18px}.dashboard-main .licenseCard{padding:16px}.dashboard-main .licenseActions>span{max-width:100%}}
+
+/* Use the supplied original Gencouv mark on legacy navigation elements too. */
+.nav .brand>span,.footer .brand>span,.auth-shell>.brand>span{
+  display:inline-block!important;
+  width:38px!important;height:38px!important;min-width:38px!important;
+  background:transparent url('/assets/gencouv-logo-white.png') center/contain no-repeat!important;
+  border:0!important;color:transparent!important;font-size:0!important;overflow:hidden!important;
+}
