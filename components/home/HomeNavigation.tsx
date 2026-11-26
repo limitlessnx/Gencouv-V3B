@@ -2,8 +2,8 @@ export default function HomeNavigation() {
   return (
     <nav className="homeNav shell" aria-label="Primary navigation">
       <a className="homeBrand" href="/" aria-label="Gencouv home">
-        <span className="homeBrandMark" aria-hidden="true"><i/><i/><i/></span>
-        <span className="homeBrandText"><b>Gencouv</b><small>AI TRADING TECHNOLOGY</small></span>
+        <img className="gencouvLogoMark" src="/assets/gencouv-logo-white.png" alt="" width="40" height="40" />
+        <span className="homeBrandText"><b>GENCOUV</b><small>TRADING · RESEARCH · TECHNOLOGY</small></span>
       </a>
 
       <div className="homeNavLinks">
