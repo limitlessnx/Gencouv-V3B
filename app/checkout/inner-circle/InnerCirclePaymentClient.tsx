@@ -28,8 +28,8 @@ export default function InnerCirclePaymentClient({enabled}:{enabled:boolean}){
      <button type="button" disabled={!accepted||busy} onClick={pay}>{busy?"Opening secure checkout…":"Pay $1,000 annually with NOWPayments"} ↗</button>
      <small>One annual invoice. NOWPayments processes cryptocurrency payments. The renewal is not automatic. Access is granted only after verified payment.</small>
    </>:<>
-     <div className="gcicPendingNotice"><strong>Annual enrollment is not yet active.</strong><p>The $1,000 NOWPayments checkout is configured but intentionally locked until regulatory review, member terms and promised delivery are approved.</p></div>
-     <a className="gcicWaitlistLink" href="/investment-intelligence#newsletter">Join the free research list ↗</a>
+     <div className="gcicPendingNotice"><strong>Annual enrollment is not yet active.</strong><p>The $1,000 NOWPayments invoice service is configured. Payment activation is awaiting verification of the applicable selling permissions and member fulfillment.</p></div>
+     <a className="gcicWaitlistLink" href="/inner-circle">Return to Prime Access ↗</a>
      <small>No payment is collected and no membership access is issued at this stage.</small>
    </>}
    {error&&<p role="alert" className="gcicPaymentError">{error}</p>}
