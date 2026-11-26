@@ -237,3 +237,16 @@
 .gencouvResearchFinePrint{color:#7e8d84;font-size:11px;line-height:1.7;margin:20px 0 0}
 @media(max-width:960px){.gencouvResearchHomeGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.gencouvResearchHomePremium{grid-column:1/-1}.gencouvResearchHomeCard{min-height:260px}}
 @media(max-width:680px){.gencouvResearchHomeGrid{grid-template-columns:1fr}.gencouvResearchHomePremium{grid-column:auto}.gencouvResearchHomeCard{min-height:0;padding:25px}.gencouvResearchHomeCard h3{margin-top:22px}.gencouvResearchChips{margin:5px 0 22px}.gencouvResearchHomeCard>a{margin-top:12px}}
+
+/* Official supplied Gencouv mark: shared across main and mobile headers */
+.gencouvLogoMark{width:40px;height:40px;object-fit:cover;object-position:center;flex:0 0 auto;border:0;border-radius:0;background:transparent}
+.homeBrand .gencouvLogoMark{width:38px;height:38px}
+.homeBrandText b{font-size:15px;letter-spacing:.15em;font-weight:750}
+.homeBrandText small{font-size:7px;letter-spacing:.11em;white-space:nowrap}
+.mobile-menu-brand .gencouvLogoMark{width:38px;height:38px;flex:none}
+.brand>.gencouvLogoMark{width:40px;height:40px;flex:0 0 40px}
+.researchFooterLogo .gencouvLogoMark{width:43px;height:43px}
+.gencouvTeamHeroVisual{display:block;position:relative;width:min(1120px,100%);margin:14px auto 35px;overflow:hidden;border-radius:26px;border:1px solid rgba(243,181,69,.25);background:#080d12;box-shadow:0 30px 85px rgba(0,0,0,.36)}
+.gencouvTeamHeroVisual img{display:block;width:100%;height:clamp(250px,45vw,535px);object-fit:cover;object-position:center 42%}
+.gencouvTeamHeroVisual figcaption{position:absolute;bottom:18px;left:20px;right:20px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#f3f1eb;text-align:center;text-shadow:0 1px 8px rgba(0,0,0,.8)}
+@media(max-width:700px){.gencouvTeamHeroVisual{border-radius:18px;margin-top:22px;margin-bottom:24px}.gencouvTeamHeroVisual img{height:300px;object-position:center}.gencouvTeamHeroVisual figcaption{font-size:9px;letter-spacing:.06em;left:10px;right:10px}.homeBrandText b{font-size:13px}.homeBrandText small{font-size:6px}}
