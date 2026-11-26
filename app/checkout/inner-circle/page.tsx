@@ -7,7 +7,7 @@ import "../../home-redesign.css";
 import "../../investment-intelligence/research.css";
 import "../../inner-circle/inner-circle.css";
 
-export const metadata:Metadata={title:"Principal Access Annual Membership | Gencouv Capital",robots:{index:false,follow:false}};
+export const metadata:Metadata={title:"Prime Trade Calls Access | Gencouv Capital",robots:{index:false,follow:false}};
 export const dynamic="force-dynamic";
 
 export default function InnerCircleCheckoutPage(){
@@ -15,13 +15,13 @@ export default function InnerCircleCheckoutPage(){
  return <main className="researchPage innerCirclePage">
    <HomeNavigation/>
    <section className="shell gcicCheckout">
-     <a href="/inner-circle">← Back to Principal Access</a>
+     <a href="/inner-circle">← Back to Prime Access</a>
      <div className="gcicCheckoutGrid">
       <div className="gcicCheckoutIntro">
        <span className="researchKicker">ANNUAL MEMBERSHIP / SECURE PAYMENT</span>
-       <h1>Gencouv Principal Access.</h1>
-       <p>Annual Inner Circle access covers an educational multi-asset research area, subject to verified regional eligibility. The Robotics 20 member research page is built; live calls are not included in the current deliverable.</p>
-       <ul><li>Bi-weekly macro briefings (schedule pending operational verification)</li><li>20-company Robotics &amp; Physical AI educational watchlist</li><li>Member research access after payment verification</li><li>Private Telegram access after verification, once the invite system is operational</li></ul>
+       <h1>Gencouv Prime Trade Calls Access.</h1>
+       <p>Annual private market-intelligence membership covering stocks, crypto, forex, metals and CFDs. Members receive market commentary and setups to watch, not personalized orders or trades executed on their behalf.</p>
+       <ul><li>Multi-asset trade-call discussions and market observations</li><li>Macro themes, catalysts and trade-setup analysis</li><li>Unique membership code after verified payment</li><li>Private Telegram invitation after account verification and manual approval</li></ul>
       </div>
       <aside className="gcicCheckoutBox">
        <span className="researchKicker">MEMBERSHIP TOTAL</span>
