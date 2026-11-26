@@ -57,8 +57,8 @@ export default function MobileSidebarMenu() {
         <aside className="mobile-menu-drawer" aria-label="Site navigation">
           <div className="mobile-menu-head">
             <a className="mobile-menu-brand" href="/" onClick={closeMenu}>
-              <span>G</span>
-              <div><b>GENCOUV</b><small>AI TRADING TECHNOLOGY</small></div>
+              <img className="gencouvLogoMark" src="/assets/gencouv-logo-white.png" alt="" width="38" height="38" />
+              <div><b>GENCOUV</b><small>TRADING · RESEARCH</small></div>
             </a>
             <button type="button" onClick={closeMenu} aria-label="Close navigation menu">×</button>
           </div>
