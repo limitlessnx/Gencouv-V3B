@@ -74,13 +74,6 @@ export default function InnerCirclePage(){
    </div>
   </div></section>
 
-  <section className="shell gcicSection" id="bonus">
-   <div className="gcicBonusCard">
-    <div className="gcicBonusIntro"><span className="researchKicker">COMPLIMENTARY MEMBERSHIP DOSSIER</span><div className="gcicBonusMark">20</div><h2>The Robotics 20.</h2><p className="gcicBonusLead">A 20-company Robotics &amp; Physical AI research universe spanning the hardware, intelligence and industrial infrastructure behind autonomous systems.</p><div className="gcicBonusChips"><span>20 equities</span><span>4 investment themes</span><span>Risk considerations</span></div><p className="gcicBonusSmall">Included with an active annual membership, after payment verification. The initial member brief is an educational watchlist, not a high-conviction buy list or an independently verified track record.</p><a className="gcicOutlineButton" href="/checkout/inner-circle">Get Prime Access ↗</a></div>
-    <div className="gcicBonusPillars"><div className="gcicBonusPillarsHead">THE FOUR RESEARCH PILLARS</div>{pillars.map((p,i)=><div className="gcicPillar" key={p.name}><span>0{i+1}</span><div><h3>{p.name}</h3><p>{p.desc}</p></div></div>)}</div>
-   </div>
-  </section>
-
   <section className="shell gcicSection" id="membership">
    <div className="gcicSectionHead"><div><span className="researchKicker">GENCOUV PRINCIPAL ACCESS</span><h2>Research that earns your attention.</h2></div><p>Designed as one annual relationship, with clear deliverables, explicit risk disclosures and separate access from our Expert Advisor and copy-trading products.</p></div>
    <div className="gcicMembership">
