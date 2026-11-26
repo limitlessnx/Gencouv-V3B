@@ -6,7 +6,7 @@ export default function ResearchFooter() {
       <div className="shell researchFooterMain">
         <div className="researchFooterBrand">
           <Link href="/" className="researchFooterLogo" aria-label="Gencouv Capital homepage">
-            <span className="researchFooterMark">G</span>
+            <img className="gencouvLogoMark" src="/assets/gencouv-logo-white.png" alt="" width="43" height="43" />
             <span><strong>GENCOUV</strong><small>CAPITAL · RESEARCH &amp; TRADING TECHNOLOGY</small></span>
           </Link>
           <p>Independent market intelligence, systematic trading technology and transparent research for informed market participants.</p>
