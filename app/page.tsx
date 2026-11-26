@@ -83,7 +83,7 @@ export default function Home() {
           <h3>Premium trade calls &amp; intelligence</h3>
           <p>Explore the proposed $1,000 annual membership covering equities, crypto, metals, CFDs, macro briefings and the Robotics 20 welcome dossier. Specific trade calls require authorization.</p>
           <div className="gencouvResearchChips"><span>Stocks</span><span>Crypto</span><span>Metals</span><span>CFDs</span></div>
-          <a className="gencouvResearchJoin" href="/inner-circle">Get Prime Access <span aria-hidden="true">↗</span></a>
+          <a className="gencouvResearchJoin" href="/checkout/inner-circle">Get Prime Access <span aria-hidden="true">↗</span></a>
         </article>
       </div>
       <p className="gencouvResearchFinePrint">The Inner Circle is currently pre-launch. Joining its landing page does not purchase membership or provide trading signals. Financial markets involve risk.</p>
